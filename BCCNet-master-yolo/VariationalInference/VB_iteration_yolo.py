@@ -20,6 +20,7 @@ def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers):
     :return: q_t - approximating posterior for true labels, alpha_volunteers - updated posterior for confusion matrices,
         lower_bound_likelihood - ELBO
     """
+    pdb.set_trace()
     ElogPi_volunteer = expected_log_Dirichlet_parameters(alpha_volunteers)
 
     # q_t
@@ -68,7 +69,7 @@ def expected_true_labels(X, nn_output, ElogPi_volunteer):
     for k in range(K):
         inds = np.where(X[:, :, k] > -1)  # rule out missing values
         rho[inds[0], inds[1], :] = rho[inds[0], inds[1], :] + np.transpose(
-            Elog[:, np.squeeze(X[inds[0], inds[1], k]), k])
+            ElogPi_volunteer[:, np.squeeze(X[inds[0], inds[1], k]), k])
 
     # normalisation: (minus the max of each anchor)
     rho = rho - np.transpose(np.tile(np.transpose(np.max(rho, 2)), (M, 1, 1)))
@@ -99,3 +100,19 @@ def update_alpha_volunteers(alpha0_volunteers, f_iu):
 
     return alpha_volunteers
 
+
+def compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output):
+    W = alpha0_volunteers.shape[2]
+
+    ll_pi_worker = 0
+    for w in range(W):
+        ll_pi_worker = ll_pi_worker - np.sum(logB_from_Dirichlet_parameters(alpha0_volunteers[:, :, w]) -
+                                             logB_from_Dirichlet_parameters(alpha_volunteers[:, :, w]))
+
+    ll_t = -np.sum(q_t * rho) + np.sum(np.log(np.sum(np.exp(rho), axis=1)), axis=0)
+
+    ll_nn = np.sum(q_t * nn_output) - np.sum(np.log(np.sum(np.exp(nn_output), axis=1)), axis=0)
+
+    ll = ll_pi_worker + ll_t + ll_nn  # VB lower bound
+
+    return ll

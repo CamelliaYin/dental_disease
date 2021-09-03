@@ -8,13 +8,15 @@ import pdb
 
 from NNArchitecture.lenet5_mnist import cnn_for_mnist
 from SyntheticCrowdsourcing.synthetic_crowd_volunteers import generate_volunteer_labels
-from VariationalInference.VB_iteration import VB_iteration
+from VariationalInference.VB_iteration_yolo import VB_iteration
 from utils.utils_dataset_processing import shrink_arrays
 from VariationalInference import confusion_matrix
 
 rseed = 1000
 np.random.seed(rseed)
+tf.random.set_seed(rseed)
 #tf.set_random_seed(rseed)
+pdb.set_trace()
 
 # parameters
 n_classes = 10
@@ -60,7 +62,7 @@ variational_param_confusion_matrices = np.copy(prior_param_confusion_matrices)
 initial_nn_output_for_vb_update = np.random.randn(x_train.shape[0], n_classes)
 ## (60000, 10)
 ## for each object we have 10 logits coresponding to 10 classes
-
+pdb.set_trace()
 q_t, variational_param_confusion_matrices, lower_bound = \
     VB_iteration(crowdsourced_labels, initial_nn_output_for_vb_update, variational_param_confusion_matrices,
                  prior_param_confusion_matrices)
