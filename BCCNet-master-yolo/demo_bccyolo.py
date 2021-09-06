@@ -8,6 +8,7 @@ import matplotlib.pyplot as plt
 import pdb
 
 from NNArchitecture.lenet5_mnist import cnn_for_mnist
+from NNArchitecture import yolov5
 from SyntheticCrowdsourcing.synthetic_crowd_volunteers import generate_volunteer_labels
 from VariationalInference.VB_iteration_yolo import VB_iteration
 from utils.utils_dataset_processing import shrink_arrays
@@ -73,12 +74,11 @@ def load_and_prepare_all_data(params):
         crowdsourced_labels = simulate_crowdsourcing(
             x_train, y_train, x_test, y_test, params)
     elif params['mode'] == 'dental':
-        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data(
-            path=os.getcwd() + '/mnist.npz')
-        x_train, x_test = prepare_data(x_train, x_test)
-        crowdsourced_labels = simulate_crowdsourcing(
-            x_train, y_train, x_test, y_test, params)
-        
+        train_data, test_data = yolov5.load_data('radiographs')
+        crowdsourced_labels = None
+        x_train, y_train = train_data
+        x_test, y_test = test_data
+        x_train, y_train, x_test, y_test, crowdsourced_labels        
     return x_train, y_train, x_test, y_test, crowdsourced_labels
 
 
@@ -139,7 +139,7 @@ def main():
     params = set_params(mode='mnist')
     x_train, y_train, x_test, y_test, crowdsourced_labels = load_and_prepare_all_data(params)
 
-    model = cnn_for_mnist()
+    model = yolov5.get_model()
 
     pcm = compute_param_confusion_matrices(params)
 

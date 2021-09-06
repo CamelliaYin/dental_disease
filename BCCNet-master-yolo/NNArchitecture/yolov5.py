@@ -29,22 +29,22 @@ from tqdm import tqdm
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
 
-import val  # for end-of-epoch mAP
-from models.experimental import attempt_load
-from models.yolo import Model
-from utils.autoanchor import check_anchors
-from utils.datasets import create_dataloader
-from utils.general import labels_to_class_weights, increment_path, labels_to_image_weights, init_seeds, \
+import lib.yolov5.val as val  # for end-of-epoch mAP
+from lib.yolov5.models.experimental import attempt_load
+from lib.yolov5.models.yolo import Model
+from lib.yolov5.utils.autoanchor import check_anchors
+from lib.yolov5.utils.datasets import create_dataloader
+from lib.yolov5.utils.general import labels_to_class_weights, increment_path, labels_to_image_weights, init_seeds, \
     strip_optimizer, get_latest_run, check_dataset, check_file, check_git_status, check_img_size, \
     check_requirements, print_mutation, set_logging, one_cycle, colorstr, methods
-from utils.downloads import attempt_download
-from utils.loss import ComputeLoss
-from utils.plots import plot_labels, plot_evolve
-from utils.torch_utils import ModelEMA, select_device, intersect_dicts, torch_distributed_zero_first, de_parallel
-from utils.loggers.wandb.wandb_utils import check_wandb_resume
-from utils.metrics import fitness
-from utils.loggers import Loggers
-from utils.callbacks import Callbacks
+from lib.yolov5.utils.downloads import attempt_download
+from lib.yolov5.utils.loss import ComputeLoss
+from lib.yolov5.utils.plots import plot_labels, plot_evolve
+from lib.yolov5.utils.torch_utils import ModelEMA, select_device, intersect_dicts, torch_distributed_zero_first, de_parallel
+from lib.yolov5.utils.loggers.wandb.wandb_utils import check_wandb_resume
+from lib.yolov5.utils.metrics import fitness
+from lib.yolov5.utils.loggers import Loggers
+from lib.yolov5.utils.callbacks import Callbacks
 
 LOGGER = logging.getLogger(__name__)
 LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))  # https://pytorch.org/docs/stable/elastic/run.html
@@ -53,10 +53,130 @@ WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 
 
 def get_model():
-    train()
+    hyp_path = 'data/hyps/hyp.scratch.yaml'
+    batch_size = 16
+    # Hyperparameters
+    if isinstance(hyp_path, str):
+        with open(hyp_path) as f:
+            hyp = yaml.safe_load(f)  # load hyps dict
 
-def get_data():
-    pass
+    data_dict = None
+    device = select_device('', batch_size=batch_size)
+    # Config
+    cuda = device.type != 'cpu'
+    init_seeds(1 + RANK)
+    nc = int(data_dict['nc'])  # number of classes
+    names = data_dict['names']  # class names
+    # Model
+    weights = 'yolov5s.pt'
+    
+    with torch_distributed_zero_first(RANK):
+        weights = attempt_download(weights)  # download if not found locally
+    ckpt = torch.load(weights, map_location=device)  # load checkpoint
+    model = Model(ckpt['model'].yaml, ch=3, nc=nc, anchors=hyp.get('anchors')).to(device)  # create
+    exclude = ['anchor'] # exclude keys
+    csd = ckpt['model'].float().state_dict()  # checkpoint state_dict as FP32
+    csd = intersect_dicts(csd, model.state_dict(), exclude=exclude)  # intersect
+    model.load_state_dict(csd, strict=False)  # load
+    LOGGER.info(f'Transferred {len(csd)}/{len(model.state_dict())} items from {weights}')  # report
+    # Freeze
+    for k, v in model.named_parameters():
+        v.requires_grad = True  # train all layers
+
+    # Optimizer
+    nbs = 64  # nominal batch size
+    accumulate = max(round(nbs / batch_size), 1)  # accumulate loss before optimizing
+    hyp['weight_decay'] *= batch_size * accumulate / nbs  # scale weight_decay
+
+    g0, g1, g2 = [], [], []  # optimizer parameter groups
+    for v in model.modules():
+        if hasattr(v, 'bias') and isinstance(v.bias, nn.Parameter):  # bias
+            g2.append(v.bias)
+        if isinstance(v, nn.BatchNorm2d):  # weight (no decay)
+            g0.append(v.weight)
+        elif hasattr(v, 'weight') and isinstance(v.weight, nn.Parameter):  # weight (with decay)
+            g1.append(v.weight)
+
+    if opt.adam:
+        optimizer = Adam(g0, lr=hyp['lr0'], betas=(hyp['momentum'], 0.999))  # adjust beta1 to momentum
+    else:
+        optimizer = SGD(g0, lr=hyp['lr0'], momentum=hyp['momentum'], nesterov=True)
+
+    optimizer.add_param_group({'params': g1, 'weight_decay': hyp['weight_decay']})  # add g1 with weight_decay
+    optimizer.add_param_group({'params': g2})  # add g2 (biases)
+    del g0, g1, g2
+
+
+    # Optimizer
+    if ckpt['optimizer'] is not None:
+        optimizer.load_state_dict(ckpt['optimizer'])
+
+    # Image sizes
+    gs = max(int(model.stride.max()), 32)  # grid size (max stride)
+    nl = model.model[-1].nl  # number of detection layers (used for scaling hyp['obj'])
+    imgsz = check_img_size(opt.imgsz, gs, floor=gs * 2)  # verify imgsz is gs-multiple
+
+    # DP mode
+    if cuda and RANK == -1 and torch.cuda.device_count() > 1:
+        logging.warning('DP not recommended, instead use torch.distributed.run for best DDP Multi-GPU results.\n'
+                        'See Multi-GPU Tutorial at https://github.com/ultralytics/yolov5/issues/475 to get started.')
+        model = torch.nn.DataParallel(model)
+
+    # SyncBatchNorm
+    if opt.sync_bn and cuda and RANK != -1:
+        model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model).to(device)
+        LOGGER.info('Using SyncBatchNorm()')
+
+    # DDP mode
+    if cuda and RANK != -1:
+        model = DDP(model, device_ids=[LOCAL_RANK], output_device=LOCAL_RANK)
+
+    # Model parameters
+    hyp['box'] *= 3. / nl  # scale to layers
+    hyp['cls'] *= nc / 80. * 3. / nl  # scale to classes and layers
+    hyp['obj'] *= (imgsz / 640) ** 2 * 3. / nl  # scale to image size and layers
+    hyp['label_smoothing'] = opt.label_smoothing
+    model.nc = nc  # attach number of classes to model
+    model.hyp = hyp  # attach hyperparameters to model
+    model.names = names
+    return model
+
+
+def load_data(data_name = 'radiographs'):
+    model = get_model()
+    data = 'data/{}.yaml'.format(data_name)
+    imgsz = 640
+    batch_size = 16
+    gs = max(int(model.stride.max()), 32)
+    single_cls = False
+    workers = 8
+    hyp_path = 'data/hyps/hyp.scratch.yaml'
+    with open(hyp_path) as f:
+        hyp = yaml.safe_load(f)  # load hyps dict
+        if 'anchors' not in hyp:  # anchors commented in hyp.yaml
+            hyp['anchors'] = 3
+    data_dict = None
+
+    with torch_distributed_zero_first(RANK):
+        data_dict = data_dict or check_dataset(data)  # check if None
+    train_path, val_path = data_dict['train'], data_dict['val']
+    # nc = int(data_dict['nc'])  # number of classes
+    # names = data_dict['names']  # class names
+
+    _, train_dataset = create_dataloader(train_path, imgsz, batch_size // WORLD_SIZE, gs, single_cls,
+                                              hyp=hyp, augment=True, cache=opt.cache, rect=opt.rect, rank=RANK,
+                                              workers=workers, image_weights=opt.image_weights, quad=opt.quad,
+                                              prefix=colorstr('train: '))
+    # mlc = int(np.concatenate(train_dataset.labels, 0)[:, 0].max())  # max label class
+    # nb = len(train_loader)  # number of batches
+
+    _, val_dataset = create_dataloader(val_path, imgsz, batch_size // WORLD_SIZE * 2, gs, single_cls,
+                                    hyp=hyp, cache=None, rect=True, rank=-1, workers=workers, pad=0.5,
+                                    prefix=colorstr('val: '))
+
+    # labels = np.concatenate(train_dataset.labels, 0)
+    return train_dataset, val_dataset
+    
 
 def train(hyp,  # path/to/hyp.yaml or hyp dictionary
           opt,
