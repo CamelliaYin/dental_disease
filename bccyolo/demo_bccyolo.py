@@ -10,14 +10,23 @@ import pdb
 from NNArchitecture.lenet5_mnist import cnn_for_mnist
 from NNArchitecture import yolov5
 from SyntheticCrowdsourcing.synthetic_crowd_volunteers import generate_volunteer_labels
-from VariationalInference.VB_iteration_yolo import VB_iteration
-from utils.utils_dataset_processing import shrink_arrays
+from VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
+from VariationalInference.VB_iteration import VB_iteration as VBi_orig
+from utils import utils_dataset_processing
+shrink_arrays = utils_dataset_processing.shrink_arrays
 from VariationalInference import confusion_matrix
 
 rseed = 1000
 np.random.seed(rseed)
 tf.random.set_seed(rseed)
 
+
+def get_model(params):
+    mode = params['mode']
+    if mode == 'mnist':
+        return cnn_for_mnist()
+    elif mode == 'dental':
+        return yolov5.get_model('{}_J'.format(params['data_name_prefix']))
 
 def set_params(mode = 'mnist'):
     # Set parameters
@@ -29,7 +38,8 @@ def set_params(mode = 'mnist'):
                 'confusion_matrix_diagonal_prior': 1e-1,
                 'n_epoch': 100,
                 'batch_size': 32,
-                'convergence_threshold': 1e-6}
+                'convergence_threshold': 1e-6,
+                'mode': mode}
     elif mode == 'dental':
         params = {'n_classes': 2,
                 # 'crowdsourced_labelled_train_data_ratio': 0.5,
@@ -38,7 +48,9 @@ def set_params(mode = 'mnist'):
                 'confusion_matrix_diagonal_prior': 1e-1,
                 'n_epoch': 100,
                 'batch_size': 32,
-                'convergence_threshold': 1e-6}
+                'convergence_threshold': 1e-6,
+                'mode': mode,
+                'data_name_prefix': 'toy'}
     return params
 
 
@@ -72,20 +84,20 @@ def load_and_prepare_all_data(params):
             path=os.getcwd() + '/mnist.npz')
         x_train, x_test = prepare_data(x_train, x_test)
         crowdsourced_labels = simulate_crowdsourcing(
-            x_train, y_train, x_test, y_test, params)
+            x_train, y_train, params)
     elif params['mode'] == 'dental':
-        train_data, test_data = yolov5.load_data('radiographs')
-        crowdsourced_labels = None
-        x_train, y_train = train_data
-        x_test, y_test = test_data
-        x_train, y_train, x_test, y_test, crowdsourced_labels        
+        train_data, test_data = yolov5.load_data('{}_J'.format(params['data_name_prefix']))
+        x_train, y_train = (train_data.imgs), train_data.labels
+        x_test, y_test = (test_data.imgs), test_data.labels
+        crowdsourced_labels = (y_train, y_test)
+        params['n_crowd_members'] = 2
     return x_train, y_train, x_test, y_test, crowdsourced_labels
 
 
 def compute_param_confusion_matrices(params):
     # set up variational parameters
     prior_param_confusion_matrices = confusion_matrix.initialise_prior(n_classes=params['n_classes'], n_volunteers=params['n_crowd_members'],
-                                                                       alpha_diag_prior=params['confusion_matrix_diagonal_prior'])
+                                                                    alpha_diag_prior=params['confusion_matrix_diagonal_prior'])
     variational_param_confusion_matrices = np.copy(
         prior_param_confusion_matrices)
     return {'prior': prior_param_confusion_matrices, 'variational': variational_param_confusion_matrices}
@@ -93,7 +105,11 @@ def compute_param_confusion_matrices(params):
 
 def init_nn_output(x_train, params):
     # initial variational inference iteration (initialisation of approximating posterior of true labels)
-    nn_output_0 = np.random.randn(x_train.shape[0], params['n_classes'])
+    try:
+        count = x_train.shape[0]
+    except AttributeError:
+        count = len(x_train)
+    nn_output_0 = np.random.randn(count, params['n_classes'])
     return nn_output_0
 
 
@@ -136,10 +152,12 @@ def plot_results(n_epoch, metrics):
     plt.show()
 
 def main():
-    params = set_params(mode='mnist')
+    params = set_params(mode='dental')
+    VB_iteration = VBi_orig if params['mode'] == 'mnist' else VBi_yolo
+
     x_train, y_train, x_test, y_test, crowdsourced_labels = load_and_prepare_all_data(params)
 
-    model = yolov5.get_model()
+    model = get_model(params)
 
     pcm = compute_param_confusion_matrices(params)
 
@@ -148,7 +166,7 @@ def main():
     q_t, pcm['variational'], old_lower_bound = VB_iteration(
         crowdsourced_labels, nn_output_0, pcm['variational'], pcm['prior'])
 
-    metrics = init_metrics(params['n_epochs'])
+    metrics = init_metrics(params['n_epoch'])
 
     # main cycle of training
     for epoch in range(params['n_epoch']):

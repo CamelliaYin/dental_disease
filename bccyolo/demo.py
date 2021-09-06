@@ -4,7 +4,7 @@ import tensorflow as tf
 import os
 import numpy as np
 import matplotlib.pyplot as plt
-import pdb
+# import pdb
 
 from NNArchitecture.lenet5_mnist import cnn_for_mnist
 from SyntheticCrowdsourcing.synthetic_crowd_volunteers import generate_volunteer_labels
@@ -16,7 +16,7 @@ rseed = 1000
 np.random.seed(rseed)
 tf.random.set_seed(rseed)
 #tf.set_random_seed(rseed)
-pdb.set_trace()
+# pdb.set_trace()
 
 # parameters
 n_classes = 10
@@ -62,7 +62,7 @@ variational_param_confusion_matrices = np.copy(prior_param_confusion_matrices)
 initial_nn_output_for_vb_update = np.random.randn(x_train.shape[0], n_classes)
 ## (60000, 10)
 ## for each object we have 10 logits coresponding to 10 classes
-pdb.set_trace()
+# pdb.set_trace()
 q_t, variational_param_confusion_matrices, lower_bound = \
     VB_iteration(crowdsourced_labels, initial_nn_output_for_vb_update, variational_param_confusion_matrices,
                  prior_param_confusion_matrices)
@@ -92,7 +92,7 @@ for epoch in range(n_epoch):
         VB_iteration(crowdsourced_labels, nn_output_for_vb_update, variational_param_confusion_matrices,
                      prior_param_confusion_matrices)
     ##  q_t (60000, 10), given normalised, we expecting the sum over each row =1
-    pdb.set_trace()  ###### where i want
+    # pdb.set_trace()  ###### where i want
     # evaluation
     nn_training_accuracy[epoch] = np.mean(np.argmax(nn_output_for_vb_update, axis=1) == y_train)
     print(f'\t nn training accuracy: {nn_training_accuracy[epoch]}')

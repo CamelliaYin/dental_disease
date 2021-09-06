@@ -16,10 +16,10 @@ sys.path.append(FILE.parents[1].as_posix())  # add yolov5/ to path
 
 from models.common import *
 from models.experimental import *
-from utils.autoanchor import check_anchor_order
-from utils.general import make_divisible, check_file, set_logging
-from utils.plots import feature_visualization
-from utils.torch_utils import time_sync, fuse_conv_and_bn, model_info, scale_img, initialize_weights, \
+from lib.yolov5.utils.autoanchor import check_anchor_order
+from lib.yolov5.utils.general import make_divisible, check_file, set_logging
+from lib.yolov5.utils.plots import feature_visualization
+from lib.yolov5.utils.torch_utils import time_sync, fuse_conv_and_bn, model_info, scale_img, initialize_weights, \
     select_device, copy_attr
 
 try:

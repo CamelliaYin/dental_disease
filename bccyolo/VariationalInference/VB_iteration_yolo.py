@@ -1,6 +1,6 @@
 import scipy.special as ss
 import numpy as np
-import pdb
+# import pdb
 
 
 def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers):
@@ -20,7 +20,7 @@ def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers):
     :return: q_t - approximating posterior for true labels, alpha_volunteers - updated posterior for confusion matrices,
         lower_bound_likelihood - ELBO
     """
-    pdb.set_trace()
+    # pdb.set_trace()
     ElogPi_volunteer = expected_log_Dirichlet_parameters(alpha_volunteers)
 
     # q_t

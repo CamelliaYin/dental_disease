@@ -41,7 +41,7 @@ from lib.yolov5.utils.downloads import attempt_download
 from lib.yolov5.utils.loss import ComputeLoss
 from lib.yolov5.utils.plots import plot_labels, plot_evolve
 from lib.yolov5.utils.torch_utils import ModelEMA, select_device, intersect_dicts, torch_distributed_zero_first, de_parallel
-from lib.yolov5.utils.loggers.wandb.wandb_utils import check_wandb_resume
+# from lib.yolov5.utils.loggers.wandb.wandb_utils import check_wandb_resume
 from lib.yolov5.utils.metrics import fitness
 from lib.yolov5.utils.loggers import Loggers
 from lib.yolov5.utils.callbacks import Callbacks
@@ -51,16 +51,22 @@ LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))  # https://pytorch.org/docs/stable
 RANK = int(os.getenv('RANK', -1))
 WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 
+YOLO_PATH = 'dental_disease/bccyolo/lib/yolov5'
 
-def get_model():
-    hyp_path = 'data/hyps/hyp.scratch.yaml'
+def get_model(data_name):
+    adam = True
+    label_smoothing = 0.0
+    imgsz = 640
+    hyp_path = os.path.join(YOLO_PATH, 'data/hyps/hyp.scratch.yaml')
     batch_size = 16
     # Hyperparameters
     if isinstance(hyp_path, str):
         with open(hyp_path) as f:
             hyp = yaml.safe_load(f)  # load hyps dict
-
+    data = os.path.join(YOLO_PATH, 'data/{}.yaml'.format(data_name))
     data_dict = None
+    with torch_distributed_zero_first(RANK):
+        data_dict = data_dict or check_dataset(data)
     device = select_device('', batch_size=batch_size)
     # Config
     cuda = device.type != 'cpu'
@@ -97,7 +103,7 @@ def get_model():
         elif hasattr(v, 'weight') and isinstance(v.weight, nn.Parameter):  # weight (with decay)
             g1.append(v.weight)
 
-    if opt.adam:
+    if adam:
         optimizer = Adam(g0, lr=hyp['lr0'], betas=(hyp['momentum'], 0.999))  # adjust beta1 to momentum
     else:
         optimizer = SGD(g0, lr=hyp['lr0'], momentum=hyp['momentum'], nesterov=True)
@@ -114,7 +120,7 @@ def get_model():
     # Image sizes
     gs = max(int(model.stride.max()), 32)  # grid size (max stride)
     nl = model.model[-1].nl  # number of detection layers (used for scaling hyp['obj'])
-    imgsz = check_img_size(opt.imgsz, gs, floor=gs * 2)  # verify imgsz is gs-multiple
+    imgsz = check_img_size(imgsz, gs, floor=gs * 2)  # verify imgsz is gs-multiple
 
     # DP mode
     if cuda and RANK == -1 and torch.cuda.device_count() > 1:
@@ -122,20 +128,20 @@ def get_model():
                         'See Multi-GPU Tutorial at https://github.com/ultralytics/yolov5/issues/475 to get started.')
         model = torch.nn.DataParallel(model)
 
-    # SyncBatchNorm
-    if opt.sync_bn and cuda and RANK != -1:
-        model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model).to(device)
-        LOGGER.info('Using SyncBatchNorm()')
+    # # SyncBatchNorm
+    # if opt.sync_bn and cuda and RANK != -1:
+    #     model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model).to(device)
+    #     LOGGER.info('Using SyncBatchNorm()')
 
     # DDP mode
-    if cuda and RANK != -1:
-        model = DDP(model, device_ids=[LOCAL_RANK], output_device=LOCAL_RANK)
+    # if cuda and RANK != -1:
+    #     model = DDP(model, device_ids=[LOCAL_RANK], output_device=LOCAL_RANK)
 
     # Model parameters
     hyp['box'] *= 3. / nl  # scale to layers
     hyp['cls'] *= nc / 80. * 3. / nl  # scale to classes and layers
     hyp['obj'] *= (imgsz / 640) ** 2 * 3. / nl  # scale to image size and layers
-    hyp['label_smoothing'] = opt.label_smoothing
+    hyp['label_smoothing'] = label_smoothing
     model.nc = nc  # attach number of classes to model
     model.hyp = hyp  # attach hyperparameters to model
     model.names = names
@@ -143,14 +149,14 @@ def get_model():
 
 
 def load_data(data_name = 'radiographs'):
-    model = get_model()
-    data = 'data/{}.yaml'.format(data_name)
+    model = get_model(data_name = data_name)
+    data = os.path.join(YOLO_PATH, 'data/{}.yaml'.format(data_name))
     imgsz = 640
     batch_size = 16
     gs = max(int(model.stride.max()), 32)
     single_cls = False
     workers = 8
-    hyp_path = 'data/hyps/hyp.scratch.yaml'
+    hyp_path = os.path.join(YOLO_PATH, 'data/hyps/hyp.scratch.yaml')
     with open(hyp_path) as f:
         hyp = yaml.safe_load(f)  # load hyps dict
         if 'anchors' not in hyp:  # anchors commented in hyp.yaml
@@ -163,9 +169,13 @@ def load_data(data_name = 'radiographs'):
     # nc = int(data_dict['nc'])  # number of classes
     # names = data_dict['names']  # class names
 
+    cache = 'ram'
+    rect = True
+    image_weights = True
+    quad = True
     _, train_dataset = create_dataloader(train_path, imgsz, batch_size // WORLD_SIZE, gs, single_cls,
-                                              hyp=hyp, augment=True, cache=opt.cache, rect=opt.rect, rank=RANK,
-                                              workers=workers, image_weights=opt.image_weights, quad=opt.quad,
+                                              hyp=hyp, augment=True, cache=cache, rect=rect, rank=RANK,
+                                              workers=workers, image_weights=image_weights, quad=quad,
                                               prefix=colorstr('train: '))
     # mlc = int(np.concatenate(train_dataset.labels, 0)[:, 0].max())  # max label class
     # nb = len(train_loader)  # number of batches
