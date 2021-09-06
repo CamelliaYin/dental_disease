@@ -41,19 +41,6 @@ def set_params(mode = 'mnist'):
     return params
 
 
-def load_and_prepare_all_data(params):
-    # load data
-    if params['mode'] == 'mnist':
-        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data(
-            path=os.getcwd() + '/mnist.npz')
-        x_train, x_test = prepare_data(x_train, x_test)
-        crowdsourced_labels = simulate_crowdsourcing(
-            x_train, y_train, x_test, y_test, params)
-    elif params['mode'] == 'dental':
-        
-    return x_train, y_train, x_test, y_test, crowdsourced_labels
-
-
 def prepare_data(x_train, x_test):
     # expand images for a cnn
     x_train = np.expand_dims(x_train, axis=3)
@@ -75,6 +62,24 @@ def simulate_crowdsourcing(x_train, y_train, params):
                                                     n_total_tasks=x_train.shape[0],
                                                     reliability_level=params['crowd_member_reliability_level'])
     return crowdsourced_labels
+
+
+def load_and_prepare_all_data(params):
+    # load data
+    if params['mode'] == 'mnist':
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data(
+            path=os.getcwd() + '/mnist.npz')
+        x_train, x_test = prepare_data(x_train, x_test)
+        crowdsourced_labels = simulate_crowdsourcing(
+            x_train, y_train, x_test, y_test, params)
+    elif params['mode'] == 'dental':
+        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data(
+            path=os.getcwd() + '/mnist.npz')
+        x_train, x_test = prepare_data(x_train, x_test)
+        crowdsourced_labels = simulate_crowdsourcing(
+            x_train, y_train, x_test, y_test, params)
+        
+    return x_train, y_train, x_test, y_test, crowdsourced_labels
 
 
 def compute_param_confusion_matrices(params):
