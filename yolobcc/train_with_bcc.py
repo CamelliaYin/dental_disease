@@ -10,17 +10,20 @@ from matplotlib import pyplot as plt
 def read_crowdsourced_labels(data_name):
     data_dict = check_dataset(data_name)
     cs_root_path = os.path.join('{}_crowdsourced'.format(data_dict['path']), 'labels')
-    users = os.listdir(cs_root_path)
+    users = [x for x in os.listdir(cs_root_path) if not x.startswith('.')]
     modes = ['train', 'test', 'val']
     y_crowdsourced = {m: [] for m in modes}
     for u in users:
         for m in modes:
-            path = os.path.join(cs_root_path, m)
+            path = os.path.join(cs_root_path, u, m)
             for file_name in os.listdir(path):
-                with open(file_name, 'r') as f:
-                    img_labels = f.readlines()
+                if file_name.startswith('.'):
+                    continue
+                img_labels = np.loadtxt(os.path.join(path, file_name))
+                # with open(os.path.join(path, file_name), 'r') as f:
+                #     img_labels = f.readlines()
                 y_crowdsourced[m].append(img_labels)
-    y_crowdsourced = {k: np.array(v) for k, v in y_crowdsourced.items()}
+    y_crowdsourced = {k: np.concatenate(v, axis=0) for k, v in y_crowdsourced.items()}
     return y_crowdsourced
 
 def get_x_paths(data_name):
@@ -115,7 +118,7 @@ def run(**kwargs):
     opt = train.parse_opt(True)
     for k, v in kwargs.items():
         setattr(opt, k, v)
-    train.main(opt)
+    train_with_bcc(opt.hyp, opt, opt.device)
 
 if __name__ == "__main__":
-    run(bcc=True, data='toy.yaml')
+    run(bcc=True, data='dental_disease/yolobcc/data/toy.yaml')
