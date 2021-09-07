@@ -427,6 +427,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
+    parser.add_argument('--bcc', action='store_true', help='Whether to run YOLO with or without BCC.')
     parser.add_argument('--weights', type=str, default='yolov5s.pt', help='initial weights path')
     parser.add_argument('--cfg', type=str, default='', help='model.yaml path')
     parser.add_argument('--data', type=str, default='data/coco128.yaml', help='dataset.yaml path')
@@ -465,7 +466,6 @@ def parse_opt(known=False):
     parser.add_argument('--patience', type=int, default=30, help='EarlyStopping patience (epochs)')
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
-
 
 def main(opt):
     # Checks
