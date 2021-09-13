@@ -21,36 +21,19 @@ np.random.seed(rseed)
 tf.random.set_seed(rseed)
 
 
-def get_model(params):
-    mode = params['mode']
-    if mode == 'mnist':
-        return cnn_for_mnist()
-    elif mode == 'dental':
-        return yolov5.get_model('{}_J'.format(params['data_name_prefix']))
+def get_model():
+    return cnn_for_mnist()
 
-def set_params(mode = 'mnist'):
+def set_params():
     # Set parameters
-    if mode == 'mnist':
-        params = {'n_classes': 10,
-                'crowdsourced_labelled_train_data_ratio': 0.5,
-                'n_crowd_members': 4,
-                'crowd_member_reliability_level': 0.6,
-                'confusion_matrix_diagonal_prior': 1e-1,
-                'n_epoch': 100,
-                'batch_size': 32,
-                'convergence_threshold': 1e-6,
-                'mode': mode}
-    elif mode == 'dental':
-        params = {'n_classes': 2,
-                # 'crowdsourced_labelled_train_data_ratio': 0.5,
-                # 'n_crowd_members': 4,
-                # 'crowd_member_reliability_level': 0.6,
-                'confusion_matrix_diagonal_prior': 1e-1,
-                'n_epoch': 100,
-                'batch_size': 32,
-                'convergence_threshold': 1e-6,
-                'mode': mode,
-                'data_name_prefix': 'toy'}
+    params = {'n_classes': 10,
+            'crowdsourced_labelled_train_data_ratio': 0.5,
+            'n_crowd_members': 4,
+            'crowd_member_reliability_level': 0.6,
+            'confusion_matrix_diagonal_prior': 1e-1,
+            'n_epoch': 100,
+            'batch_size': 32,
+            'convergence_threshold': 1e-6}
     return params
 
 
@@ -79,18 +62,10 @@ def simulate_crowdsourcing(x_train, y_train, params):
 
 def load_and_prepare_all_data(params):
     # load data
-    if params['mode'] == 'mnist':
-        (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data(
-            path=os.getcwd() + '/mnist.npz')
-        x_train, x_test = prepare_data(x_train, x_test)
-        crowdsourced_labels = simulate_crowdsourcing(
-            x_train, y_train, params)
-    elif params['mode'] == 'dental':
-        train_data, test_data = yolov5.load_data('{}_J'.format(params['data_name_prefix']))
-        x_train, y_train = (train_data.imgs), train_data.labels
-        x_test, y_test = (test_data.imgs), test_data.labels
-        crowdsourced_labels = (y_train, y_test)
-        params['n_crowd_members'] = 2
+    (x_train, y_train), (x_test, y_test) = tf.keras.datasets.mnist.load_data(
+        path=os.getcwd() + '/mnist.npz')
+    x_train, x_test = prepare_data(x_train, x_test)
+    crowdsourced_labels = simulate_crowdsourcing(x_train, y_train, params)
     return x_train, y_train, x_test, y_test, crowdsourced_labels
 
 
@@ -152,12 +127,12 @@ def plot_results(n_epoch, metrics):
     plt.show()
 
 def main():
-    params = set_params(mode='dental')
-    VB_iteration = VBi_orig if params['mode'] == 'mnist' else VBi_yolo
+    params = set_params()
+    VB_iteration = VBi_orig
 
     x_train, y_train, x_test, y_test, crowdsourced_labels = load_and_prepare_all_data(params)
 
-    model = get_model(params)
+    model = get_model()
 
     pcm = compute_param_confusion_matrices(params)
 

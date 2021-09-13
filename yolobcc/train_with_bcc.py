@@ -94,8 +94,17 @@ def init_metrics(n_epochs):
     metrics = {'accuracy': np.zeros((n_epochs,), dtype=np.float64)}
     return {'train': metrics, 'test': metrics, 'posterior_estimate': metrics}
 
-def convert_to_logits(output):
-    pass
+def convert_to_logits(yolo_output):
+    n_batches = len(yolo_output)
+    for b in range(n_batches):
+        y_b = yolo_output[b]
+        n_images_per_batch = len(y_b)
+        for i in range(n_images_per_batch):
+            y_i = y_b[i]
+
+
+        
+
 
 def convert_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G):
     modes = ['train', 'val', 'test']
