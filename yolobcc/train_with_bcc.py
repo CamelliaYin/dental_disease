@@ -1,5 +1,5 @@
 from label_converter import init_yolo_labels, yolo2bcc
-import train
+# import train
 from utils.general import check_dataset, check_file, increment_path
 import detect
 import numpy as np
@@ -11,6 +11,15 @@ from matplotlib import pyplot as plt
 from utils.torch_utils import select_device
 
 DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
+
+def init_nn_output(x_train, params):
+    # initial variational inference iteration (initialisation of approximating posterior of true labels)
+    try:
+        count = x_train.shape[0]
+    except AttributeError:
+        count = len(x_train)
+    nn_output_0 = np.random.randn(count, params['n_classes'])
+    return nn_output_0
 
 def read_crowdsourced_labels(data_name):
     data_dict = check_dataset(data_name)
@@ -27,6 +36,8 @@ def read_crowdsourced_labels(data_name):
                 if file_name.startswith('.'):
                     continue
                 img_labels = np.loadtxt(os.path.join(path, file_name))
+                if img_labels.dim == 1:
+                    img_labels = np.expand_dims(img_labels, axis = 0)
                 # with open(os.path.join(path, file_name), 'r') as f:
                 #     img_labels = f.readlines()
                 y_per_mode_per_user.append(img_labels)
@@ -44,7 +55,7 @@ def read_results(path):
         results = np.array(f.readlines())
     return results
 
-def update_metrics(metrics, q_t, yhat_train, y_train, yhat_test, y_test, epoch, verbose = True):
+def update_bcc_metrics(metrics, q_t, yhat_train, y_train, yhat_test, y_test, epoch, verbose = True):
     metrics['train']['accuracy'][epoch] = np.mean(np.argmax(yhat_train, axis=1) == y_train)
     metrics['posterior_estimate']['accuracy'][epoch] = np.mean(np.argmax(q_t, axis=1) == y_train)
     metrics['test']['accuracy'][epoch] = np.mean(np.argmax(yhat_test, axis=1) == y_test)
@@ -140,7 +151,7 @@ def train_with_bcc(hyp, opt, device):
     metrics = init_metrics(bcc_epochs)
     for epoch in range(bcc_epochs):
         print(f'epoch: {epoch}')
-        train.train(hyp, opt, device)
+        # train.train(hyp, opt, device)
         opt.weights = os.path.join(opt.save_dir, 'weights', 'last.pt')
         yhat_train = detect.run(weights = opt.weights, source = x_train_path, save_txt=True, save_conf=True, nosave=True, nonms=False, conf_thres=0, iou_thres=0)
         # yhat_train = read_results(yhat_train_txt_path)
@@ -150,7 +161,7 @@ def train_with_bcc(hyp, opt, device):
         
         yhat_test = detect.run(weights = opt.weights, source = x_test_path, save_text = True, save_conf = True, nosave=True, nonms=False, conf_thres=0, iou_thres=0)
         # yhat_test = read_results(yhat_test_txt_path)
-        update_metrics(metrics, q_t, yhat_train, y_train, yhat_test, y_test, epoch)
+        update_bcc_metrics(metrics, q_t, yhat_train, y_train, yhat_test, y_test, epoch)
 
         if np.abs((lower_bound - old_lower_bound) / old_lower_bound) < bcc_params['convergence_threshold']:
             break
@@ -161,13 +172,14 @@ def train_with_bcc(hyp, opt, device):
 
 def run(**kwargs):
     # Usage: import train; train.run(data='coco128.yaml', imgsz=320, weights='yolov5m.pt')
-    opt = train.parse_opt(True)
-    for k, v in kwargs.items():
-        setattr(opt, k, v)
-    # opt.data, opt.cfg, opt.hyp = check_file(opt.data), check_file(opt.cfg), check_file(opt.hyp)
-    opt.save_dir = str(increment_path(Path(opt.project) / opt.name, exist_ok=opt.exist_ok))
-    device = select_device(opt.device, batch_size=opt.batch_size)
-    train_with_bcc(opt.hyp, opt, device)
+    # opt = train.parse_opt(True)
+    # for k, v in kwargs.items():
+    #     setattr(opt, k, v)
+    # # opt.data, opt.cfg, opt.hyp = check_file(opt.data), check_file(opt.cfg), check_file(opt.hyp)
+    # opt.save_dir = str(increment_path(Path(opt.project) / opt.name, exist_ok=opt.exist_ok))
+    # device = select_device(opt.device, batch_size=opt.batch_size)
+    # train_with_bcc(opt.hyp, opt, device)
+    pass
 
 if __name__ == "__main__":
     run(bcc=True, data='dental_disease/yolobcc/data/toy.yaml',

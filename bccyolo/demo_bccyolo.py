@@ -127,29 +127,41 @@ def plot_results(n_epoch, metrics):
     plt.show()
 
 def main():
+    # Done
     params = set_params()
+    # Done
     VB_iteration = VBi_orig
 
+    # Done
     x_train, y_train, x_test, y_test, crowdsourced_labels = load_and_prepare_all_data(params)
 
-    model = get_model()
+    # Done
+    model = get_model() 
 
+    # Done
     pcm = compute_param_confusion_matrices(params)
 
     # for each object we have 10 logits coresponding to 10 classes
+    # Done
     nn_output_0 = init_nn_output(x_train, params)
+    # Done
     q_t, pcm['variational'], old_lower_bound = VB_iteration(
         crowdsourced_labels, nn_output_0, pcm['variational'], pcm['prior'])
 
+    # Done
     metrics = init_metrics(params['n_epoch'])
 
     # main cycle of training
     for epoch in range(params['n_epoch']):
         print(f'epoch {epoch}:')
 
+        # Done
         train_one_nn_epoch(model, x_train, q_t, params['batch_size'])
+        
+        # Done
         yhat_train = nn_predict(model, x_train)
         
+        # Done
         q_t, pcm['variational'], lower_bound = VB_iteration(
             crowdsourced_labels, yhat_train, pcm['variational'], pcm['prior'])
     
