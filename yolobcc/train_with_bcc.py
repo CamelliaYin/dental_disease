@@ -37,14 +37,20 @@ def read_crowdsourced_labels(data):
     modes = ['train', 'test', 'val']
     y_crowdsourced = {m: [] for m in modes}
     for m in modes:
+        image_file_prefixes = [os.path.splitext(n)[0] for n in \
+        os.listdir(os.path.join('{}_crowdsourced'.format(data_dict['path']), 'images', m)) \
+            if not n.startswith('.')]
         y_per_mode = []
         for u in users:
             y_per_mode_per_user = []
             path = os.path.join(cs_root_path, u, m)
-            for file_name in os.listdir(path):
-                if file_name.startswith('.'):
-                    continue
-                img_labels = np.loadtxt(os.path.join(path, file_name))
+            for file_prefix in image_file_prefixes:
+                label_file_name = f'{file_prefix}.txt'
+                label_file_path = os.path.join(path, label_file_name)
+                try:
+                    img_labels = np.loadtxt(label_file_path)
+                except OSError:
+                    img_labels = np.array([-1, 0, 0, 0, 0])
                 if img_labels.ndim == 1:
                     img_labels = np.expand_dims(img_labels, axis = 0)
                 # with open(os.path.join(path, file_name), 'r') as f:
