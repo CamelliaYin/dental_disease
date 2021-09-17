@@ -662,7 +662,7 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'data/full.yaml'
+    opt.data = 'dental_disease/yolobcc/data/full.yaml'
     opt.exist_ok = True
     opt.cache = None
     opt.workers = 0

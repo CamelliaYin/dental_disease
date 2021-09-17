@@ -121,7 +121,7 @@ def yolo2bcc(yolo_labels, intermediate_yolo_mode = False):
             for gc in range(cells_per_side**2):  # grid-cells
                 bb_ids = gc_bb_map[(g, a, gc)]
                 if len(bb_ids) > 1:
-                    raise Exception(f"More than one bounding boxes for the same " +
+                    print(f"More than one bounding boxes for the same " +
                                     f"(grid-choice ({g}: {G[g]}), anchor-choice ({a}), grid-cell ({gc})) combination")
                 if len(bb_ids) == 0:
                     c = BACKGROUND_CLASS_ID

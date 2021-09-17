@@ -33,7 +33,7 @@ def read_crowdsourced_labels(data):
     elif isinstance(data, dict):
         data_dict = data
     cs_root_path = os.path.join('{}_crowdsourced'.format(data_dict['path']), 'labels')
-    users = [x for x in os.listdir(cs_root_path) if not x.startswith('.')]
+    users = [x for x in os.listdir(cs_root_path) if (not x.startswith('.') and x != 'all')]
     modes = ['train', 'test', 'val']
     y_crowdsourced = {m: [] for m in modes}
     for m in modes:
