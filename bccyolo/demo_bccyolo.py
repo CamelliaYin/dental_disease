@@ -164,7 +164,7 @@ def main():
         # Done
         q_t, pcm['variational'], lower_bound = VB_iteration(
             crowdsourced_labels, yhat_train, pcm['variational'], pcm['prior'])
-    
+        
         # evaluation
         yhat_test = nn_predict(model, x_test)
         update_metrics(metrics, q_t, yhat_train, y_train, yhat_test, y_test, epoch)

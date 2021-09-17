@@ -32,7 +32,7 @@ def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers):
     # Low bound
     lower_bound_likelihood = compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output)
 
-    return q_t, alpha_volunteers, lower_bound_likelihood
+    return q_t, alpha_volunteers, np.sum(lower_bound_likelihood)
 
 # part of computing loss
 def logB_from_Dirichlet_parameters(alpha):
@@ -55,7 +55,6 @@ def expected_log_Dirichlet_parameters(param):
                               np.transpose(np.tile(ss.psi(np.sum(param[:, :, i], 1)), (size[1], 1)))
     else:
         raise Exception('param can have no more than 3 dimensions')
-
     return result
 
 

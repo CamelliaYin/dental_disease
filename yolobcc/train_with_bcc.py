@@ -9,20 +9,29 @@ from lib.BCCNet.VariationalInference import VB_iteration_yolo
 from lib.BCCNet.VariationalInference import confusion_matrix
 from matplotlib import pyplot as plt
 from utils.torch_utils import select_device
+import torch
 
 DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
 
-def init_nn_output(x_train, params):
+def init_nn_output(n_train, G, n_anchor_choices, params, bkgd=False):
+    # bkgd for "background".
     # initial variational inference iteration (initialisation of approximating posterior of true labels)
-    try:
-        count = x_train.shape[0]
-    except AttributeError:
-        count = len(x_train)
-    nn_output_0 = np.random.randn(count, params['n_classes'])
+    # try:
+    #     count = x_train.shape[0]
+    # except AttributeError:
+    #     count = len(x_train)
+    # TODO: might need to use expanded (grid- and anchor-based) n_train.
+    num_grid_cells = int(((1/G) * (1/G)).sum())
+    n_effective_grid_cells = num_grid_cells * n_anchor_choices
+    n_effective_classes = params['n_classes'] + (1 if bkgd else 0)
+    nn_output_0 = np.random.randn(n_train, n_effective_grid_cells, n_effective_classes)
     return nn_output_0
 
-def read_crowdsourced_labels(data_name):
-    data_dict = check_dataset(data_name)
+def read_crowdsourced_labels(data):
+    if isinstance(data, str):
+        data_dict = check_dataset(data)
+    elif isinstance(data, dict):
+        data_dict = data
     cs_root_path = os.path.join('{}_crowdsourced'.format(data_dict['path']), 'labels')
     users = [x for x in os.listdir(cs_root_path) if not x.startswith('.')]
     modes = ['train', 'test', 'val']
@@ -36,7 +45,7 @@ def read_crowdsourced_labels(data_name):
                 if file_name.startswith('.'):
                     continue
                 img_labels = np.loadtxt(os.path.join(path, file_name))
-                if img_labels.dim == 1:
+                if img_labels.ndim == 1:
                     img_labels = np.expand_dims(img_labels, axis = 0)
                 # with open(os.path.join(path, file_name), 'r') as f:
                 #     img_labels = f.readlines()
@@ -98,7 +107,8 @@ def plot_results(n_epoch, metrics):
 def init_bcc_params():
     bcc_params = {'n_classes': 2,
                   'n_crowd_members': 4,
-                  'confusion_matrix_diagonal_prior': 1e-1}
+                  'confusion_matrix_diagonal_prior': 1e-1,
+                  'convergence_threshold': 1e-6}
     return bcc_params
 
 def init_metrics(n_epochs):
@@ -113,11 +123,19 @@ def convert_to_logits(yolo_output):
         for i in range(n_images_per_batch):
             y_i = y_b[i]
 
+def convert_yolo2bcc(y_yolo, Na, Nc, G, intermediate_yolo_mode = False):
+    y_bcc = []
+    n_images = len(y_yolo)
+    for i in range(n_images):
+        y_image_yolo = y_yolo[i]
+        yolo_labels = {'labels': init_yolo_labels(y_image_yolo, Na, G), 'G': G, 'Nc': Nc}
+        bcc_labels = yolo2bcc(yolo_labels, intermediate_yolo_mode = intermediate_yolo_mode)
+        y_image_bcc = bcc_labels['labels']
+        y_bcc.append(y_image_bcc)
+    y_bcc = np.array(y_bcc)
+    return y_bcc
 
-        
-
-
-def convert_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G):
+def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mode = False):
     modes = ['train', 'val', 'test']
     y_cs_bcc = {}
     for m in modes:
@@ -126,19 +144,38 @@ def convert_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G):
         y_bcc = []
         for u in range(n_users):
             y_per_user_yolo = y_yolo[u]
-            n_images = len(y_per_user_yolo)
-            y_per_user_bcc = []
-            for i in range(n_images):
-                y_image_yolo = y_per_user_yolo[i]
-                yolo_labels = {'labels': init_yolo_labels(y_image_yolo, Na, G), 'G': G, 'Nc': Nc}
-                bcc_labels = yolo2bcc(yolo_labels)
-                y_image_bcc = bcc_labels['labels']
-                y_per_user_bcc.append(y_image_bcc)
+            y_per_user_bcc = convert_yolo2bcc(y_per_user_yolo, Na, Nc, G, intermediate_yolo_mode=intermediate_yolo_mode)
             y_bcc.append(y_per_user_bcc)
-        y_cs_bcc[m] = y_bcc
+        y_cs_bcc[m] = np.array(y_bcc).transpose(1, 2, 0) # (I x UV x K)
     return y_cs_bcc
 
+def xywhpc1ck_to_cxywh(y):
+    y[:, 4] = y[:, 5:].max(dim=1).indices
+    y = y[:, :5]
+    y = y[:, [4, 0, 1, 2, 3]]
+    return y
+
+def nn_predict(model, x, imgsz, offgrid_translate_flag=True, normalize_flag=True, transform_format_flag=True):
+    # update of approximating posterior for the true labels and confusion matrices
+    # get current predictions from a neural network
+    y = model(x)[0]
+    if offgrid_translate_flag:
+        # TODO: A quickfix here is to force-translate any point lying outside the grid to the nearest grid cell.
+        y[..., :2][y[..., :2] < 0] = 0
+        y[..., :2][y[..., :2] > imgsz] = imgsz
+    if normalize_flag:
+        y[..., :2] = y[..., :2] / imgsz
+    if transform_format_flag: # Transform (x, y, w, h, prob, c1, ..., ck) to (c, x, y, w, h)
+        z = y[..., :5]
+        n_images = y.shape[0]
+        for i in range(n_images):
+            z[i] = xywhpc1ck_to_cxywh(y[i])
+        y = z
+    return y
+
+
 def train_with_bcc(hyp, opt, device):
+    # THIS IS AN UNUSABLE FUNCTION. TO BE USED ONLY WHEN DOUBLE-CHECKED.
     y_crowdsourced_yolo = read_crowdsourced_labels(opt.data)
     x_train_path, x_val_path, x_test_path = get_x_paths(opt.data)
     x_paths = {'train': x_train_path, 'test': x_test_path, 'val': x_val_path}
