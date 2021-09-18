@@ -72,9 +72,9 @@ def test_find_grid_center():
     assert find_grid_center(0.5, 0.5, 3) == (0.75, 0.75)
 
 
-def yolo2bcc_new(y_yolo):
+def yolo2bcc_new(y_yolo, imgsz):
     y_bcc = torch.log(y_yolo[:, ..., 5:]/y_yolo[:,...,5:].sum(2).unsqueeze(-1))
-    wh = y_yolo[:, ..., 2:4]
+    wh = y_yolo[:, ..., 2:4]/imgsz
     return y_bcc, wh
 
 def yolo2bcc(yolo_labels, intermediate_yolo_mode = False):
