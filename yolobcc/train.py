@@ -343,7 +343,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             with amp.autocast(enabled=cuda):
                 model.eval()
                 pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False)
-                pred_bcc, pred_yolo_wh = yolo2bcc_new(pred_yolo)
+                pred_bcc, pred_yolo_wh = yolo2bcc_new(pred_yolo, imgsz)
                 qtargets, pcm['variational'], lb = VBi_yolo(cstargets_bcc, pred_bcc.cpu().detach().numpy(), pcm['variational'], pcm['prior'])
                 qtargets_yolo = qt2yolo(qtargets, grid_ratios, n_anchor_choices, pred_yolo_wh.cpu().detach().numpy())
                 # pred_bcc = convert_yolo2bcc(pred_yolo.cpu().detach().numpy(), n_anchor_choices, nc, grid_ratios, intermediate_yolo_mode=True)
