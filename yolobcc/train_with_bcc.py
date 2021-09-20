@@ -95,12 +95,13 @@ def read_labels(data_name):
     # labels = {k: np.array(v) for k, v in labels.items()}
     return labels['train'], labels['val'], labels['test']
 
-def compute_param_confusion_matrices(bcc_params):
+def compute_param_confusion_matrices(bcc_params, torchMode=False):
     # set up variational parameters
     prior_param_confusion_matrices = confusion_matrix.initialise_prior(n_classes=bcc_params['n_classes'],
                                                                        n_volunteers=bcc_params['n_crowd_members'],
-                                                                       alpha_diag_prior=bcc_params['confusion_matrix_diagonal_prior'])
-    variational_param_confusion_matrices = np.copy(prior_param_confusion_matrices)
+                                                                       alpha_diag_prior=bcc_params['confusion_matrix_diagonal_prior'],
+                                                                       torchMode = torchMode)
+    variational_param_confusion_matrices = prior_param_confusion_matrices.detach().clone() if torchMode else np.copy(prior_param_confusion_matrices)
     return {'prior': prior_param_confusion_matrices, 'variational': variational_param_confusion_matrices}
 
 def plot_results(n_epoch, metrics):
@@ -129,16 +130,16 @@ def convert_to_logits(yolo_output):
         for i in range(n_images_per_batch):
             y_i = y_b[i]
 
-def convert_yolo2bcc(y_yolo, Na, Nc, G, intermediate_yolo_mode = False):
+def convert_yolo2bcc(y_yolo, Na, Nc, G, intermediate_yolo_mode = False, torchMode = False):
     y_bcc = []
     n_images = len(y_yolo)
     for i in range(n_images):
         y_image_yolo = y_yolo[i]
-        yolo_labels = {'labels': init_yolo_labels(y_image_yolo, Na, G), 'G': G, 'Nc': Nc}
-        bcc_labels = yolo2bcc(yolo_labels, intermediate_yolo_mode = intermediate_yolo_mode)
+        yolo_labels = {'labels': init_yolo_labels(y_image_yolo, Na, G, torchMode = torchMode), 'G': G, 'Nc': Nc}
+        bcc_labels = yolo2bcc(yolo_labels, intermediate_yolo_mode = intermediate_yolo_mode, torchMode = torchMode)
         y_image_bcc = bcc_labels['labels']
         y_bcc.append(y_image_bcc)
-    y_bcc = np.array(y_bcc)
+    y_bcc = torch.tensor(y_bcc) if torchMode else np.array(y_bcc)
     return y_bcc
 
 def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mode = False):
@@ -152,7 +153,7 @@ def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mo
             y_per_user_yolo = y_yolo[u]
             y_per_user_bcc = convert_yolo2bcc(y_per_user_yolo, Na, Nc, G, intermediate_yolo_mode=intermediate_yolo_mode)
             y_bcc.append(y_per_user_bcc)
-        y_cs_bcc[m] = np.array(y_bcc).transpose(1, 2, 0) # (I x UV x K)
+        y_cs_bcc[m] = np.array(y_bcc).transpose(1, 2, 0)# (I x UV x K)
     return y_cs_bcc
 
 def xywhpc1ck_to_cxywh(y):

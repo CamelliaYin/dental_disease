@@ -77,7 +77,7 @@ def yolo2bcc_new(y_yolo, imgsz):
     wh = y_yolo[:, ..., 2:4]/imgsz
     return y_bcc, wh
 
-def yolo2bcc(yolo_labels, intermediate_yolo_mode = False):
+def yolo2bcc(yolo_labels, intermediate_yolo_mode = False, torchMode = False):
     BB, G, Nc = [yolo_labels[x] for x in ['labels', 'G', 'Nc']]
     flattened = (len(BB.shape) != 4)
     if not flattened:
@@ -134,15 +134,16 @@ def yolo2bcc(yolo_labels, intermediate_yolo_mode = False):
                     wh_map[(g, a, gc)] = (w, h)
                 bcc_labels.append(c)
                 effective_id += 1
-    return {'labels': np.array(bcc_labels, dtype=int), 'wh_map': wh_map, 'Na': Na, 'G': G, 'Nc': Nc}
+    labels = torch.tensor(bcc_labels, dtype=int) if torchMode else np.array(bcc_labels, dtype=int)
+    return {'labels': labels, 'wh_map': wh_map, 'Na': Na, 'G': G, 'Nc': Nc}
 
-def qt2yolo(qt, G, Na, wh_yolo):
+def qt2yolo(qt, G, Na, wh_yolo, torchMode=False):
     Ng = G.shape[0]
     y_bcc = []
     num_images = qt.shape[0]
     for i in range(num_images):
         effective_id = 0
-        cs = np.argmax(qt[i, :], 1)            
+        cs = torch.argmax(qt[i, :], 1) if torchMode else np.argmax(qt[i, :], 1)
         for g in range(Ng):
             g_frac = G[g]
             S_g = np.ceil(1/g_frac).astype(int)
@@ -153,7 +154,7 @@ def qt2yolo(qt, G, Na, wh_yolo):
                     c = cs[effective_id]
                     y_bcc.append([i, c, x, y, w, h])
                     effective_id += 1
-    return np.array(y_bcc)
+    return torch.tensor(y_bcc) if torchMode else np.array(y_bcc)
 
 
 def bcc2yolo(bcc_labels, return_flattened=False):
@@ -188,12 +189,13 @@ def bcc2yolo(bcc_labels, return_flattened=False):
     return {'labels': y, 'G': G, 'Nc': Nc}
 
 
-def init_yolo_labels(BB, Na, G, flatten=False):
+def init_yolo_labels(BB, Na, G, flatten=False, torchMode = False):
     Ng = G.shape[0]
+    base_lib = torch if torchMode else np
     if not flatten:
-        labels = np.tile(BB, (Ng, Na, 1, 1))
+        labels = base_lib.tile(BB, (Ng, Na, 1, 1))
     else:
-        labels = np.tile(BB, (Ng*Na, 1))
+        labels = base_lib.tile(BB, (Ng*Na, 1))
     return labels
 
 def equals(a, b):

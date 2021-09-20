@@ -1,9 +1,16 @@
 import scipy.special as ss
 import numpy as np
+import torch
 # import pdb
 
+def torch_max_fun(t1, t2):
+    if not torch.is_tensor(t1):
+        t1 = torch.tensor(t1)
+    if not torch.is_tensor(t2):
+        t2 = torch.tensor(t2)
+    return torch.max(t1, t2)
 
-def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers):
+def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=False):
     """
     performs one iteration of variational inference update for BCCNet (E-step)
     -- update for approximating posterior of true labels and confusion matrices
@@ -20,79 +27,110 @@ def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers):
     :return: q_t - approximating posterior for true labels, alpha_volunteers - updated posterior for confusion matrices,
         lower_bound_likelihood - ELBO
     """
+    # torchMode = all([torch.is_tensor(x) for x in [X, nn_output, alpha_volunteers, alpha0_volunteers]])
+
     # pdb.set_trace()
-    ElogPi_volunteer = expected_log_Dirichlet_parameters(alpha_volunteers)
+    ElogPi_volunteer = expected_log_Dirichlet_parameters(alpha_volunteers, torchMode)
 
     # q_t
-    q_t, Njl, rho = expected_true_labels(X, nn_output, ElogPi_volunteer)
+    q_t, Njl, rho = expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode)
 
     # q_pi_workers
-    alpha_volunteers = update_alpha_volunteers(alpha0_volunteers, Njl)
+    alpha_volunteers = update_alpha_volunteers(alpha0_volunteers, Njl, torchMode)
 
     # Low bound
-    lower_bound_likelihood = compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output)
+    lower_bound_likelihood = compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output, torchMode)
 
-    return q_t, alpha_volunteers, np.sum(lower_bound_likelihood)
+    return q_t, alpha_volunteers, lower_bound_likelihood
 
 # part of computing loss
-def logB_from_Dirichlet_parameters(alpha):
-    logB = np.sum(ss.gammaln(alpha)) - ss.gammaln(np.sum(alpha))
 
+torch_module_map = {'base_lib': torch,
+                    'gammaln': torch.special.gammaln, 
+                    'digamma': torch.digamma,
+                    'simple_transpose': lambda x: torch.permute(x, tuple(range(x.ndim)[::-1])),
+                    'copy': lambda x: x.clone().detach(),
+                    'maxwithdim': lambda x, d: torch.max(x, d).values,
+                    'maximum': lambda t1, t2: torch_max_fun(t1, t2)
+                    }
+
+np_module_map = {'base_lib': np,
+                 'gammaln': ss.gammaln,
+                 'digamma': ss.psi,
+                 'simple_transpose': np.transpose,
+                 'copy': np.copy,
+                 'maxwithdim': np.max,
+                 'maximum': np.maximum
+                 }
+
+def get_modules(torchMode=False, module_names=None):
+    module_names = module_names or ['base_lib']
+    module_map = torch_module_map if torchMode else np_module_map
+    modules = [module_map[x] for x in module_names]
+    return modules
+
+# part of computing loss
+def logB_from_Dirichlet_parameters(alpha, torchMode=False):
+    base_lib, gammaln_fn = get_modules(torchMode, ['base_lib', 'gammaln'])
+    logB = base_lib.sum(gammaln_fn(alpha)) - gammaln_fn(base_lib.sum(alpha))
     return logB
 
 
-def expected_log_Dirichlet_parameters(param):
+def expected_log_Dirichlet_parameters(param, torchMode=False):
+    base_lib, digamma_fn, simple_transpose = get_modules(torchMode, ['base_lib', 'digamma', 'simple_transpose'])        
     size = param.shape
-    result = np.zeros_like(param)
+    result = base_lib.zeros_like(param)
 
     if len(size) == 1:
-        result = ss.psi(param) - ss.psi(np.sum(param))
+        result = digamma_fn(param) - digamma_fn(base_lib.sum(param))
     elif len(size) == 2:  # when we take A_0 for everyone
-        result = ss.psi(param) - np.transpose(np.tile(ss.psi(np.sum(param, 1)), (size[1], 1)))
+        result = digamma_fn(param) - simple_transpose(base_lib.tile(digamma_fn(base_lib.sum(param, 1)), (size[1], 1)))
     elif len(size) == 3:  # most of time for posterior cm
         for i in range(size[2]):
-            result[:, :, i] = ss.psi(param[:, :, i]) - \
-                              np.transpose(np.tile(ss.psi(np.sum(param[:, :, i], 1)), (size[1], 1)))
+            result[:, :, i] = digamma_fn(param[:, :, i]) - \
+                              simple_transpose(base_lib.tile(digamma_fn(base_lib.sum(param[:, :, i], 1)), (size[1], 1)))
     else:
         raise Exception('param can have no more than 3 dimensions')
     return result
 
 
-def expected_true_labels(X, nn_output, ElogPi_volunteer):
+def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False):
+    base_lib, copy_fn, simple_transpose, maxwithdim_fn, maximum_fn = get_modules(torchMode, ['base_lib', 'copy', 'simple_transpose', 'maxwithdim', 'maximum'])
     I, U, K = X.shape  # I = no. of image, U = no. of anchor boxes in total, K = no. of volunteers
     M = ElogPi_volunteer.shape[0]  # M = Number of classes
     N = ElogPi_volunteer.shape[1]  # N = Number of classes used by volunteers
 
-    rho = np.copy(nn_output)  # I x U x M logits
+    rho = copy_fn(nn_output)  # I x U x M logits
     # eq. 12:
     for k in range(K):
         inds = np.where(X[:, :, k] > -1)  # rule out missing values
-        rho[inds[0], inds[1], :] = rho[inds[0], inds[1], :] + np.transpose(
-            ElogPi_volunteer[:, np.squeeze(X[inds[0], inds[1], k]), k])
+        rho[inds[0], inds[1], :] += simple_transpose(
+            ElogPi_volunteer[:, base_lib.squeeze(X[inds[0], inds[1], k]), k])
 
     # normalisation: (minus the max of each anchor)
-    rho = rho - np.transpose(np.tile(np.transpose(np.max(rho, 2)), (M, 1, 1)))
+    rho -= simple_transpose(base_lib.tile(simple_transpose(maxwithdim_fn(rho, 2)), (M, 1, 1)))
 
-    # eq. 11:
-    q_t = np.exp(rho) / np.maximum(1e-60, np.transpose(np.tile(np.transpose(np.sum(np.exp(rho), 2)), (M, 1, 1))))
-    q_t = np.maximum(1e-60, q_t)
+    # # eq. 11:
+    q_t = base_lib.exp(rho) / maximum_fn(1e-60, simple_transpose(base_lib.tile(simple_transpose(base_lib.sum(base_lib.exp(rho), 2)), (M, 1, 1))))
+    q_t = maximum_fn(1e-60, q_t)
 
     # partial of eq. 8: (right side 2nd term)
-    f_iu = np.zeros((M, N, K), dtype=np.float64)
+    f_iu = base_lib.zeros((M, N, K), dtype=base_lib.float64)
     for k in range(K):
         for n in range(N):
             ids0 = np.where(X[:, :, k] == n)[0]
             ids1 = np.where(X[:, :, k] == n)[1]
-            f_iu[:, n, k] = np.sum(q_t[ids0, ids1, :], 0)
-
+            f_iu[:, n, k] = base_lib.sum(q_t[ids0, ids1, :], 0)
+    rho.shape, rho
     return q_t, f_iu, rho
 # dim: (I x U x M), (M x N x K), (I x U x M)
 
 
 # eq. 8:
-def update_alpha_volunteers(alpha0_volunteers, f_iu):
+def update_alpha_volunteers(alpha0_volunteers, f_iu, torchMode=False):
+    (base_lib,) = get_modules(torchMode, ['base_lib'])
     K = alpha0_volunteers.shape[2]
-    alpha_volunteers = np.zeros_like(alpha0_volunteers)
+    alpha_volunteers = base_lib.zeros_like(alpha0_volunteers)
 
     for k in range(K):
         alpha_volunteers[:, :, k] = alpha0_volunteers[:, :, k] + f_iu[:, :, k]
@@ -100,18 +138,20 @@ def update_alpha_volunteers(alpha0_volunteers, f_iu):
     return alpha_volunteers
 
 
-def compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output):
+def compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output, torchMode=False):
+    (base_lib,) = get_modules(torchMode, ['base_lib'])
+    
     W = alpha0_volunteers.shape[2]
 
     ll_pi_worker = 0
     for w in range(W):
-        ll_pi_worker = ll_pi_worker - np.sum(logB_from_Dirichlet_parameters(alpha0_volunteers[:, :, w]) -
-                                             logB_from_Dirichlet_parameters(alpha_volunteers[:, :, w]))
+        ll_pi_worker -= base_lib.sum(logB_from_Dirichlet_parameters(alpha0_volunteers[:, :, w], torchMode=torchMode) -
+                                             logB_from_Dirichlet_parameters(alpha_volunteers[:, :, w], torchMode=torchMode))
 
-    ll_t = -np.sum(q_t * rho) + np.sum(np.log(np.sum(np.exp(rho), axis=1)), axis=0)
+    ll_t = -base_lib.sum(q_t * rho) + base_lib.sum(base_lib.log(base_lib.sum(base_lib.exp(rho), axis=1)), axis=0)
 
-    ll_nn = np.sum(q_t * nn_output) - np.sum(np.log(np.sum(np.exp(nn_output), axis=1)), axis=0)
+    ll_nn = base_lib.sum(q_t * nn_output) - base_lib.sum(base_lib.log(base_lib.sum(base_lib.exp(nn_output), axis=1)), axis=0)
 
     ll = ll_pi_worker + ll_t + ll_nn  # VB lower bound
 
-    return ll
+    return base_lib.sum(ll)
