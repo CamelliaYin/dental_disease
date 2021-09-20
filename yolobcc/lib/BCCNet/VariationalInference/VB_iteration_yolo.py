@@ -103,7 +103,7 @@ def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False):
     rho = copy_fn(nn_output)  # I x U x M logits
     # eq. 12:
     for k in range(K):
-        inds = np.where(X[:, :, k] > -1)  # rule out missing values
+        inds = base_lib.where(X[:, :, k] > -1)  # rule out missing values
         rho[inds[0], inds[1], :] += simple_transpose(
             ElogPi_volunteer[:, base_lib.squeeze(X[inds[0], inds[1], k]), k])
 
@@ -118,8 +118,8 @@ def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False):
     f_iu = base_lib.zeros((M, N, K), dtype=base_lib.float64)
     for k in range(K):
         for n in range(N):
-            ids0 = np.where(X[:, :, k] == n)[0]
-            ids1 = np.where(X[:, :, k] == n)[1]
+            ids0 = base_lib.where(X[:, :, k] == n)[0]
+            ids1 = base_lib.where(X[:, :, k] == n)[1]
             f_iu[:, n, k] = base_lib.sum(q_t[ids0, ids1, :], 0)
     rho.shape, rho
     return q_t, f_iu, rho
