@@ -137,7 +137,7 @@ def yolo2bcc(yolo_labels, intermediate_yolo_mode = False, torchMode = False):
     labels = torch.tensor(bcc_labels, dtype=int) if torchMode else np.array(bcc_labels, dtype=int)
     return {'labels': labels, 'wh_map': wh_map, 'Na': Na, 'G': G, 'Nc': Nc}
 
-def qt2yolo(qt, G, Na, wh_yolo, torchMode=False):
+def qt2yolo(qt, G, Na, wh_yolo, torchMode=False, device=None):
     Ng = G.shape[0]
     y_bcc = []
     num_images = qt.shape[0]
@@ -154,7 +154,7 @@ def qt2yolo(qt, G, Na, wh_yolo, torchMode=False):
                     c = cs[effective_id]
                     y_bcc.append([i, c, x, y, w, h])
                     effective_id += 1
-    return torch.tensor(y_bcc) if torchMode else np.array(y_bcc)
+    return torch.tensor(y_bcc).to(device) if torchMode else np.array(y_bcc)
 
 
 def bcc2yolo(bcc_labels, return_flattened=False):

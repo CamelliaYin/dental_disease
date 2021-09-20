@@ -6,6 +6,7 @@ Usage:
     $ python path/to/train.py --data coco128.yaml --weights yolov5s.pt --img 640
 """
 
+import pdb
 import argparse
 from label_converter import qt2yolo
 
@@ -345,8 +346,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 model.eval()
                 pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False)
                 pred_bcc, pred_yolo_wh = yolo2bcc_new(pred_yolo, imgsz)
-                qtargets, pcm['variational'], lb = VBi_yolo(cstargets_bcc, pred_bcc, pcm['variational'], pcm['prior'], torchMode = torchMode)
-                qtargets_yolo = qt2yolo(qtargets, grid_ratios, n_anchor_choices, pred_yolo_wh, torchMode = torchMode)
+                qtargets, pcm['variational'], lb = VBi_yolo(cstargets_bcc, pred_bcc, pcm['variational'], pcm['prior'], torchMode = torchMode, device=device)
+                qtargets_yolo = qt2yolo(qtargets, grid_ratios, n_anchor_choices, pred_yolo_wh, torchMode = torchMode, device=device).half().float()
                 # pred_bcc = convert_yolo2bcc(pred_yolo.cpu().detach().numpy(), n_anchor_choices, nc, grid_ratios, intermediate_yolo_mode=True)
                 model.train()
                 pred = model(imgs)  # forward
@@ -437,7 +438,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             if stopper(epoch=epoch, fitness=fi):
                 break
 
-        if epoch > start_epoch and np.abs((lb - old_lb) / old_lb) < bcc_params['convergence_threshold']:
+        if epoch > start_epoch and torch.abs((lb - old_lb) / old_lb) < bcc_params['convergence_threshold']:
             print('Convergence reached!')
             break
         

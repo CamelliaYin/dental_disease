@@ -1,6 +1,7 @@
 import scipy.special as ss
 import numpy as np
 import torch
+import pdb
 # import pdb
 
 def torch_max_fun(t1, t2):
@@ -10,7 +11,7 @@ def torch_max_fun(t1, t2):
         t2 = torch.tensor(t2)
     return torch.max(t1, t2)
 
-def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=False):
+def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=False, device=None):
     """
     performs one iteration of variational inference update for BCCNet (E-step)
     -- update for approximating posterior of true labels and confusion matrices
@@ -30,13 +31,13 @@ def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=Fa
     # torchMode = all([torch.is_tensor(x) for x in [X, nn_output, alpha_volunteers, alpha0_volunteers]])
 
     # pdb.set_trace()
-    ElogPi_volunteer = expected_log_Dirichlet_parameters(alpha_volunteers, torchMode)
+    ElogPi_volunteer = expected_log_Dirichlet_parameters(alpha_volunteers, torchMode, device=device)
 
     # q_t
-    q_t, Njl, rho = expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode)
+    q_t, Njl, rho = expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode, device=device)
 
     # q_pi_workers
-    alpha_volunteers = update_alpha_volunteers(alpha0_volunteers, Njl, torchMode)
+    alpha_volunteers = update_alpha_volunteers(alpha0_volunteers, Njl, torchMode, device=device)
 
     # Low bound
     lower_bound_likelihood = compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output, torchMode)
@@ -76,10 +77,12 @@ def logB_from_Dirichlet_parameters(alpha, torchMode=False):
     return logB
 
 
-def expected_log_Dirichlet_parameters(param, torchMode=False):
+def expected_log_Dirichlet_parameters(param, torchMode=False, device=None):
     base_lib, digamma_fn, simple_transpose = get_modules(torchMode, ['base_lib', 'digamma', 'simple_transpose'])        
     size = param.shape
     result = base_lib.zeros_like(param)
+    if torchMode:
+        result = result.to(device)
 
     if len(size) == 1:
         result = digamma_fn(param) - digamma_fn(base_lib.sum(param))
@@ -94,18 +97,18 @@ def expected_log_Dirichlet_parameters(param, torchMode=False):
     return result
 
 
-def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False):
+def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False, device=None):
     base_lib, copy_fn, simple_transpose, maxwithdim_fn, maximum_fn = get_modules(torchMode, ['base_lib', 'copy', 'simple_transpose', 'maxwithdim', 'maximum'])
-    I, U, K = X.shape  # I = no. of image, U = no. of anchor boxes in total, K = no. of volunteers
+    I, U, K = X.shape  # I = no. of image, U = no. of anc hor boxes in total, K = no. of volunteers
     M = ElogPi_volunteer.shape[0]  # M = Number of classes
     N = ElogPi_volunteer.shape[1]  # N = Number of classes used by volunteers
 
     rho = copy_fn(nn_output)  # I x U x M logits
     # eq. 12:
     for k in range(K):
-        inds = base_lib.where(X[:, :, k] > -1)  # rule out missing values
+        inds = tuple([x.long() for x in base_lib.where(X[:, :, k] > -1)])  # rule out missing values
         rho[inds[0], inds[1], :] += simple_transpose(
-            ElogPi_volunteer[:, base_lib.squeeze(X[inds[0], inds[1], k]), k])
+            ElogPi_volunteer[:, base_lib.squeeze(X[inds[0], inds[1], k]).long(), k])
 
     # normalisation: (minus the max of each anchor)
     rho -= simple_transpose(base_lib.tile(simple_transpose(maxwithdim_fn(rho, 2)), (M, 1, 1)))
@@ -116,6 +119,8 @@ def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False):
 
     # partial of eq. 8: (right side 2nd term)
     f_iu = base_lib.zeros((M, N, K), dtype=base_lib.float64)
+    if torchMode:
+        f_iu = f_iu.to(device)
     for k in range(K):
         for n in range(N):
             ids0 = base_lib.where(X[:, :, k] == n)[0]
@@ -127,11 +132,14 @@ def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False):
 
 
 # eq. 8:
-def update_alpha_volunteers(alpha0_volunteers, f_iu, torchMode=False):
+def update_alpha_volunteers(alpha0_volunteers, f_iu, torchMode=False, device=None):
     (base_lib,) = get_modules(torchMode, ['base_lib'])
     K = alpha0_volunteers.shape[2]
     alpha_volunteers = base_lib.zeros_like(alpha0_volunteers)
+    if torchMode:
+        alpha_volunteers = alpha_volunteers.to(device)
 
+    # pdb.set_trace()
     for k in range(K):
         alpha_volunteers[:, :, k] = alpha0_volunteers[:, :, k] + f_iu[:, :, k]
 
