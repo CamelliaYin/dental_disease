@@ -289,7 +289,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     stopper = EarlyStopping(patience=opt.patience)
     compute_loss = ComputeLoss(model)  # init loss class
     # YOLOBCC
-    bcc_params = init_bcc_params()
+    bcc_params = init_bcc_params(K=cstargets_bcc.shape[-1])
     bcc_params['n_epoch'] = epochs
     batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
     # pred0_bcc = init_nn_output(dataset.n, grid_ratios, n_anchor_choices, bcc_params)
