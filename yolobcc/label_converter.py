@@ -137,6 +137,27 @@ def yolo2bcc(yolo_labels, intermediate_yolo_mode = False, torchMode = False):
     labels = torch.tensor(bcc_labels, dtype=int) if torchMode else np.array(bcc_labels, dtype=int)
     return {'labels': labels, 'wh_map': wh_map, 'Na': Na, 'G': G, 'Nc': Nc}
 
+def qt2yolo_optimized(qt, G, Na, wh_yolo, torchMode=False, device=None):
+    Ng = G.shape[0]
+    num_images = qt.shape[0]
+    y_bcc = []
+    for i in range(num_images):
+        cs = torch.argmax(qt[i, :], 1)
+        st = 0
+        for g in range(Ng):
+            g_frac = G[g]
+            S_g = np.ceil(1/g_frac).astype(int)
+            n_cells = S_g*S_g
+            for a in range(Na):
+                z = torch.linspace(g_frac/2, 1-g_frac/2, S_g).repeat(S_g, 1).unsqueeze(-1)
+                xy = torch.cat((z.permute(1, 0, 2), z), 2).permute(1, 0, 2).reshape(n_cells, 2)
+                wh = wh_yolo[i][st:st+n_cells]
+                c = cs[st:st+n_cells]
+                icxywh = torch.cat((i*torch.ones(n_cells, 1), c.unsqueeze(-1), xy, wh), 1)
+                y_bcc.append(icxywh)
+                st += n_cells
+    return torch.cat(y_bcc)
+
 def qt2yolo(qt, G, Na, wh_yolo, torchMode=False, device=None):
     Ng = G.shape[0]
     y_bcc = []
