@@ -13,6 +13,8 @@ import argparse
 from label_converter import qt2yolo_optimized, qt2yolo
 from GPUtil import showUtilization as gpu_usage
 
+from label_filter import filter_qt
+
 from PIL.ImageFont import truetype
 from label_converter import yolo2bcc_new
 from train_with_bcc import convert_yolo2bcc, nn_predict, convert_cs_yolo2bcc
@@ -77,6 +79,11 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     save_dir, epochs, batch_size, weights, single_cls, evolve, data, cfg, resume, noval, nosave, workers, freeze, = \
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.weights, opt.single_cls, opt.evolve, opt.data, opt.cfg, \
         opt.resume, opt.noval, opt.nosave, opt.workers, opt.freeze
+    
+    bcc_epoch = opt.bcc_epoch
+    qtfilter_epoch = opt.qtfilter_epoch
+    qt_thres_mode = opt.qt_thres_mode
+    qt_thres = opt.qt_thres
 
     # Directories
     w = save_dir / 'weights'  # weights dir
@@ -299,16 +306,15 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 f"Logging results to {colorstr('bold', save_dir)}\n"
                 f'Starting training for {epochs} epochs...')
 
- 
-    # print("GPU Usage after emptying the cache")
-    # torch.cuda.empty_cache()
-    # gpu_usage()
-
     times = defaultdict(float)
     epoch_times = {epoch: defaultdict(float) for epoch in range(start_epoch, epochs)}
     batch_times = {i: defaultdict(float) for i in range(1 + np.max(dataset.batch))}
     epoch_batch_times = {epoch: {i: defaultdict(float) for i in batch_times} for epoch in epoch_times}
     for epoch in range(start_epoch, epochs):  # epoch ------------------------------------------------------------------
+        bcc_flag = False if bcc_epoch == -1 else (epoch - start_epoch >= bcc_epoch)
+        qtfilter_flag = False if qtfilter_epoch == -1 else (epoch - start_epoch >= qtfilter_epoch)
+        if not bcc_flag and qtfilter_flag:
+            qtfilter_flag = False
         print(f"*** GPU Usage before epoch {epoch} in {{{start_epoch}, ..., {epochs-1}}}")
         gpu_usage()
         LBs = []
@@ -366,49 +372,58 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
             # Forward
             with amp.autocast(enabled=cuda):
-                model.eval()
-                
-                t1 = timer()
-                batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False)
-                t2 = timer()
-                delta_t = round(t2 - t1, 2)
-                epoch_batch_times[epoch][i]['nn_predict'] += delta_t
-                epoch_times[epoch]['nn_predict'] += delta_t
-                batch_times[i]['nn_predict'] += delta_t
-                times['nn_predict'] += delta_t
-
-                t1 = timer()
-                batch_pred_bcc, batch_pred_yolo_wh = yolo2bcc_new(batch_pred_yolo, imgsz)
-                t2 = timer()
-                delta_t = round(t2 - t1, 2)
-                epoch_batch_times[epoch][i]['yolo2bcc_new'] += delta_t
-                epoch_times[epoch]['yolo2bcc_new'] += delta_t
-                batch_times[i]['yolo2bcc_new'] += delta_t
-                times['yolo2bcc_new'] += delta_t
-
-                t1 = timer()
-                batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(batch_cstargets_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
-                t2 = timer()
-                delta_t = round(t2 - t1, 2)
-                epoch_batch_times[epoch][i]['VBi_yolo'] += delta_t
-                epoch_times[epoch]['VBi_yolo'] += delta_t
-                batch_times[i]['VBi_yolo'] += delta_t
-                times['VBi_yolo'] += delta_t
-
-                LBs.append(batch_lb)
-
-                with torch.no_grad():
+                if bcc_flag:
+                    model.eval()
                     t1 = timer()
-                    batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, batch_pred_yolo_wh, torchMode = torchMode, device=device).half().float()
+                    batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False)
                     t2 = timer()
                     delta_t = round(t2 - t1, 2)
-                    epoch_batch_times[epoch][i]['qt2yolo_optimized'] += delta_t
-                    epoch_times[epoch]['qt2yolo_optimized'] += delta_t
-                    batch_times[i]['qt2yolo_optimized'] += delta_t
-                    times['qt2yolo_optimized'] += delta_t
-                # pred_bcc = convert_yolo2bcc(pred_yolo.cpu().detach().numpy(), n_anchor_choices, nc, grid_ratios, intermediate_yolo_mode=True)
+                    epoch_batch_times[epoch][i]['nn_predict'] += delta_t
+                    epoch_times[epoch]['nn_predict'] += delta_t
+                    batch_times[i]['nn_predict'] += delta_t
+                    times['nn_predict'] += delta_t
 
-                model.train()
+                    t1 = timer()
+                    batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_new(batch_pred_yolo, imgsz)
+                    t2 = timer()
+                    delta_t = round(t2 - t1, 2)
+                    epoch_batch_times[epoch][i]['yolo2bcc_new'] += delta_t
+                    epoch_times[epoch]['yolo2bcc_new'] += delta_t
+                    batch_times[i]['yolo2bcc_new'] += delta_t
+                    times['yolo2bcc_new'] += delta_t
+
+                    t1 = timer()
+                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(batch_cstargets_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
+                    t2 = timer()
+                    delta_t = round(t2 - t1, 2)
+                    epoch_batch_times[epoch][i]['VBi_yolo'] += delta_t
+                    epoch_times[epoch]['VBi_yolo'] += delta_t
+                    batch_times[i]['VBi_yolo'] += delta_t
+                    times['VBi_yolo'] += delta_t
+
+                    LBs.append(batch_lb)
+
+                    with torch.no_grad():
+                        t1 = timer()
+                        batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, batch_pred_yolo_wh, torchMode = torchMode, device=device).half().float()
+                        t2 = timer()
+                        delta_t = round(t2 - t1, 2)
+                        epoch_batch_times[epoch][i]['qt2yolo_optimized'] += delta_t
+                        epoch_times[epoch]['qt2yolo_optimized'] += delta_t
+                        batch_times[i]['qt2yolo_optimized'] += delta_t
+                        times['qt2yolo_optimized'] += delta_t
+                    
+                        t1 = timer()
+                        batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_conf, torchMode = torchMode, device=device).half().float()
+                        t2 = timer()
+                        delta_t = round(t2 - t1, 2)
+                        epoch_batch_times[epoch][i]['qt2yolo_optimized'] += delta_t
+                        epoch_times[epoch]['qt2yolo_optimized'] += delta_t
+                        batch_times[i]['qt2yolo_optimized'] += delta_t
+                        times['qt2yolo_optimized'] += delta_t
+                    # pred_bcc = convert_yolo2bcc(pred_yolo.cpu().detach().numpy(), n_anchor_choices, nc, grid_ratios, intermediate_yolo_mode=True)
+
+                    model.train()
                 
                 t1 = timer()
                 pred = model(imgs)  # forward
@@ -423,7 +438,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 # YOLOBCC
                 # loss, loss_items = compute_loss(pred, targets)  # loss scaled by batch_size
                 t1 = timer()
-                loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
+                loss, loss_items = compute_loss(pred, batch_qtargets_yolo if bcc_flag else targets.to(device))
                 t2 = timer()
                 delta_t = round(t2 - t1, 2)
                 epoch_batch_times[epoch][i]['compute_loss'] += delta_t
@@ -573,7 +588,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
-    parser.add_argument('--bcc', action='store_true', help='Whether to run YOLO with or without BCC.')
+    parser.add_argument('--bcc_epoch', type=int, default=0, help='start-epoch for BCC+YOLO run; use -1 for no BCC.')
+    parser.add_argument('--qtfilter_epoch', type=int, default=-1, help='start-epoch for qt-filter; use -1 for no qt-filter.')
+    parser.add_argument('--qt_thres_mode', type=str, default='', help="one of '', 'conf-count', 'entropy', 'conf-val'")
+    parser.add_argument('--qt_thres', type=float, default=0.0, help="the threshold value.")
     parser.add_argument('--weights', type=str, default='yolov5s.pt', help='initial weights path')
     parser.add_argument('--cfg', type=str, default='', help='model.yaml path')
     parser.add_argument('--data', type=str, default='data/coco128.yaml', help='dataset.yaml path')
@@ -753,20 +771,12 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-<<<<<<< HEAD
     opt.data = 'dental_disease/yolobcc/data/singletoy.yaml'
-    opt.exist_ok = True
-    # opt.cache = None
-    # opt.workers = 0
-    opt.batch_size = 2 # Change this to number of train images
-    opt.epochs = 5
-=======
-    opt.data = 'data/single.yaml'
     opt.exist_ok = False
-    # opt.cache = None
-    # opt.workers = 0
     opt.batch_size = 20 # Change this to number of train images
     opt.epochs = 50
->>>>>>> 53caa7c653faacde40910847515b45c1ab576e20
-    #opt.device = 'cpu'
+    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch"
+    opt.qtfilter_epoch = 0 # Involve qt-filter from epoch number "qtfilter_epoch"
+    opt.qt_thres_mode = 'conf-val' # Use "qt_thres_mode" for qt-filter
+    opt.qt_thres = 0.5 # Use "qt_thres" as the value for threshold
     main(opt)

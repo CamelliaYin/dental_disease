@@ -77,7 +77,8 @@ def test_find_grid_center():
 def yolo2bcc_new(y_yolo, imgsz):
     y_bcc = torch.log(y_yolo[:, ..., 5:]/y_yolo[:,...,5:].sum(2).unsqueeze(-1))
     wh = y_yolo[:, ..., 2:4]/imgsz
-    return y_bcc, wh
+    conf = y_yolo[:, ..., 4]
+    return y_bcc, wh, conf
 
 def yolo2bcc(yolo_labels, intermediate_yolo_mode = False, torchMode = False):
     BB, G, Nc = [yolo_labels[x] for x in ['labels', 'G', 'Nc']]
