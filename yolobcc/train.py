@@ -753,10 +753,10 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'dental_disease/yolobcc/data/toy.yaml'
+    opt.data = 'dental_disease/yolobcc/data/singletoy.yaml'
     opt.exist_ok = True
-    opt.cache = None
-    opt.workers = 0
+    # opt.cache = None
+    # opt.workers = 0
     opt.batch_size = 2 # Change this to number of train images
     opt.epochs = 5
     #opt.device = 'cpu'
