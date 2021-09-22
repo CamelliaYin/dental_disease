@@ -771,12 +771,12 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'dental_disease/yolobcc/data/singletoy.yaml'
+    opt.data = 'data/single.yaml'
     opt.exist_ok = False
     opt.batch_size = 20 # Change this to number of train images
     opt.epochs = 50
     opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch"
-    opt.qtfilter_epoch = 0 # Involve qt-filter from epoch number "qtfilter_epoch"
+    opt.qtfilter_epoch = 0# Involve qt-filter from epoch number "qtfilter_epoch"
     opt.qt_thres_mode = 'conf-val' # Use "qt_thres_mode" for qt-filter
     opt.qt_thres = 0.5 # Use "qt_thres" as the value for threshold
     main(opt)
