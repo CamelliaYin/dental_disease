@@ -548,13 +548,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     if RANK in [-1, 0]:
         LOGGER.info(f'\n{epoch - start_epoch + 1} epochs completed in {(time.time() - t0) / 3600:.3f} hours.')
         if not evolve:
-            if is_coco:  # COCO dataset
+            if True:  # COCO dataset => true
                 for m in [last, best] if best.exists() else [last]:  # speed, mAP tests
                     results, _, _ = val.run(data_dict,
                                             batch_size=batch_size // WORLD_SIZE * 2,
                                             imgsz=imgsz,
                                             model=attempt_load(m, device).half(),
-                                            iou_thres=0.7,  # NMS IoU threshold for best pycocotools results
+                                            iou_thres=0.9,  # NMS IoU threshold for best pycocotools results
                                             single_cls=single_cls,
                                             dataloader=val_loader,
                                             save_dir=save_dir,
@@ -753,11 +753,20 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
+<<<<<<< HEAD
     opt.data = 'dental_disease/yolobcc/data/singletoy.yaml'
     opt.exist_ok = True
     # opt.cache = None
     # opt.workers = 0
     opt.batch_size = 2 # Change this to number of train images
     opt.epochs = 5
+=======
+    opt.data = 'data/single.yaml'
+    opt.exist_ok = False
+    # opt.cache = None
+    # opt.workers = 0
+    opt.batch_size = 20 # Change this to number of train images
+    opt.epochs = 50
+>>>>>>> 53caa7c653faacde40910847515b45c1ab576e20
     #opt.device = 'cpu'
     main(opt)
