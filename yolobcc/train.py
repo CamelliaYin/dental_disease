@@ -408,6 +408,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            batch_size=batch_size // WORLD_SIZE * 2,
                                            imgsz=imgsz,
                                            model=ema.ema,
+                                           #conf_thres=0.001,  # confidence threshold
+                                           #iou_thres=0.5,  # NMS IoU threshold
                                            single_cls=single_cls,
                                            dataloader=val_loader,
                                            save_dir=save_dir,
@@ -449,16 +451,22 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             # Stop Single-GPU
             if stopper(epoch=epoch, fitness=fi):
                 break
-        lb = LBs[-1]
-        if epoch > start_epoch and torch.abs((lb - old_lb) / old_lb) < bcc_params['convergence_threshold']:
-            print('Convergence reached!')
-            break
-        
-        old_lb = lb
+        try:
+            lb = LBs[-1]
+            if epoch > start_epoch and torch.abs((lb - old_lb) / old_lb) < bcc_params['convergence_threshold']:
+                print('Convergence reached!')
+                break
+            old_lb = lb
+        except IndexError:
+            pass
+
         print(f"*** GPU Usage after epoch {epoch} in {{{start_epoch}, ..., {epochs}}}")
         gpu_usage()
-        
-        del batch_pred_yolo, batch_pred_bcc, batch_pred_yolo_wh, batch_qtargets, batch_qtargets_yolo
+        try:
+
+            del batch_pred_yolo, batch_pred_bcc, batch_pred_yolo_wh, batch_qtargets, batch_qtargets_yolo
+        except UnboundLocalError:
+            pass
         
         print(f"*** GPU Usage after deleting some variables")
         gpu_usage()
@@ -683,9 +691,9 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'dental_disease/yolobcc/data/single.yaml'
+    opt.data = 'data/single.yaml'
     opt.exist_ok = False
     opt.batch_size = 20 # Change this to number of train images
-    opt.epochs = 5
-    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC.
+    opt.epochs = 50
+    opt.bcc_epoch = -1 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     main(opt)
