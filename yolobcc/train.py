@@ -300,6 +300,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     epoch_times = {epoch: defaultdict(float) for epoch in range(start_epoch, epochs)}
     batch_times = {i: defaultdict(float) for i in range(1 + np.max(dataset.batch))}
     epoch_batch_times = {epoch: {i: defaultdict(float) for i in batch_times} for epoch in epoch_times}
+    old_lb = float('Inf')
     for epoch in range(start_epoch, epochs):  # epoch ------------------------------------------------------------------
         bcc_flag = False if bcc_epoch == -1 else (epoch - start_epoch >= bcc_epoch)
         qtfilter_flag = False if qtfilter_epoch == -1 else (epoch - start_epoch >= qtfilter_epoch)
@@ -487,7 +488,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                             batch_size=batch_size // WORLD_SIZE * 2,
                                             imgsz=imgsz,
                                             model=attempt_load(m, device).half(),
-                                            iou_thres=0.9,  # NMS IoU threshold for best pycocotools results
+                                            iou_thres=0.6,  # NMS IoU threshold for best pycocotools results
                                             single_cls=single_cls,
                                             dataloader=val_loader,
                                             save_dir=save_dir,
@@ -695,5 +696,5 @@ if __name__ == "__main__":
     opt.exist_ok = False
     opt.batch_size = 20 # Change this to number of train images
     opt.epochs = 50
-    opt.bcc_epoch = -1 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
+    opt.bcc_epoch = 5 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     main(opt)
