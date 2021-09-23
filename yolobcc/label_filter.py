@@ -1,7 +1,8 @@
 import torch
 MAX_BBS_PER_IMAGE_FALLBACK = 10
 
-def filter_qt(qt_yolo, qt_thres_mode, qt_thres, conf, torchMode = False, device=None):
+def filter_qt(qt_yolo, qt_thres_mode, qt_thres, conf, qt=None, torchMode = False, device=None):
+    raise Exception("Filters have been disabled since they weren't tested. We have moved to the 3-class idea (background-based)")
     if qt_thres_mode == '':
         return qt_yolo
     n_images = conf.shape[0]
@@ -11,11 +12,14 @@ def filter_qt(qt_yolo, qt_thres_mode, qt_thres, conf, torchMode = False, device=
     if qt_thres_mode == 'conf-count':
         count_thres = qt_thres
         return filter_qt_conf_count(qt_yolo, conf, count_thres)
-    # if qt_thres_mode == 'entropy':
-    #     entropy_thres = qt_thres
-    #     return filter_qt_entropy(qt_yolo, entropy_thres)
+    if qt_thres_mode == 'entropy':
+        entropy_thres = qt_thres
+        return filter_qt_entropy(qt_yolo, qt, entropy_thres)
+    if qt_thres_mode.startswith('hybrid'):
+        entropy_thres, conf_thres = qt_thres
+        return filter_qt_hybrid(qt_yolo, qt, entropy_thres, conf_thres)
     raise Exception("Filter not implemented yet.")
-        
+    
 
 def print_diff(orig, filt):
     n_total_bb = orig.shape[0]
@@ -48,3 +52,7 @@ def filter_qt_conf_val(qt_yolo, conf, conf_thres, silent = False):
     print(f"No bounding boxes left after conf-val>={conf_thres} filter. Resorting to top {MAX_BBS_PER_IMAGE_FALLBACK}.")
     filtered_qt_yolo = filter_qt_conf_count(qt_yolo, conf, MAX_BBS_PER_IMAGE_FALLBACK, silent=True)
     return filtered_qt_yolo
+
+def filter_qt_entropy(qt_yolo, qt, entropy_thres):
+    if qt is None:
+        raise Exception("qtargets are None. Need probability information to compute entropies")

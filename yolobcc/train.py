@@ -6,7 +6,6 @@ Usage:
     $ python path/to/train.py --data coco128.yaml --weights yolov5s.pt --img 640
 """
 from timeit import default_timer as timer
-# import pandas as pd
 from collections import defaultdict
 import pdb
 import argparse
@@ -18,7 +17,6 @@ from label_filter import filter_qt
 from PIL.ImageFont import truetype
 from label_converter import yolo2bcc_new
 from train_with_bcc import convert_yolo2bcc, nn_predict, convert_cs_yolo2bcc
-# YOLOBCC
 from train_with_bcc import read_crowdsourced_labels, init_bcc_params, \
     init_nn_output, compute_param_confusion_matrices, init_metrics, update_bcc_metrics
 from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
@@ -62,13 +60,10 @@ from utils.metrics import fitness
 from utils.loggers import Loggers
 from utils.callbacks import Callbacks
 
-
-
 LOGGER = logging.getLogger(__name__)
 LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))  # https://pytorch.org/docs/stable/elastic/run.html
 RANK = int(os.getenv('RANK', -1))
 WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
-
 
 def train(hyp,  # path/to/hyp.yaml or hyp dictionary
           opt,
@@ -84,7 +79,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     qtfilter_epoch = opt.qtfilter_epoch
     qt_thres_mode = opt.qt_thres_mode
     qt_thres = opt.qt_thres
-
+    hybrid_entropy_thres = opt.hybrid_entropy_thres
+    hybrid_conf_thres = opt.hybrid_conf_thres
+    # if not opt.bcc:
+    #     bcc_epoch = -1
     # Directories
     w = save_dir / 'weights'  # weights dir
     w.mkdir(parents=True, exist_ok=True)  # make dir
@@ -234,13 +232,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                               prefix=colorstr('train: '))
     print("*** GPU Usage after reading data")
     gpu_usage()
-    # YOLOBCC
-    # TODO: Verify the following (is nl == ng?):
     n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
     grid_ratios = model.model[-1].stride.cpu().detach().numpy() / imgsz
     cstargets_all = read_crowdsourced_labels(data)
     cstargets_all_bcc = convert_cs_yolo2bcc(cstargets_all, n_anchor_choices, nc, grid_ratios)
-    # cstargets = cstargets_all['train']
     cstargets_bcc = torch.tensor(cstargets_all_bcc['train']) if torchMode else cstargets_all_bcc['train']
     print("*** GPU Usage after reading crowdsourced labels")
     gpu_usage()
@@ -257,9 +252,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
         if not resume:
             labels = np.concatenate(dataset.labels, 0)
-            # c = torch.tensor(labels[:, 0])  # classes
-            # cf = torch.bincount(c.long(), minlength=nc) + 1.  # frequency
-            # model._initialize_biases(cf.to(device))
             if plots:
                 plot_labels(labels, names, save_dir)
 
@@ -287,7 +279,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     # Start training
     t0 = time.time()
     nw = max(round(hyp['warmup_epochs'] * nb), 1000)  # number of warmup iterations, max(3 epochs, 1k iterations)
-    # nw = min(nw, (epochs - start_epoch) / 2 * nb)  # limit warmup to < 1/2 of training
     last_opt_step = -1
     maps = np.zeros(nc)  # mAP per class
     results = (0, 0, 0, 0, 0, 0, 0)  # P, R, mAP@.5, mAP@.5-.95, val_loss(box, obj, cls)
@@ -295,7 +286,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     scaler = amp.GradScaler(enabled=cuda)
     stopper = EarlyStopping(patience=opt.patience)
     compute_loss = ComputeLoss(model)  # init loss class
-    # YOLOBCC
     bcc_params = init_bcc_params(K=cstargets_bcc.shape[-1])
     bcc_params['n_epoch'] = epochs
     batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
@@ -315,13 +305,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         qtfilter_flag = False if qtfilter_epoch == -1 else (epoch - start_epoch >= qtfilter_epoch)
         if not bcc_flag and qtfilter_flag:
             qtfilter_flag = False
+        LBs = []
         print(f"*** GPU Usage before epoch {epoch} in {{{start_epoch}, ..., {epochs-1}}}")
         gpu_usage()
-        LBs = []
         model.train()
-        # if epoch == start_epoch:
-        #     pred_bcc = pred0_bcc
-
         # Update image weights (optional, single-GPU only)
         if opt.image_weights:
             cw = model.class_weights.cpu().numpy() * (1 - maps) ** 2 / nc  # class weights
@@ -329,32 +316,25 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             dataset.indices = random.choices(range(dataset.n), weights=iw, k=dataset.n)  # rand weighted idx
 
         # Update mosaic border (optional)
-        # b = int(random.uniform(0.25 * imgsz, 0.75 * imgsz + gs) // gs * gs)
-        # dataset.mosaic_border = [b - imgsz, -b]  # height, width borders
         
-        # GOVIND0: Find mean losses by comparing pred with `qtargets`, not `targets`. Look for pointer GOVIND1
         mloss = torch.zeros(3, device=device)  # mean losses
         if RANK != -1:
             train_loader.sampler.set_epoch(epoch)
         pbar = enumerate(train_loader)
         LOGGER.info(('\n' + '%10s' * 7) % ('Epoch', 'gpu_mem', 'box', 'obj', 'cls', 'labels', 'img_size'))
+        LOGGER.info('\n' + ('YOLO+BCC' if bcc_flag else 'Only YOLO'))
         if RANK in [-1, 0]:
             pbar = tqdm(pbar, total=nb)  # progress bar
         optimizer.zero_grad()
 
-        # YOLOBCC
-        # qtargets, pcm['variational'], lb = VBi_yolo(cstargets_bcc, pred_bcc, pcm['variational'], pcm['prior'])
         for i, (imgs, targets, paths, _) in pbar:  # batch -------------------------------------------------------------
             batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
-            # YOLOBCC
-            # batch_qtargets = qtargets
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
 
             # Warmup
             if ni <= nw:
                 xi = [0, nw]  # x interp
-                # compute_loss.gr = np.interp(ni, xi, [0.0, 1.0])  # iou loss ratio (obj_loss = 1.0 or iou)
                 accumulate = max(1, np.interp(ni, xi, [1, nbs / batch_size]).round())
                 for j, x in enumerate(optimizer.param_groups):
                     # bias lr falls from 0.1 to lr0, all other lrs rise from 0.0 to lr0
@@ -372,80 +352,22 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
             # Forward
             with amp.autocast(enabled=cuda):
+                pred = model(imgs)
                 if bcc_flag:
                     model.eval()
-                    t1 = timer()
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False)
-                    t2 = timer()
-                    delta_t = round(t2 - t1, 2)
-                    epoch_batch_times[epoch][i]['nn_predict'] += delta_t
-                    epoch_times[epoch]['nn_predict'] += delta_t
-                    batch_times[i]['nn_predict'] += delta_t
-                    times['nn_predict'] += delta_t
-
-                    t1 = timer()
                     batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_new(batch_pred_yolo, imgsz)
-                    t2 = timer()
-                    delta_t = round(t2 - t1, 2)
-                    epoch_batch_times[epoch][i]['yolo2bcc_new'] += delta_t
-                    epoch_times[epoch]['yolo2bcc_new'] += delta_t
-                    batch_times[i]['yolo2bcc_new'] += delta_t
-                    times['yolo2bcc_new'] += delta_t
-
-                    t1 = timer()
                     batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(batch_cstargets_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
-                    t2 = timer()
-                    delta_t = round(t2 - t1, 2)
-                    epoch_batch_times[epoch][i]['VBi_yolo'] += delta_t
-                    epoch_times[epoch]['VBi_yolo'] += delta_t
-                    batch_times[i]['VBi_yolo'] += delta_t
-                    times['VBi_yolo'] += delta_t
-
                     LBs.append(batch_lb)
-
                     with torch.no_grad():
-                        t1 = timer()
                         batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, batch_pred_yolo_wh, torchMode = torchMode, device=device).half().float()
-                        t2 = timer()
-                        delta_t = round(t2 - t1, 2)
-                        epoch_batch_times[epoch][i]['qt2yolo_optimized'] += delta_t
-                        epoch_times[epoch]['qt2yolo_optimized'] += delta_t
-                        batch_times[i]['qt2yolo_optimized'] += delta_t
-                        times['qt2yolo_optimized'] += delta_t
-                    
-                        t1 = timer()
-                        batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_conf, torchMode = torchMode, device=device).half().float()
-                        t2 = timer()
-                        delta_t = round(t2 - t1, 2)
-                        epoch_batch_times[epoch][i]['qt2yolo_optimized'] += delta_t
-                        epoch_times[epoch]['qt2yolo_optimized'] += delta_t
-                        batch_times[i]['qt2yolo_optimized'] += delta_t
-                        times['qt2yolo_optimized'] += delta_t
-                    # pred_bcc = convert_yolo2bcc(pred_yolo.cpu().detach().numpy(), n_anchor_choices, nc, grid_ratios, intermediate_yolo_mode=True)
-
+                        # if qt_thres_mode.startswith('hybrid'):
+                            # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
+                        # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
-                
-                t1 = timer()
-                pred = model(imgs)  # forward
-                t2 = timer()
-                delta_t = round(t2 - t1, 2)
-                epoch_batch_times[epoch][i]['pred'] += delta_t
-                epoch_times[epoch]['pred'] += delta_t
-                batch_times[i]['pred'] += delta_t
-                times['pred'] += delta_t
-
-                # GOVIND1: Don't compare w.r.t. targets, but w.r.t. qtargets (generated by BCC)
-                # YOLOBCC
-                # loss, loss_items = compute_loss(pred, targets)  # loss scaled by batch_size
-                t1 = timer()
-                loss, loss_items = compute_loss(pred, batch_qtargets_yolo if bcc_flag else targets.to(device))
-                t2 = timer()
-                delta_t = round(t2 - t1, 2)
-                epoch_batch_times[epoch][i]['compute_loss'] += delta_t
-                epoch_times[epoch]['compute_loss'] += delta_t
-                batch_times[i]['compute_loss'] += delta_t
-                times['compute_loss'] += delta_t
-                
+                    loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
+                else:
+                    loss, loss_items = compute_loss(pred, targets.to(device))
                 if RANK != -1:
                     loss *= WORLD_SIZE  # gradient averaged between devices in DDP mode
                 if opt.quad:
@@ -470,7 +392,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 pbar.set_description(('%10s' * 2 + '%10.4g' * 5) % (
                     f'{epoch}/{epochs - 1}', mem, *mloss, targets.shape[0], imgs.shape[-1]))
                 callbacks.on_train_batch_end(ni, model, imgs, targets, paths, plots, opt.sync_bn)
-        # print(pd.DataFrame(epoch_batch_times))
             # end batch ------------------------------------------------------------------------------------------------
 
         # Scheduler
@@ -495,11 +416,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            plots=plots and final_epoch,
                                            callbacks=callbacks,
                                            compute_loss=compute_loss)
-                # YOLOBCC
-                yhat_train = pred
-                y_train = dataset.labels
-                yhat_test = results
-                y_test = val_dataset.labels
+                # yhat_train = pred
+                # y_train = dataset.labels
+                # yhat_test = results
+                # y_test = val_dataset.labels
                 # update_bcc_metrics(bcc_metrics, qtargets, yhat_train, y_train, yhat_test, y_test, epoch)
             
             # Update best mAP
@@ -535,16 +455,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             break
         
         old_lb = lb
-
-            # Stop DDP TODO: known issues shttps://github.com/ultralytics/yolov5/pull/4576
-            # stop = stopper(epoch=epoch, fitness=fi)
-            # if RANK == 0:
-            #    dist.broadcast_object_list([stop], 0)  # broadcast 'stop' to all ranks
-
-        # Stop DPP
-        # with torch_distributed_zero_first(RANK):
-        # if stop:
-        #    break  # must break all DDP ranks
         print(f"*** GPU Usage after epoch {epoch} in {{{start_epoch}, ..., {epochs}}}")
         gpu_usage()
         
@@ -592,6 +502,8 @@ def parse_opt(known=False):
     parser.add_argument('--qtfilter_epoch', type=int, default=-1, help='start-epoch for qt-filter; use -1 for no qt-filter.')
     parser.add_argument('--qt_thres_mode', type=str, default='', help="one of '', 'conf-count', 'entropy', 'conf-val'")
     parser.add_argument('--qt_thres', type=float, default=0.0, help="the threshold value.")
+    parser.add_argument('--hybrid_entropy_thres', type=float, default=0.0, help="the entropy threshold value (only to be used when running the hybrid filter).")
+    parser.add_argument('--hybrid_conf_thres', type=float, default=0.0, help="the confidence threshold value (only to be used when running the hybrid filter).")
     parser.add_argument('--weights', type=str, default='yolov5s.pt', help='initial weights path')
     parser.add_argument('--cfg', type=str, default='', help='model.yaml path')
     parser.add_argument('--data', type=str, default='data/coco128.yaml', help='dataset.yaml path')
@@ -771,12 +683,9 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'dental_disease/yolobcc/data/singletoy.yaml'
+    opt.data = 'dental_disease/yolobcc/data/single.yaml'
     opt.exist_ok = False
     opt.batch_size = 20 # Change this to number of train images
-    opt.epochs = 50
-    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch"
-    opt.qtfilter_epoch = 0 # Involve qt-filter from epoch number "qtfilter_epoch"
-    opt.qt_thres_mode = 'conf-val' # Use "qt_thres_mode" for qt-filter
-    opt.qt_thres = 0.5 # Use "qt_thres" as the value for threshold
+    opt.epochs = 5
+    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC.
     main(opt)
