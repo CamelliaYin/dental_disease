@@ -409,8 +409,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            batch_size=batch_size // WORLD_SIZE * 2,
                                            imgsz=imgsz,
                                            model=ema.ema,
-                                           #conf_thres=0.001,  # confidence threshold
-                                           #iou_thres=0.5,  # NMS IoU threshold
                                            single_cls=single_cls,
                                            dataloader=val_loader,
                                            save_dir=save_dir,
