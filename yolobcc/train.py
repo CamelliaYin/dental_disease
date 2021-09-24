@@ -5,6 +5,7 @@ Train a YOLOv5 model on a custom dataset
 Usage:
     $ python path/to/train.py --data coco128.yaml --weights yolov5s.pt --img 640
 """
+from label_converter import BACKGROUND_CLASS_ID
 from timeit import default_timer as timer
 from collections import defaultdict
 import pdb
@@ -15,7 +16,7 @@ from GPUtil import showUtilization as gpu_usage
 from label_filter import filter_qt
 
 from PIL.ImageFont import truetype
-from label_converter import yolo2bcc_new
+from label_converter import yolo2bcc_new, find_union_cstargets, targetize, yolo2bcc_newer
 from train_with_bcc import convert_yolo2bcc, nn_predict, convert_cs_yolo2bcc
 from train_with_bcc import read_crowdsourced_labels, init_bcc_params, \
     init_nn_output, compute_param_confusion_matrices, init_metrics, update_bcc_metrics
@@ -235,6 +236,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
     grid_ratios = model.model[-1].stride.cpu().detach().numpy() / imgsz
     cstargets_all = read_crowdsourced_labels(data)
+    cstargets_union = find_union_cstargets(cstargets_all['train'])
     cstargets_all_bcc = convert_cs_yolo2bcc(cstargets_all, n_anchor_choices, nc, grid_ratios)
     cstargets_bcc = torch.tensor(cstargets_all_bcc['train']) if torchMode else cstargets_all_bcc['train']
     print("*** GPU Usage after reading crowdsourced labels")
@@ -356,19 +358,27 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 pred = model(imgs)
                 if bcc_flag:
                     model.eval()
-                    batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False)
-                    batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_new(batch_pred_yolo, imgsz)
+                    batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
+                    batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
                     batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(batch_cstargets_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
                     LBs.append(batch_lb)
                     with torch.no_grad():
                         batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, batch_pred_yolo_wh, torchMode = torchMode, device=device).half().float()
+                        batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
                         # if qt_thres_mode.startswith('hybrid'):
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
                     loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
                 else:
-                    loss, loss_items = compute_loss(pred, targets.to(device))
+                    # # # # # Just for the sake of seeing the output
+                    model.eval()
+                    batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
+                    batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
+                    model.train()
+                    # # # # # 
+                    batch_cstargets_union = targetize([cstargets_union[index] for index in np.where(dataset.batch==i)[0]])
+                    loss, loss_items = compute_loss(pred, torch.cat(batch_cstargets_union).to(device))
                 if RANK != -1:
                     loss *= WORLD_SIZE  # gradient averaged between devices in DDP mode
                 if opt.quad:
@@ -690,9 +700,9 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'data/single.yaml'
+    opt.data = 'dental_disease/yolobcc/data/toy.yaml'
     opt.exist_ok = False
-    opt.batch_size = 20 # Change this to number of train images
+    opt.batch_size = 1 # Change this to number of train images
     opt.epochs = 50
-    opt.bcc_epoch = 5 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
+    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     main(opt)

@@ -112,7 +112,7 @@ def plot_results(n_epoch, metrics):
     plt.show()
 
 def init_bcc_params(K=4):
-    bcc_params = {'n_classes': 2,
+    bcc_params = {'n_classes': 3,
                   'n_crowd_members': K,
                   'confusion_matrix_diagonal_prior': 1e-1,
                   'convergence_threshold': 1e-6}

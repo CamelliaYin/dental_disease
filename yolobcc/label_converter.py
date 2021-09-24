@@ -1,3 +1,4 @@
+from os import confstr
 import pdb
 
 import numpy as np
@@ -5,7 +6,13 @@ import torch
 from collections import defaultdict
 
 MAX_GRID_CELLS = 99999
-BACKGROUND_CLASS_ID = -1
+BACKGROUND_CLASS_ID = 2
+
+def targetize(z):
+    targeted_y = []
+    for i, e in enumerate(z):
+        targeted_y.append(torch.cat([i*torch.ones(e.shape[0], 1), e], 1))
+    return targeted_y
 
 
 def find_containing_grid_cell(grid_x_frac, grid_y_frac, x, y, mode='row-major'):
@@ -73,6 +80,30 @@ def test_find_grid_center():
     assert find_grid_center(0.5, 0.5, 2) == (0.25, 0.75)
     assert find_grid_center(0.5, 0.5, 3) == (0.75, 0.75)
 
+def find_union_cstargets(cstargets):
+    n_images = len(cstargets[0])
+    y_cs_union = []
+    for i in range(n_images):
+        y_cs_union.append(torch.cat([torch.tensor(x[i]) for x in cstargets]))
+    return y_cs_union
+
+def yolo2bcc_newer(y_yolo, imgsz, silent = True):
+    wh = y_yolo[:, ..., 2:4]/imgsz
+    conf = y_yolo[:, ..., 4]
+
+    p = y_yolo[..., 4]
+    sigma_t = y_yolo[..., 5:]
+    sigma_prime_t = sigma_t / sigma_t.sum(axis=2).unsqueeze(-1)
+    class_prob = sigma_prime_t*p.unsqueeze(-1)
+    bkgd_prob = 1-p
+    bcc_prob = torch.cat([class_prob, bkgd_prob.unsqueeze(-1)], -1)
+    if not silent:
+        mins = [round(x, 6) for x in list(bcc_prob.min(1).values.min(0).values.cpu().detach().numpy())]
+        maxs = [round(x, 6) for x in list(bcc_prob.max(1).values.max(0).values.cpu().detach().numpy())]
+        print('Minimum probs (c1, c2, bkgd):', mins)
+        print('Maximum probs (c1, c2, bkgd):', maxs)
+    bcc_logits = torch.log(bcc_prob)
+    return bcc_logits, wh, conf
 
 def yolo2bcc_new(y_yolo, imgsz):
     y_bcc = torch.log(y_yolo[:, ..., 5:]/y_yolo[:,...,5:].sum(2).unsqueeze(-1))
