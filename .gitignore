@@ -1,6 +1,6 @@
 .DS_Store
 __pycache__*
-.pyc
-.cache
-.npy
-.pt
+*.pyc
+*.cache
+*.npy
+*.pt

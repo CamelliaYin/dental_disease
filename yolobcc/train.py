@@ -376,7 +376,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
                     batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
                     model.train()
-                    # # # # # 
+                    # # # # #
                     batch_cstargets_union = targetize([cstargets_union[index] for index in np.where(dataset.batch==i)[0]])
                     loss, loss_items = compute_loss(pred, torch.cat(batch_cstargets_union).to(device))
                 if RANK != -1:
@@ -700,9 +700,9 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'dental_disease/yolobcc/data/toy.yaml'
+    opt.data = 'data/full.yaml'
     opt.exist_ok = False
-    opt.batch_size = 1 # Change this to number of train images
+    opt.batch_size = 4 # Change this to number of train images
     opt.epochs = 50
-    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
+    opt.bcc_epoch = -1 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     main(opt)
