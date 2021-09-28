@@ -372,13 +372,14 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
                 else:
                     # # # # # Just for the sake of seeing the output
-                    model.eval()
-                    batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
-                    batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
-                    model.train()
+                    # model.eval()
+                    # batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
+                    # batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
+                    # model.train()
                     # # # # #
-                    batch_cstargets_union = targetize([cstargets_union[index] for index in np.where(dataset.batch==i)[0]])
-                    loss, loss_items = compute_loss(pred, torch.cat(batch_cstargets_union).to(device))
+                    batch_cstargets_union = targetize([cstargets_union[index] for index in np.where(dataset.batch == i)[0]])
+                    # loss, loss_items = compute_loss(pred, torch.cat(batch_cstargets_union).to(device))
+                    loss, loss_items = compute_loss(pred, targets.to(device))
                 if RANK != -1:
                     loss *= WORLD_SIZE  # gradient averaged between devices in DDP mode
                 if opt.quad:
@@ -556,7 +557,7 @@ def parse_opt(known=False):
     parser.add_argument('--artifact_alias', type=str, default="latest", help='version of dataset artifact to be used')
     parser.add_argument('--local_rank', type=int, default=-1, help='DDP parameter, do not modify')
     parser.add_argument('--freeze', type=int, default=0, help='Number of layers to freeze. backbone=10, all=24')
-    parser.add_argument('--patience', type=int, default=300, help='EarlyStopping patience (epochs)')
+    parser.add_argument('--patience', type=int, default=1100, help='EarlyStopping patience (epochs)')
     opt = parser.parse_known_args()[0] if known else parser.parse_args()
     return opt
 
@@ -700,9 +701,12 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'data/full.yaml'
+    opt.data = 'data/all.yaml' # full is J, all is CS
     opt.exist_ok = False
-    opt.batch_size = 4 # Change this to number of train images
-    opt.epochs = 50
+    # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
+    opt.batch_size = 20 # Change this to number of train images
+    opt.epochs = 300
+    #opt.image_weights = True
+    #opt.evolve = True
     opt.bcc_epoch = -1 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     main(opt)
