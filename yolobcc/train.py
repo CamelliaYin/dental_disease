@@ -235,12 +235,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     gpu_usage()
     n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
     grid_ratios = model.model[-1].stride.cpu().detach().numpy() / imgsz
-    cstargets_all = read_crowdsourced_labels(data)
-    cstargets_union = find_union_cstargets(cstargets_all['train'])
-    cstargets_all_bcc = convert_cs_yolo2bcc(cstargets_all, n_anchor_choices, nc, grid_ratios)
-    cstargets_bcc = torch.tensor(cstargets_all_bcc['train']) if torchMode else cstargets_all_bcc['train']
-    print("*** GPU Usage after reading crowdsourced labels")
-    gpu_usage()
+    if bcc_epoch != -1:
+        cstargets_all = read_crowdsourced_labels(data)
+        cstargets_union = find_union_cstargets(cstargets_all['train'])
+        cstargets_all_bcc = convert_cs_yolo2bcc(cstargets_all, n_anchor_choices, nc, grid_ratios)
+        cstargets_bcc = torch.tensor(cstargets_all_bcc['train']) if torchMode else cstargets_all_bcc['train']
+        print("*** GPU Usage after reading crowdsourced labels")
+        gpu_usage()
     mlc = int(np.concatenate(dataset.labels, 0)[:, 0].max())  # max label class
     nb = len(train_loader)  # number of batches
     assert mlc < nc, f'Label class {mlc} exceeds nc={nc} in {data}. Possible class labels are 0-{nc - 1}'
@@ -288,11 +289,12 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     scaler = amp.GradScaler(enabled=cuda)
     stopper = EarlyStopping(patience=opt.patience)
     compute_loss = ComputeLoss(model)  # init loss class
-    bcc_params = init_bcc_params(K=cstargets_bcc.shape[-1])
-    bcc_params['n_epoch'] = epochs
-    batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
-    # pred0_bcc = init_nn_output(dataset.n, grid_ratios, n_anchor_choices, bcc_params)
-    bcc_metrics = init_metrics(bcc_params['n_epoch'])
+    if bcc_epoch != -1:
+        bcc_params = init_bcc_params(K=cstargets_bcc.shape[-1])
+        bcc_params['n_epoch'] = epochs
+        batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
+        # pred0_bcc = init_nn_output(dataset.n, grid_ratios, n_anchor_choices, bcc_params)
+        bcc_metrics = init_metrics(bcc_params['n_epoch'])
     LOGGER.info(f'Image sizes {imgsz} train, {imgsz} val\n'
                 f'Using {train_loader.num_workers} dataloader workers\n'
                 f"Logging results to {colorstr('bold', save_dir)}\n"
@@ -331,7 +333,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         optimizer.zero_grad()
 
         for i, (imgs, targets, paths, _) in pbar:  # batch -------------------------------------------------------------
-            batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
+            if bcc_epoch != -1:
+                batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
 
@@ -377,7 +380,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     # batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
                     # model.train()
                     # # # # #
-                    batch_cstargets_union = targetize([cstargets_union[index] for index in np.where(dataset.batch == i)[0]])
+                    # batch_cstargets_union = targetize([cstargets_union[index] for index in np.where(dataset.batch == i)[0]])
                     # loss, loss_items = compute_loss(pred, torch.cat(batch_cstargets_union).to(device))
                     loss, loss_items = compute_loss(pred, targets.to(device))
                 if RANK != -1:
@@ -701,7 +704,7 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'data/all.yaml' # full is J, all is CS
+    opt.data = 'dental_disease/yolobcc/data/iid.yaml' # full is J, all is CS
     opt.exist_ok = False
     # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
     opt.batch_size = 20 # Change this to number of train images
