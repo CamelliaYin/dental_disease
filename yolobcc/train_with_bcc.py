@@ -1,3 +1,4 @@
+from label_converter import BACKGROUND_CLASS_ID
 from label_converter import init_yolo_labels, yolo2bcc
 # import train
 from utils.general import check_dataset, check_file, increment_path
@@ -12,6 +13,21 @@ from utils.torch_utils import select_device
 import torch
 
 DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
+
+
+VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
+
+def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=VOL_ID_MAP):
+    vol_path = os.path.join(data_dict['path'], 'volunteers')
+    vol_mode_path = os.path.join(vol_path, mode)
+    file_names = [x for x in os.listdir(vol_mode_path) if not x.startswith('.')]
+    file_vols_dict = {}
+    for fn in file_names:
+        vol_file_path = os.path.join(vol_mode_path, fn)
+        with open(vol_file_path) as f:
+            vol_seq = [vol_id_map[x.strip()] for x in f.readlines()]
+        file_vols_dict[fn] = torch.tensor(vol_seq).int()
+    return file_vols_dict
 
 def init_nn_output(n_train, G, n_anchor_choices, params, bkgd=False):
     # bkgd for "background".
@@ -142,7 +158,10 @@ def convert_yolo2bcc(y_yolo, Na, Nc, G, intermediate_yolo_mode = False, torchMod
     y_bcc = torch.tensor(y_bcc) if torchMode else np.array(y_bcc)
     return y_bcc
 
-def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mode = False):
+def convert_cs_yolo2bcc_with_vol_list(targets, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mode = False, volunteer_list = None):
+    pass
+
+def convert_cs_yolo2bcc_wo_vol_list(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mode = False):
     modes = ['train', 'val', 'test']
     y_cs_bcc = {}
     for m in modes:
@@ -156,6 +175,43 @@ def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mo
         y_cs_bcc[m] = np.array(y_bcc).transpose(1, 2, 0)# (I x UV x K)
     return y_cs_bcc
 
+def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mode = False, volunteer_list = None):
+    if volunteer_list is None:
+        return convert_cs_yolo2bcc_wo_vol_list(y_cs_yolo, Na, Nc, G, intermediate_yolo_mode)
+    return convert_cs_yolo2bcc_with_vol_list(y_cs_yolo, Na, Nc, G, intermediate_yolo_mode, volunteer_list)
+
+def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_G, batch_size=None, vol_id_map=VOL_ID_MAP):
+    n_images = batch_size
+    n_vols = len(vol_id_map)
+    Ng = G.shape[0]
+
+    targets_per_i_bcc_list = []
+    for i in range(n_images):
+        target_vols_per_i = target_volunteers[target_volunteers[:, 0] == i][:, 1:]
+        targets_per_ig_bcc_list = []
+        for g in range(Ng):  # per grid choice
+            g_frac = G[g]
+            S_g = np.ceil(1/g_frac).astype(int)**2
+            # Don't need a loop for anchor-boxes as we are simply repeating Na times below.
+            targets_per_iv_bcc_list = []
+            for v in range(n_vols):
+                targets_per_iv = target_vols_per_i[target_vols_per_i[:, -1] == v][:, :-1]
+                c, x, y, _, _ = targets_per_iv.T # w and h are ignored
+
+                x_cell_ids = torch.where(x<1, x/g_frac, torch.ones(x.shape)*(np.ceil(1/g_frac))).int()
+                y_cell_ids = torch.where(y<1, y/g_frac, torch.ones(y.shape)*(np.ceil(1/g_frac))).int()
+                gc_ids = ((y_cell_ids)*(np.ceil(1/g_frac)) + x_cell_ids).long()
+
+                targets_per_iv_bcc = BACKGROUND_CLASS_ID * torch.ones(S_g)
+                targets_per_iv_bcc[gc_ids] = c
+                targets_per_iv_bcc_list.append(targets_per_iv_bcc)
+            targets_per_iga_bcc = torch.stack(tuple(targets_per_iv_bcc_list)).T
+            targets_per_ig_bcc = targets_per_iga_bcc.repeat((Na, 1))
+            targets_per_ig_bcc_list.append(targets_per_ig_bcc)
+        targets_per_i_bcc = torch.cat(targets_per_ig_bcc_list)
+        targets_per_i_bcc_list.append(targets_per_i_bcc)
+    target_volunteers_bcc = torch.stack(tuple(targets_per_i_bcc_list))
+    return target_volunteers_bcc
 def xywhpc1ck_to_cxywh(y):
     y[:, 4] = y[:, 5:].max(dim=1).indices
     y = y[:, :5]

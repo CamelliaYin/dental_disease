@@ -5,6 +5,9 @@ Train a YOLOv5 model on a custom dataset
 Usage:
     $ python path/to/train.py --data coco128.yaml --weights yolov5s.pt --img 640
 """
+from train_with_bcc import VOL_ID_MAP
+from train_with_bcc import convert_target_volunteers_yolo2bcc
+from train_with_bcc import get_file_volunteers_dict
 from label_converter import BACKGROUND_CLASS_ID
 from timeit import default_timer as timer
 from collections import defaultdict
@@ -224,24 +227,23 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model).to(device)
         LOGGER.info('Using SyncBatchNorm()')
     
-    print("*** GPU Usage before reading data")
-    gpu_usage()
     # Trainloader
     train_loader, dataset = create_dataloader(train_path, imgsz, batch_size // WORLD_SIZE, gs, single_cls,
                                               hyp=hyp, augment=False, cache=opt.cache, rect=opt.rect, rank=RANK,
                                               workers=workers, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '))
-    print("*** GPU Usage after reading data")
-    gpu_usage()
+    if bcc_epoch != -1:
+        file_volunteers_dict = get_file_volunteers_dict(data_dict)
+
     n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
     grid_ratios = model.model[-1].stride.cpu().detach().numpy() / imgsz
-    if bcc_epoch != -1:
-        cstargets_all = read_crowdsourced_labels(data)
-        cstargets_union = find_union_cstargets(cstargets_all['train'])
-        cstargets_all_bcc = convert_cs_yolo2bcc(cstargets_all, n_anchor_choices, nc, grid_ratios)
-        cstargets_bcc = torch.tensor(cstargets_all_bcc['train']) if torchMode else cstargets_all_bcc['train']
-        print("*** GPU Usage after reading crowdsourced labels")
-        gpu_usage()
+    # if bcc_epoch != -1:
+    #     cstargets_all = read_crowdsourced_labels(data)
+    #     cstargets_union = find_union_cstargets(cstargets_all['train'])
+    #     cstargets_all_bcc = convert_cs_yolo2bcc(cstargets_all, n_anchor_choices, nc, grid_ratios)
+    #     cstargets_bcc = torch.tensor(cstargets_all_bcc['train']) if torchMode else cstargets_all_bcc['train']
+    #     print("*** GPU Usage after reading crowdsourced labels")
+    #     gpu_usage()
     mlc = int(np.concatenate(dataset.labels, 0)[:, 0].max())  # max label class
     nb = len(train_loader)  # number of batches
     assert mlc < nc, f'Label class {mlc} exceeds nc={nc} in {data}. Possible class labels are 0-{nc - 1}'
@@ -290,7 +292,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     stopper = EarlyStopping(patience=opt.patience)
     compute_loss = ComputeLoss(model)  # init loss class
     if bcc_epoch != -1:
-        bcc_params = init_bcc_params(K=cstargets_bcc.shape[-1])
+        bcc_params = init_bcc_params(K=len(VOL_ID_MAP))
         bcc_params['n_epoch'] = epochs
         batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
         # pred0_bcc = init_nn_output(dataset.n, grid_ratios, n_anchor_choices, bcc_params)
@@ -311,8 +313,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         if not bcc_flag and qtfilter_flag:
             qtfilter_flag = False
         LBs = []
-        print(f"*** GPU Usage before epoch {epoch} in {{{start_epoch}, ..., {epochs-1}}}")
-        gpu_usage()
         model.train()
         # Update image weights (optional, single-GPU only)
         if opt.image_weights:
@@ -334,7 +334,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
         for i, (imgs, targets, paths, _) in pbar:  # batch -------------------------------------------------------------
             if bcc_epoch != -1:
-                batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
+                batch_filenames = [dataset.label_files[x].split(os.sep)[-1] for x in np.where(dataset.batch==i)[0]]
+                batch_volunteers_list = [file_volunteers_dict[fn] for fn in batch_filenames]
+                batch_volunteers = torch.cat(batch_volunteers_list)
+                target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
+                batch_size = np.where(dataset.batch==i)[0].shape[0]
+                target_volunteers_bcc = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size)
+                # batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
 
@@ -363,7 +369,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     model.eval()
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
                     batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
-                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(batch_cstargets_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
+                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
                     LBs.append(batch_lb)
                     with torch.no_grad():
                         batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, batch_pred_yolo_wh, torchMode = torchMode, device=device).half().float()
@@ -473,20 +479,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         except IndexError:
             pass
 
-        print(f"*** GPU Usage after epoch {epoch} in {{{start_epoch}, ..., {epochs}}}")
-        gpu_usage()
         try:
-
             del batch_pred_yolo, batch_pred_bcc, batch_pred_yolo_wh, batch_qtargets, batch_qtargets_yolo
         except UnboundLocalError:
             pass
         
-        print(f"*** GPU Usage after deleting some variables")
-        gpu_usage()
 
         torch.cuda.empty_cache()
-        print(f"*** GPU Usage after emptying cache")
-        gpu_usage()
 
         # end epoch ----------------------------------------------------------------------------------------------------
     
@@ -704,12 +703,12 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'dental_disease/yolobcc/data/iid.yaml' # full is J, all is CS
+    opt.data = 'dental_disease/yolobcc/data/single_toy_bcc.yaml' # full is J, all is CS
     opt.exist_ok = False
     # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
     opt.batch_size = 20 # Change this to number of train images
     opt.epochs = 300
     #opt.image_weights = True
     #opt.evolve = True
-    opt.bcc_epoch = -1 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
+    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     main(opt)
