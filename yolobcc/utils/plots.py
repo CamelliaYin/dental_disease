@@ -397,10 +397,15 @@ def plot_results(file='path/to/results.csv', dir=''):
             s = [x.strip() for x in data.columns]
             x = data.values[:, 0]
             for i, j in enumerate([1, 2, 3, 4, 5, 8, 9, 10, 6, 7]):
+                loss_mode = j not in range(4, 8)
                 y = data.values[:, j]
                 # y[y == 0] = np.nan  # don't show zero values
                 ax[i].plot(x, y, marker='.', label=f.stem, linewidth=2, markersize=8)
                 ax[i].set_title(s[j], fontsize=12)
+                if loss_mode:
+                    ax[i].set_ylim(0, 0.1) #########
+                else:
+                    ax[i].set_ylim(0, 1) #########
                 # if j in [8, 9, 10]:  # share train and val loss y axes
                 #     ax[i].get_shared_y_axes().join(ax[i], ax[i - 5])
         except Exception as e:
