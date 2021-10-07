@@ -16,6 +16,7 @@ DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
 
 
 VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
+SINGLE_VOL_ID_MAP = {'Camellia': 0}
 
 def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=VOL_ID_MAP):
     vol_path = os.path.join(data_dict['path'], 'volunteers')
@@ -185,6 +186,7 @@ def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_
     n_vols = len(vol_id_map)
     Ng = G.shape[0]
 
+    vigcwh_list = [] # [v]olunteer, [i]mage, [g]rid choice, grid [c]ell id, [w]idth, [h]eight    
     targets_per_i_bcc_list = []
     for i in range(n_images):
         target_vols_per_i = target_volunteers[target_volunteers[:, 0] == i][:, 1:]
@@ -196,12 +198,13 @@ def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_
             targets_per_iv_bcc_list = []
             for v in range(n_vols):
                 targets_per_iv = target_vols_per_i[target_vols_per_i[:, -1] == v][:, :-1]
-                c, x, y, _, _ = targets_per_iv.T # w and h are ignored
+                c, x, y, w, h = targets_per_iv.T # w and h are ignored
 
                 x_cell_ids = torch.where(x<1, x/g_frac, torch.ones(x.shape)*(np.ceil(1/g_frac))).int()
                 y_cell_ids = torch.where(y<1, y/g_frac, torch.ones(y.shape)*(np.ceil(1/g_frac))).int()
                 gc_ids = ((y_cell_ids)*(np.ceil(1/g_frac)) + x_cell_ids).long()
-
+                vigcwh_list.append(torch.cat([torch.tensor([v, i, g])*torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+                
                 targets_per_iv_bcc = BACKGROUND_CLASS_ID * torch.ones(S_g)
                 targets_per_iv_bcc[gc_ids] = c
                 targets_per_iv_bcc_list.append(targets_per_iv_bcc)
@@ -211,7 +214,9 @@ def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_
         targets_per_i_bcc = torch.cat(targets_per_ig_bcc_list)
         targets_per_i_bcc_list.append(targets_per_i_bcc)
     target_volunteers_bcc = torch.stack(tuple(targets_per_i_bcc_list))
-    return target_volunteers_bcc
+    vigcwh = torch.cat(vigcwh_list)
+    return target_volunteers_bcc, vigcwh
+
 def xywhpc1ck_to_cxywh(y):
     y[:, 4] = y[:, 5:].max(dim=1).indices
     y = y[:, :5]

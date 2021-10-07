@@ -6,6 +6,7 @@ from collections import defaultdict
 
 MAX_GRID_CELLS = 99999
 BACKGROUND_CLASS_ID = 2
+BKGD_WH_IS_MEAN = False
 
 def targetize(z):
     targeted_y = []
@@ -170,7 +171,7 @@ def yolo2bcc(yolo_labels, intermediate_yolo_mode = False, torchMode = False):
     labels = torch.tensor(bcc_labels, dtype=int) if torchMode else np.array(bcc_labels, dtype=int)
     return {'labels': labels, 'wh_map': wh_map, 'Na': Na, 'G': G, 'Nc': Nc}
 
-def qt2yolo_optimized(qt, G, Na, wh_yolo, torchMode=False, device=None):
+def qt2yolo_optimized(qt, G, Na, vigcwh, torchMode=False, device=None):
     Ng = G.shape[0]
     num_images = qt.shape[0]
     y_bcc = []
@@ -181,15 +182,29 @@ def qt2yolo_optimized(qt, G, Na, wh_yolo, torchMode=False, device=None):
             g_frac = G[g]
             S_g = np.ceil(1/g_frac).astype(int)
             n_cells = S_g*S_g
+            
+            ig_indices = torch.logical_and(vigcwh[:, 1] == i, vigcwh[:, 2] == g)
+            vigcwh_ig = vigcwh[ig_indices, :]
+            wh_ig = vigcwh_ig[:, -2:]
+            wh_ig_mean = wh_ig.mean(axis=0)
+            wh_init_multiplier = wh_ig_mean if BKGD_WH_IS_MEAN and wh_ig.shape[0] > 0 else -1
+            wh = wh_init_multiplier*torch.ones(n_cells, 2)
+            tagged_gc_ids = vigcwh_ig[:, 3].unique().int()
+            for gc in tagged_gc_ids:
+                igc_indices = torch.logical_and(ig_indices, vigcwh[:,3] == gc)
+                vigcwh_igc = vigcwh[igc_indices]
+                wh_igc = vigcwh_igc[:, -2:]
+                wh_igc_mean = wh_igc.mean(axis=0)
+                wh[gc, :] = wh_ig_mean if wh_igc.shape[0] == 0 else wh_ig_mean
             for a in range(Na):
                 z = torch.linspace(g_frac/2, 1-g_frac/2, S_g).repeat(S_g, 1).unsqueeze(-1)
                 xy = torch.cat((z.permute(1, 0, 2), z), 2).permute(1, 0, 2).reshape(n_cells, 2).to(device)
-                wh = wh_yolo[i][st:st+n_cells]
                 c = cs[st:st+n_cells]
                 icxywh = torch.cat(((i*torch.ones(n_cells, 1)).to(device), c.unsqueeze(-1), xy, wh), 1)
                 y_bcc.append(icxywh)
                 st += n_cells
-    return torch.cat(y_bcc)
+    qt_yolo = torch.cat(y_bcc)
+    return qt_yolo
 
 def qt2yolo(qt, G, Na, wh_yolo, torchMode=False, device=None):
     Ng = G.shape[0]

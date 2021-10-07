@@ -5,7 +5,7 @@ Train a YOLOv5 model on a custom dataset
 Usage:
     $ python path/to/train.py --data coco128.yaml --weights yolov5s.pt --img 640
 """
-from train_with_bcc import VOL_ID_MAP
+from train_with_bcc import VOL_ID_MAP, SINGLE_VOL_ID_MAP
 from train_with_bcc import convert_target_volunteers_yolo2bcc
 from train_with_bcc import get_file_volunteers_dict
 from label_converter import BACKGROUND_CLASS_ID
@@ -78,6 +78,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     save_dir, epochs, batch_size, weights, single_cls, evolve, data, cfg, resume, noval, nosave, workers, freeze, = \
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.weights, opt.single_cls, opt.evolve, opt.data, opt.cfg, \
         opt.resume, opt.noval, opt.nosave, opt.workers, opt.freeze
+    vol_id_map = SINGLE_VOL_ID_MAP if 'single' in data else VOL_ID_MAP
     
     bcc_epoch = opt.bcc_epoch
     qtfilter_epoch = opt.qtfilter_epoch
@@ -233,7 +234,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                               workers=workers, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '))
     if bcc_epoch != -1:
-        file_volunteers_dict = get_file_volunteers_dict(data_dict)
+        file_volunteers_dict = get_file_volunteers_dict(data_dict, vol_id_map = vol_id_map)
 
     n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
     grid_ratios = model.model[-1].stride.cpu().detach().numpy() / imgsz
@@ -292,7 +293,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     stopper = EarlyStopping(patience=opt.patience)
     compute_loss = ComputeLoss(model)  # init loss class
     if bcc_epoch != -1:
-        bcc_params = init_bcc_params(K=len(VOL_ID_MAP))
+        bcc_params = init_bcc_params(K=len(vol_id_map))
         bcc_params['n_epoch'] = epochs
         batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
         # pred0_bcc = init_nn_output(dataset.n, grid_ratios, n_anchor_choices, bcc_params)
@@ -339,7 +340,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 batch_volunteers = torch.cat(batch_volunteers_list)
                 target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
                 batch_size = np.where(dataset.batch==i)[0].shape[0]
-                target_volunteers_bcc = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size)
+                target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
                 # batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
@@ -368,11 +369,11 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 if bcc_flag:
                     model.eval()
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
-                    batch_pred_bcc, batch_pred_yolo_wh, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
+                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
                     batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
                     LBs.append(batch_lb)
                     with torch.no_grad():
-                        batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, batch_pred_yolo_wh, torchMode = torchMode, device=device).half().float()
+                        batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
                         batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
                         # if qt_thres_mode.startswith('hybrid'):
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
