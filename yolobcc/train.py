@@ -373,13 +373,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
                     LBs.append(batch_lb)
                     with torch.no_grad():
-                        batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
+                        batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode).half().float()
                         batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
                         # if qt_thres_mode.startswith('hybrid'):
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
-                    loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
+                    loss, loss_items = compute_loss(pred, batch_qtargets_yolo.to(device))
                 else:
                     # # # # # Just for the sake of seeing the output
                     # model.eval()
