@@ -11,7 +11,7 @@ def torch_max_fun(t1, t2):
         t2 = torch.tensor(t2)
     return torch.max(t1, t2)
 
-def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=False, device=None):
+def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=False, device=None, invert_classes = False):
     """
     performs one iteration of variational inference update for BCCNet (E-step)
     -- update for approximating posterior of true labels and confusion matrices
@@ -42,6 +42,10 @@ def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=Fa
     # Low bound
     lower_bound_likelihood = compute_lower_bound_likelihood(alpha0_volunteers, alpha_volunteers, q_t, rho, nn_output, torchMode)
 
+    if invert_classes:
+        q_t_copy = q_t.clone()
+        q_t[:,:,0] = q_t_copy[:,:,1]
+        q_t[:,:,1] = q_t_copy[:,:,0]
     return q_t, alpha_volunteers, lower_bound_likelihood
 
 # part of computing loss

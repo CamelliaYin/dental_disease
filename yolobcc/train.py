@@ -370,7 +370,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     model.eval()
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
                     batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
-                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device)
+                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = True)
                     LBs.append(batch_lb)
                     with torch.no_grad():
                         batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
