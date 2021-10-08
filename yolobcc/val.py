@@ -102,6 +102,7 @@ def run(data,
         plots=True,
         callbacks=Callbacks(),
         compute_loss=None,
+        prefix=''
         ):
     # Initialize/load model and set device
     training = model is not None
@@ -220,9 +221,9 @@ def run(data,
 
         # Plot images
         if plots and batch_i < 3:
-            f = save_dir / f'val_batch{batch_i}_labels.jpg'  # labels
+            f = save_dir / f'{"val" if prefix=="" else prefix}_batch{batch_i}_labels.jpg'  # labels
             Thread(target=plot_images, args=(img, targets, paths, f, names), daemon=True).start()
-            f = save_dir / f'val_batch{batch_i}_pred.jpg'  # predictions
+            f = save_dir / f'{"val" if prefix=="" else prefix}_batch{batch_i}_pred.jpg'  # predictions
             Thread(target=plot_images, args=(img, output_to_target(out), paths, f, names), daemon=True).start()
 
     # Compute statistics
@@ -252,7 +253,7 @@ def run(data,
 
     # Plots
     if plots:
-        confusion_matrix.plot(save_dir=save_dir, names=list(names.values()))
+        confusion_matrix.plot(save_dir=save_dir, names=list(names.values()), prefix=prefix)
         callbacks.on_val_end()
 
     # Save JSON

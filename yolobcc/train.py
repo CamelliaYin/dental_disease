@@ -438,6 +438,20 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            plots=plots and final_epoch,
                                            callbacks=callbacks,
                                            compute_loss=compute_loss)
+
+                train_results, train_maps, _ = val.run(data_dict,
+                                                       batch_size=batch_size // WORLD_SIZE * 2,
+                                                       imgsz=imgsz,
+                                                       model=ema.ema,
+                                                       single_cls=single_cls,
+                                                       dataloader=train_loader,
+                                                       save_dir=save_dir,
+                                                       save_json=is_coco and final_epoch,
+                                                       verbose=nc < 50 and final_epoch,
+                                                       plots=plots and final_epoch,
+                                                       callbacks=callbacks,
+                                                       compute_loss=compute_loss,
+                                                       prefix='train')
                 # yhat_train = pred
                 # y_train = dataset.labels
                 # yhat_test = results
@@ -715,4 +729,6 @@ if __name__ == "__main__":
     #opt.image_weights = True
     #opt.evolve = True
     opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
+    #opt.SGD = True
     main(opt)
+#torch.cuda.empty_cache()

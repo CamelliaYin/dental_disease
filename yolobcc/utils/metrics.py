@@ -160,7 +160,7 @@ class ConfusionMatrix:
     def matrix(self):
         return self.matrix
 
-    def plot(self, normalize=True, save_dir='', names=()):
+    def plot(self, normalize=True, save_dir='', names=(), prefix=''):
         try:
             import seaborn as sn
 
@@ -177,7 +177,7 @@ class ConfusionMatrix:
                            yticklabels=names + ['background FN'] if labels else "auto").set_facecolor((1, 1, 1))
             fig.axes[0].set_xlabel('True')
             fig.axes[0].set_ylabel('Predicted')
-            fig.savefig(Path(save_dir) / 'confusion_matrix.png', dpi=250)
+            fig.savefig(Path(save_dir) / f'{prefix}_confusion_matrix.png', dpi=250)
             plt.close()
             ###
             fig = plt.figure(figsize=(12, 9), tight_layout=True)
@@ -190,7 +190,7 @@ class ConfusionMatrix:
                            yticklabels=names + ['background FN'] if labels else "auto").set_facecolor((1, 1, 1))
             fig.axes[0].set_xlabel('True')
             fig.axes[0].set_ylabel('Predicted')
-            fig.savefig(Path(save_dir) / 'confusion_matrix_abs.png', dpi=250)
+            fig.savefig(Path(save_dir) / f'{prefix}_confusion_matrix_abs.png', dpi=250)
             plt.close()
         except Exception as e:
             print(f'WARNING: ConfusionMatrix plot failure: {e}')
