@@ -40,7 +40,7 @@ def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45)
             per_cl_tgts.append(z)
         per_im_tgts.extend(per_cl_tgts)
     filtered_batch_qtargets_yolo = torch.cat(per_im_tgts, axis=0)
-    return filtered_batch_qtargets_yolo
+    return filtered_batch_qtargets_yolo[:, :-1]
 
 def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=VOL_ID_MAP):
     vol_path = os.path.join(data_dict['path'], 'volunteers')

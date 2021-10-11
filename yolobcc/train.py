@@ -384,7 +384,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
-                    loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
+                    loss, loss_items = compute_loss(pred, filtered_batch_qtargets_yolo)
                 else:
                     # # # # # Just for the sake of seeing the output
                     # model.eval()
