@@ -20,7 +20,7 @@ from label_filter import filter_qt
 
 from PIL.ImageFont import truetype
 from label_converter import yolo2bcc_new, find_union_cstargets, targetize, yolo2bcc_newer
-from train_with_bcc import convert_yolo2bcc, nn_predict, convert_cs_yolo2bcc
+from train_with_bcc import convert_yolo2bcc, nn_predict, convert_cs_yolo2bcc, perform_nms_filtering
 from train_with_bcc import read_crowdsourced_labels, init_bcc_params, \
     init_nn_output, compute_param_confusion_matrices, init_metrics, update_bcc_metrics
 from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
@@ -375,6 +375,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     with torch.no_grad():
                         batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
                         batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
+                        nms_thres = 0.2
+                        # orig_count = batch_qtargets_yolo.shape[0]
+                        filtered_batch_qtargets_yolo = perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres)
+                        # filtered_count = filtered_batch_qtargets_yolo.shape[0]
                         # if qt_thres_mode.startswith('hybrid'):
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
@@ -718,7 +722,7 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'data/single_toy_bcc.yaml' # full is J, all is CS
+    opt.data = 'dental_disease/yolobcc/data/single_toy_bcc.yaml' # full is J, all is CS
     opt.exist_ok = False
     # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
     opt.batch_size = 20 # Change this to number of train images

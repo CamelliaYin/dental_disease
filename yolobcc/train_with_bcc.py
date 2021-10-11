@@ -1,6 +1,8 @@
 from label_converter import BACKGROUND_CLASS_ID
 from label_converter import init_yolo_labels, yolo2bcc
 # import train
+from torchvision.ops import nms
+from utils.general import xywh2xyxy
 from utils.general import check_dataset, check_file, increment_path
 import detect
 import numpy as np
@@ -17,6 +19,28 @@ DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
 
 VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
 SINGLE_VOL_ID_MAP = {'Camellia': 0}
+
+def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45):
+    n_images = batch_qtargets.shape[0]
+    per_im_tgts = []
+    for i in range(n_images):
+        y1 = batch_qtargets_yolo[batch_qtargets_yolo[:, 0] == i]
+        orig_im_count = y1.shape[0]
+        y = batch_qtargets[i]
+        inds = torch.argmax(y, axis=1) != 2
+        y = y[inds, :]
+        y = torch.cat([y1, y[:, [-1]]], axis=1)
+        c = 1
+        per_cl_tgts = []
+        for c in range(2):
+            z = y[y[:, 1] == c, :]
+            orig_im_cl_count = z.shape[0]
+            inds = nms(xywh2xyxy(z[:, 2:6]), z[:,-1], nms_thres)
+            z = z[inds, :]
+            per_cl_tgts.append(z)
+        per_im_tgts.extend(per_cl_tgts)
+    filtered_batch_qtargets_yolo = torch.cat(per_im_tgts, axis=0)
+    return filtered_batch_qtargets_yolo
 
 def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=VOL_ID_MAP):
     vol_path = os.path.join(data_dict['path'], 'volunteers')
