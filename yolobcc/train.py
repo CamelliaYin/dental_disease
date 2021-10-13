@@ -378,13 +378,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                         batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
                         nms_thres = 0.2 #nms thres for q(t)
                         # orig_count = batch_qtargets_yolo.shape[0]
-                        filtered_batch_qtargets_yolo = perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres)
+                        # batch_qtargets_yolo = perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres)
                         # filtered_count = filtered_batch_qtargets_yolo.shape[0]
                         # if qt_thres_mode.startswith('hybrid'):
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
-                    loss, loss_items = compute_loss(pred, filtered_batch_qtargets_yolo)
+                    loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
                 else:
                     # # # # # Just for the sake of seeing the output
                     # model.eval()
@@ -723,16 +723,17 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'data/bcc.yaml' # full is J, all is CS
+    opt.data = 'data/bcc-tvt.yaml'
+    # opt.data = 'data/iid-tvt.yaml'
     opt.exist_ok = False
     # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
     opt.batch_size = 20 # Change this to number of train images
-    opt.epochs = 300
-    #opt.weights = ''
-    #opt.cfg = 'yolov5s_binary.yaml'
-    #opt.freeze = 10
-    #opt.image_weights = True
-    #opt.evolve = True
+    opt.epochs = 150
+    # opt.weights = 'runs/train/exp202/weights/last.pt'
+    # opt.cfg = 'yolov5s_binary.yaml'
+    # opt.freeze = 10
+    # opt.image_weights = True
+    # opt.evolve = True
     opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     #opt.SGD = True
     main(opt)
