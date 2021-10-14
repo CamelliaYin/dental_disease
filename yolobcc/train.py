@@ -724,7 +724,7 @@ def run(**kwargs):
 if __name__ == "__main__":
     opt = parse_opt()
     # opt.data = 'data/bcc-tvt.yaml'
-    opt.data = 'data/yolo.yaml'
+    opt.data = 'data/cyolo.yaml'
     opt.exist_ok = False
     # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
     opt.batch_size = 20 # Change this to number of train images
@@ -734,7 +734,7 @@ if __name__ == "__main__":
     # opt.freeze = 10
     # opt.image_weights = True
     # opt.evolve = True
-    opt.bcc_epoch = -1 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
+    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
     #opt.SGD = True
     main(opt)
 #torch.cuda.empty_cache()

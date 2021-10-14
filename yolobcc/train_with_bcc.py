@@ -43,7 +43,7 @@ def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45)
     return filtered_batch_qtargets_yolo[:, :-1]
 
 def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=VOL_ID_MAP):
-    vol_path = os.path.join(data_dict['path'], 'volunteers')
+    vol_path = os.path.join(data_dict[mode], '..', '..','volunteers')
     vol_mode_path = os.path.join(vol_path, mode)
     file_names = [x for x in os.listdir(vol_mode_path) if not x.startswith('.')]
     file_vols_dict = {}
