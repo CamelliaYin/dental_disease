@@ -728,8 +728,8 @@ if __name__ == "__main__":
     opt.exist_ok = False
     # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
     opt.batch_size = 20 # Change this to number of train images
-    opt.epochs = 50
-    # opt.weights = 'runs/train/exp202/weights/last.pt'
+    opt.epochs = 45
+    opt.weights = 'runs\\train\\exp235\\weights\\last.pt'
     # opt.cfg = 'yolov5s_binary.yaml'
     # opt.freeze = 10
     # opt.image_weights = True

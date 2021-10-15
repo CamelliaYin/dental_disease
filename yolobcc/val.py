@@ -16,6 +16,7 @@ from threading import Thread
 import numpy as np
 import torch
 from tqdm import tqdm
+import pickle
 
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
@@ -149,14 +150,20 @@ def run(data,
                                        prefix=colorstr(f'{task}: '))[0]
 
     seen = 0
-    confusion_matrix = ConfusionMatrix(nc=nc)
+    # confusion_matrix = ConfusionMatrix(nc=nc)
     names = {k: v for k, v in enumerate(model.names if hasattr(model, 'names') else model.module.names)}
     class_map = coco80_to_coco91_class() if is_coco else list(range(1000))
     s = ('%20s' + '%11s' * 6) % ('Class', 'Images', 'Labels', 'P', 'R', 'mAP@.5', 'mAP@.5:.95')
     p, r, f1, mp, mr, map50, map, t0, t1, t2 = 0., 0., 0., 0., 0., 0., 0., 0., 0., 0.
     loss = torch.zeros(3, device=device)
     jdict, stats, ap, ap_class = [], [], [], []
+    conf_thres_values = [0.001, 0.01, 0.1, 0.25]
+    cms = [ConfusionMatrix(nc=nc, conf=conf_thres_value) for conf_thres_value in conf_thres_values]
     for batch_i, (img, targets, paths, shapes) in enumerate(tqdm(dataloader, desc=s)):
+        intermediate_path = os.path.join(save_dir, 'intermediate')
+        if not os.path.exists(intermediate_path):
+            os.mkdir(intermediate_path)
+        batch_path = os.path.join(intermediate_path, str(batch_i))
         t_ = time_sync()
         img = img.to(device, non_blocking=True)
         img = img.half() if half else img.float()  # uint8 to fp16/32
@@ -183,6 +190,10 @@ def run(data,
 
         # Statistics per image
         for si, pred in enumerate(out):
+            batch_image_path = '.'.join([batch_path, paths[si].split(os.sep)[-1]])
+            batch_image_predn_path = '.'.join([batch_image_path, 'predn.pkl'])
+            batch_image_labelsn_path = '.'.join([batch_image_path, 'labelsn.pkl'])
+
             labels = targets[targets[:, 0] == si, 1:]
             nl = len(labels)
             tcls = labels[:, 0].tolist() if nl else []  # target class
@@ -199,15 +210,19 @@ def run(data,
                 pred[:, 5] = 0
             predn = pred.clone()
             scale_coords(img[si].shape[1:], predn[:, :4], shape, shapes[si][1])  # native-space pred
+            pickle.dump(predn.cpu().detach().numpy(),open(batch_image_predn_path, 'wb'))
+
 
             # Evaluate
             if nl:
                 tbox = xywh2xyxy(labels[:, 1:5])  # target boxes
                 scale_coords(img[si].shape[1:], tbox, shape, shapes[si][1])  # native-space labels
                 labelsn = torch.cat((labels[:, 0:1], tbox), 1)  # native-space labels
+                pickle.dump(labelsn.cpu().detach().numpy(),open(batch_image_labelsn_path, 'wb'))
                 correct = process_batch(predn, labelsn, iouv)
                 if plots:
-                    confusion_matrix.process_batch(predn, labelsn)
+                    for conf_thres_id, conf_thres_value in enumerate(conf_thres_values):
+                        cms[conf_thres_id].process_batch(predn, labelsn)
             else:
                 correct = torch.zeros(pred.shape[0], niou, dtype=torch.bool)
             stats.append((correct.cpu(), pred[:, 4].cpu(), pred[:, 5].cpu(), tcls))  # (correct, conf, pcls, tcls)
@@ -253,7 +268,8 @@ def run(data,
 
     # Plots
     if plots:
-        confusion_matrix.plot(save_dir=save_dir, names=list(names.values()), prefix=prefix)
+        for i, conf_thres_value in enumerate(conf_thres_values):
+            cms[i].plot(save_dir=save_dir, names=list(names.values()), prefix=prefix, suffix=str(conf_thres_value))
         callbacks.on_val_end()
 
     # Save JSON
