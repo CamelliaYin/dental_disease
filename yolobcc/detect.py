@@ -209,4 +209,5 @@ def main(opt):
 
 if __name__ == "__main__":
     opt = parse_opt()
+    opt.source = 'datasets/single_toy_bcc/images/val'
     main(opt)
