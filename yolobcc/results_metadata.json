@@ -1,0 +1,12 @@
+{
+    "baseline": 
+    {
+        "name": "yolo",
+        "exp_id": 218
+    },
+    "contribution":
+    {
+        "name": "cyolo",
+        "exp_id": 236
+    }
+}

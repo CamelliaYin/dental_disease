@@ -1,0 +1,7 @@
+path: datasets/iid-tt # dataset root dir
+train: images/train  # train images (relative to 'path') 128 images
+test: images/test # test images (optional)
+
+# Classes
+nc: 2  # number of classes
+names: ['bone-loss', 'dental-caries']  # class names
