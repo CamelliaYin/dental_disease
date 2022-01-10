@@ -1,0 +1,8 @@
+path: ../data/datasets # dataset root dir
+train: single_toy_bcc-tvt/images/train  # train images (relative to 'path') 128 images
+val: single_toy_iid-tvt/images/val  # val images (relative to 'path') 128 images
+test: single_toy_iid-tvt/images/test # test images (optional)
+
+# Classes
+nc: 2  # number of classes
+names: ['bone-loss', 'dental-caries']  # class names

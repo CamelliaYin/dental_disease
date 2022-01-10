@@ -5,43 +5,33 @@ Train a YOLOv5 model on a custom dataset
 Usage:
     $ python path/to/train.py --data coco128.yaml --weights yolov5s.pt --img 640
 """
-from train_with_bcc import VOL_ID_MAP, SINGLE_VOL_ID_MAP
-from train_with_bcc import convert_target_volunteers_yolo2bcc
-from train_with_bcc import get_file_volunteers_dict
-from label_converter import BACKGROUND_CLASS_ID
-from timeit import default_timer as timer
-from collections import defaultdict
 import pdb
 import argparse
-from label_converter import qt2yolo_optimized, qt2yolo
-from GPUtil import showUtilization as gpu_usage
-
-from label_filter import filter_qt
-
-from PIL.ImageFont import truetype
-from label_converter import yolo2bcc_new, find_union_cstargets, targetize, yolo2bcc_newer
-from train_with_bcc import convert_yolo2bcc, nn_predict, convert_cs_yolo2bcc, perform_nms_filtering
-from train_with_bcc import read_crowdsourced_labels, init_bcc_params, \
-    init_nn_output, compute_param_confusion_matrices, init_metrics, update_bcc_metrics
-from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
 import logging
 import math
 import os
 import random
 import sys
 import time
+from timeit import default_timer as timer
+from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
-
 import numpy as np
 import torch
 import torch.distributed as dist
 import torch.nn as nn
-import yaml
 from torch.cuda import amp
 from torch.nn.parallel import DistributedDataParallel as DDP
 from torch.optim import Adam, SGD, lr_scheduler
 from tqdm import tqdm
+import yaml
+
+from cyolo_utils.train_with_bcc import VOL_ID_MAP, SINGLE_VOL_ID_MAP, \
+    convert_target_volunteers_yolo2bcc, get_file_volunteers_dict, \
+    nn_predict, init_bcc_params, compute_param_confusion_matrices, init_metrics
+from cyolo_utils.label_converter import BACKGROUND_CLASS_ID, qt2yolo_optimized, yolo2bcc_newer
+from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
 
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
@@ -69,6 +59,7 @@ LOCAL_RANK = int(os.getenv('LOCAL_RANK', -1))  # https://pytorch.org/docs/stable
 RANK = int(os.getenv('RANK', -1))
 WORLD_SIZE = int(os.getenv('WORLD_SIZE', 1))
 
+# The function that actually trains a model. Parameters are generally decided by the main() function below.
 def train(hyp,  # path/to/hyp.yaml or hyp dictionary
           opt,
           device,
@@ -518,7 +509,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     results, _, _ = val.run(data_dict,
                                             batch_size=batch_size // WORLD_SIZE * 2,
                                             imgsz=imgsz,
-                                            model=attempt_load(m, device).half(),
+                                            model=attempt_load(m, device),
                                             iou_thres=0.6,  # NMS IoU threshold for best pycocotools results
                                             single_cls=single_cls,
                                             dataloader=val_loader,
@@ -546,8 +537,8 @@ def parse_opt(known=False):
     parser.add_argument('--hybrid_conf_thres', type=float, default=0.0, help="the confidence threshold value (only to be used when running the hybrid filter).")
     parser.add_argument('--weights', type=str, default='yolov5s.pt', help='initial weights path')
     parser.add_argument('--cfg', type=str, default='', help='model.yaml path')
-    parser.add_argument('--data', type=str, default='data/coco128.yaml', help='dataset.yaml path')
-    parser.add_argument('--hyp', type=str, default='data/hyps/hyp.scratch.yaml', help='hyperparameters path')
+    parser.add_argument('--data', type=str, default='../data/coco128.yaml', help='dataset.yaml path')
+    parser.add_argument('--hyp', type=str, default='../data/hyps/hyp.scratch.yaml', help='hyperparameters path')
     parser.add_argument('--epochs', type=int, default=300)
     parser.add_argument('--batch-size', type=int, default=16, help='total batch size for all GPUs')
     parser.add_argument('--imgsz', '--img', '--img-size', type=int, default=640, help='train, val image size (pixels)')
@@ -723,19 +714,6 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    # opt.data = 'data/bcc-tvt.yaml'
-    opt.data = 'data/cyolo.yaml'
-    opt.exist_ok = False
-    # opt.hyp = 'runs\evolve\exp\hyp_evolve.yaml' the same compared with non-tune version
-    opt.batch_size = 20 # Change this to number of train images
-    opt.epochs = 45
-    opt.weights = 'runs\\train\\exp235\\weights\\last.pt'
-    # opt.cfg = 'yolov5s_binary.yaml'
-    # opt.freeze = 10
-    # opt.image_weights = True
-    # opt.evolve = True
-    opt.bcc_epoch = 0 # Involve BCC from epoch number "bcc_epoch". Set to -1 for no BCC. 0 for all BCC.
-    #opt.SGD = True
     main(opt)
 #torch.cuda.empty_cache()
 

@@ -15,7 +15,7 @@ def read_exp_results(exp_no, exp_prefix=DEFAULT_EXP_PREFIX, rel_path=DEFAULT_REL
     pred = json.load(open(os.path.join(exp_path, '_predictions.json'))) #todo
     hyp = yaml.safe_load(open(os.path.join(exp_path, 'hyp.yaml'))) #todo
     opt = yaml.safe_load(open(os.path.join(exp_path, 'opt.yaml'))) #todo
-    cm_path = os.path.join(exp_path, '_confusion_matrix_abs.png')
+    cm_path = os.path.join(exp_path, 'confusion_matrix_abs_0.25.png')
     cm = plt.imread(cm_path)
     return {'results': results_df, 'hyp': hyp, 'opt': opt, 'pred': pred, 'cm': cm}
 

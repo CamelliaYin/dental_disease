@@ -87,6 +87,9 @@ def find_union_cstargets(cstargets):
         y_cs_union.append(torch.cat([torch.tensor(x[i]) for x in cstargets]))
     return y_cs_union
 
+# When YOLO predicts bounding boxes in a given epoch, this has to be fed to BCC,
+# which is only possible if the dimensions match. While YOLO gives a boundingbox-class tensor (x, y, w, h, c, c1, c2),
+# what BCC needs is a gridcell-class tensor, and that too in logits.
 def yolo2bcc_newer(y_yolo, imgsz, silent = True):
     wh = y_yolo[:, ..., 2:4]/imgsz
     conf = y_yolo[:, ..., 4]
@@ -171,6 +174,10 @@ def yolo2bcc(yolo_labels, intermediate_yolo_mode = False, torchMode = False):
     labels = torch.tensor(bcc_labels, dtype=int) if torchMode else np.array(bcc_labels, dtype=int)
     return {'labels': labels, 'wh_map': wh_map, 'Na': Na, 'G': G, 'Nc': Nc}
 
+# After a BCC step is run on a YOLO output (i.e., we have q_t with us), we need to convert it to
+# a format acceptable by YOLO as a target. I.e., we need to convert a grid-class tensor to x,y,w,h,c format.
+# You give qt, grid sizes G, number of anchors Na, volunteer-image-gridchoice-gridcellid-w-h tensor as input,
+# and get a YOLO compatible output.
 def qt2yolo_optimized(qt, G, Na, vigcwh, torchMode=False, device=None):
     Ng = G.shape[0]
     num_images = qt.shape[0]

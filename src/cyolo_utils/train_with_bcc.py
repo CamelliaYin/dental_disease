@@ -1,5 +1,5 @@
-from label_converter import BACKGROUND_CLASS_ID
-from label_converter import init_yolo_labels, yolo2bcc
+from cyolo_utils.label_converter import BACKGROUND_CLASS_ID
+from cyolo_utils.label_converter import init_yolo_labels, yolo2bcc
 # import train
 from torchvision.ops import nms
 from utils.general import xywh2xyxy
@@ -16,7 +16,7 @@ import torch
 
 DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
 
-
+# This mapping is followed throughout for volunteer ids.
 VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
 SINGLE_VOL_ID_MAP = {'Camellia': 0}
 
@@ -42,6 +42,8 @@ def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45)
     filtered_batch_qtargets_yolo = torch.cat(per_im_tgts, axis=0)
     return filtered_batch_qtargets_yolo[:, :-1]
 
+# Reads the "volunteers" file (generally located at train/volunteers/<im_name>.txt)
+# as a filename:volunteertensor dictionary.
 def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=VOL_ID_MAP):
     vol_path = os.path.join(data_dict[mode], '..', '..','volunteers')
     vol_mode_path = os.path.join(vol_path, mode)
@@ -136,6 +138,7 @@ def read_labels(data_name):
     # labels = {k: np.array(v) for k, v in labels.items()}
     return labels['train'], labels['val'], labels['test']
 
+# A function from the BCC algorithm to compute the cross-volunteer confusion matrices.
 def compute_param_confusion_matrices(bcc_params, torchMode=False):
     # set up variational parameters
     prior_param_confusion_matrices = confusion_matrix.initialise_prior(n_classes=bcc_params['n_classes'],
@@ -152,6 +155,7 @@ def plot_results(n_epoch, metrics):
     plt.legend()
     plt.show()
 
+# This is directly taken from the BCC algorithm. We have 3 classes, dental-caries, bone-loss, and background.
 def init_bcc_params(K=4):
     bcc_params = {'n_classes': 3,
                   'n_crowd_members': K,
@@ -159,6 +163,7 @@ def init_bcc_params(K=4):
                   'convergence_threshold': 1e-6}
     return bcc_params
 
+# Initialise the metrics of interest.
 def init_metrics(n_epochs):
     metrics = {'accuracy': np.zeros((n_epochs,), dtype=np.float64)}
     return {'train': metrics, 'test': metrics, 'posterior_estimate': metrics}
@@ -205,6 +210,8 @@ def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mo
         return convert_cs_yolo2bcc_wo_vol_list(y_cs_yolo, Na, Nc, G, intermediate_yolo_mode)
     return convert_cs_yolo2bcc_with_vol_list(y_cs_yolo, Na, Nc, G, intermediate_yolo_mode, volunteer_list)
 
+# This takes in a tensor in the native target volunteer format (image-class-x-y-w-h-volunteer; targets concatenated with volunteer ids)
+# to the BCC format (i.e., volunteer-image-gridchoice-gridcell-width-height) format.
 def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_G, batch_size=None, vol_id_map=VOL_ID_MAP):
     n_images = batch_size
     n_vols = len(vol_id_map)
@@ -241,12 +248,20 @@ def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_
     vigcwh = torch.cat(vigcwh_list)
     return target_volunteers_bcc, vigcwh
 
+# Converts a YOLO output (x,y,w,h,confidence_probability p, class_probabilities c1...ck) to (c,x,y,w,h) format.
 def xywhpc1ck_to_cxywh(y):
     y[:, 4] = y[:, 5:].max(dim=1).indices
     y = y[:, :5]
     y = y[:, [4, 0, 1, 2, 3]]
     return y
 
+# Get inference/prediction from a given CYOLO model and input x.
+# Additional postprocessing options:
+# Offgrid translate: All points lying outside the main [0, 0, imgsz[0], imgsz[1]] grid need to be brought back in.
+# Normalize: To convert pixelated outputs to a fraction.
+# Transform Format: YOLO gives for each prediction, a confidence probability (prob), and various class probabilities (c1...ck)
+#                   For BCC to operate on the YOLO output, we need it in the format (class-x-y-w-h), which is done via
+#                   the xywhpc1ck_to_cxywh function.
 def nn_predict(model, x, imgsz, offgrid_translate_flag=True, normalize_flag=True, transform_format_flag=True):
     # update of approximating posterior for the true labels and confusion matrices
     # get current predictions from a neural network
