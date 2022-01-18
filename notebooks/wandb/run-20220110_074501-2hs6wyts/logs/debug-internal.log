@@ -1,0 +1,339 @@
+2022-01-10 07:45:02,878 INFO    MainThread:9175 [internal.py:wandb_internal():86] W&B internal server running at pid: 9175, started at: 2022-01-10 07:45:02.878502
+2022-01-10 07:45:02,879 INFO    WriterThread:9175 [datastore.py:open_for_write():77] open: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/run-2hs6wyts.wandb
+2022-01-10 07:45:02,880 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: check_version
+2022-01-10 07:45:02,881 DEBUG   SenderThread:9175 [sender.py:send():185] send: header
+2022-01-10 07:45:02,881 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: check_version
+2022-01-10 07:45:02,991 DEBUG   SenderThread:9175 [sender.py:send():185] send: run
+2022-01-10 07:45:03,000 INFO    SenderThread:9175 [sender.py:_maybe_setup_resume():427] checking resume status for None/YOLOv5/2hs6wyts
+2022-01-10 07:45:03,464 INFO    SenderThread:9175 [dir_watcher.py:__init__():169] watching files in: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files
+2022-01-10 07:45:03,464 INFO    SenderThread:9175 [sender.py:_start_run_threads():746] run started: 2hs6wyts with start time 1641800701
+2022-01-10 07:45:03,465 DEBUG   SenderThread:9175 [sender.py:send():185] send: summary
+2022-01-10 07:45:03,465 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2022-01-10 07:45:03,468 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: run_start
+2022-01-10 07:45:04,733 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/wandb-summary.json
+2022-01-10 07:45:05,871 DEBUG   HandlerThread:9175 [meta.py:__init__():40] meta init
+2022-01-10 07:45:05,871 DEBUG   HandlerThread:9175 [meta.py:__init__():54] meta init done
+2022-01-10 07:45:05,871 DEBUG   HandlerThread:9175 [meta.py:probe():211] probe
+2022-01-10 07:45:05,873 DEBUG   HandlerThread:9175 [meta.py:_setup_git():201] setup git
+2022-01-10 07:45:05,902 DEBUG   HandlerThread:9175 [meta.py:_setup_git():208] setup git done
+2022-01-10 07:45:05,903 DEBUG   HandlerThread:9175 [meta.py:_save_pip():58] save pip
+2022-01-10 07:45:05,904 DEBUG   HandlerThread:9175 [meta.py:_save_pip():72] save pip done
+2022-01-10 07:45:05,904 DEBUG   HandlerThread:9175 [meta.py:_save_conda():79] save conda
+2022-01-10 07:45:06,735 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/conda-environment.yaml
+2022-01-10 07:45:06,735 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/requirements.txt
+2022-01-10 07:45:08,741 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:10,749 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:11,398 DEBUG   HandlerThread:9175 [meta.py:_save_conda():87] save conda done
+2022-01-10 07:45:11,398 DEBUG   HandlerThread:9175 [meta.py:probe():249] probe done
+2022-01-10 07:45:11,405 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: stop_status
+2022-01-10 07:45:11,406 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: stop_status
+2022-01-10 07:45:11,605 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:11,606 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:11,606 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file wandb-metadata.json with policy now
+2022-01-10 07:45:11,750 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/conda-environment.yaml
+2022-01-10 07:45:11,750 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/wandb-metadata.json
+2022-01-10 07:45:12,287 INFO    Thread-11 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1emnxvxn-wandb-metadata.json
+2022-01-10 07:45:14,756 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:20,779 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:24,787 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:26,636 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: stop_status
+2022-01-10 07:45:26,636 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: stop_status
+2022-01-10 07:45:30,810 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:32,820 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:33,823 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/config.yaml
+2022-01-10 07:45:34,584 DEBUG   SenderThread:9175 [sender.py:send():185] send: stats
+2022-01-10 07:45:34,824 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:40,850 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:41,835 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: stop_status
+2022-01-10 07:45:41,836 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: stop_status
+2022-01-10 07:45:43,119 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,119 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Labels_0_0.jpg with policy now
+2022-01-10 07:45:43,120 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,120 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Labels_0_1.jpg with policy now
+2022-01-10 07:45:43,121 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,121 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Labels_0_2.jpg with policy now
+2022-01-10 07:45:43,122 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,122 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Labels_0_3.jpg with policy now
+2022-01-10 07:45:43,162 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,163 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Validation_0_0.jpg with policy now
+2022-01-10 07:45:43,164 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,164 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Validation_0_1.jpg with policy now
+2022-01-10 07:45:43,192 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,192 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_0.png with policy now
+2022-01-10 07:45:43,193 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,194 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_00.boxes2D.json with policy now
+2022-01-10 07:45:43,195 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,196 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,196 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_1.png with policy now
+2022-01-10 07:45:43,200 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,200 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_10.boxes2D.json with policy now
+2022-01-10 07:45:43,204 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,205 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,205 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_2.png with policy now
+2022-01-10 07:45:43,205 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,205 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_20.boxes2D.json with policy now
+2022-01-10 07:45:43,206 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,206 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,206 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_3.png with policy now
+2022-01-10 07:45:43,207 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,207 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_30.boxes2D.json with policy now
+2022-01-10 07:45:43,208 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,208 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,208 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_4.png with policy now
+2022-01-10 07:45:43,209 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,209 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_40.boxes2D.json with policy now
+2022-01-10 07:45:43,209 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,209 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,209 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_5.png with policy now
+2022-01-10 07:45:43,218 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,218 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_50.boxes2D.json with policy now
+2022-01-10 07:45:43,219 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,219 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,219 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_6.png with policy now
+2022-01-10 07:45:43,220 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,220 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_60.boxes2D.json with policy now
+2022-01-10 07:45:43,222 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,222 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,223 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_7.png with policy now
+2022-01-10 07:45:43,223 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,223 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_70.boxes2D.json with policy now
+2022-01-10 07:45:43,224 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,224 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,224 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Bounding Box Debugger/Images_0_8.png with policy now
+2022-01-10 07:45:43,225 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:43,225 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/metadata/boxes2D/Bounding Box Debugger/Images_0_80.boxes2D.json with policy now
+2022-01-10 07:45:43,225 DEBUG   SenderThread:9175 [sender.py:send():185] send: config
+2022-01-10 07:45:43,241 DEBUG   SenderThread:9175 [sender.py:send():185] send: history
+2022-01-10 07:45:43,242 DEBUG   SenderThread:9175 [sender.py:send():185] send: summary
+2022-01-10 07:45:43,244 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2022-01-10 07:45:43,864 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/wandb-summary.json
+2022-01-10 07:45:43,864 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_00.boxes2D.json
+2022-01-10 07:45:43,864 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_6.png
+2022-01-10 07:45:43,864 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_3.jpg
+2022-01-10 07:45:43,864 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_20.boxes2D.json
+2022-01-10 07:45:43,864 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Validation_0_1.jpg
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_2.jpg
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_50.boxes2D.json
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_0.jpg
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_40.boxes2D.json
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_5.png
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_1.jpg
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_3.png
+2022-01-10 07:45:43,865 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_80.boxes2D.json
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_1.png
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_4.png
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_7.png
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_60.boxes2D.json
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_70.boxes2D.json
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_2.png
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_0.png
+2022-01-10 07:45:43,866 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_30.boxes2D.json
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Validation_0_0.jpg
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_8.png
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_10.boxes2D.json
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger
+2022-01-10 07:45:43,867 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger
+2022-01-10 07:45:44,386 INFO    Thread-33 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1wtk146g-media/metadata/boxes2D/Bounding Box Debugger/Images_0_70.boxes2D.json
+2022-01-10 07:45:44,592 INFO    Thread-16 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1d2cg9bq-media/images/Validation_0_0.jpg
+2022-01-10 07:45:44,732 INFO    Thread-12 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1admntkb-media/images/Labels_0_0.jpg
+2022-01-10 07:45:44,829 INFO    Thread-19 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/2z7b3rlb-media/metadata/boxes2D/Bounding Box Debugger/Images_0_00.boxes2D.json
+2022-01-10 07:45:44,867 INFO    Thread-21 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/oebjexo8-media/metadata/boxes2D/Bounding Box Debugger/Images_0_10.boxes2D.json
+2022-01-10 07:45:44,868 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:44,966 INFO    Thread-14 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/2x23sza2-media/images/Labels_0_2.jpg
+2022-01-10 07:45:44,975 INFO    Thread-13 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1dmusey3-media/images/Labels_0_1.jpg
+2022-01-10 07:45:45,014 INFO    Thread-24 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/pvlp679m-media/images/Bounding Box Debugger/Images_0_3.png
+2022-01-10 07:45:45,050 INFO    Thread-32 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1jtfuswj-media/images/Bounding Box Debugger/Images_0_7.png
+2022-01-10 07:45:45,085 INFO    Thread-35 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/23q6edw0-media/metadata/boxes2D/Bounding Box Debugger/Images_0_80.boxes2D.json
+2022-01-10 07:45:45,104 INFO    Thread-15 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1yooj1tp-media/images/Labels_0_3.jpg
+2022-01-10 07:45:45,161 INFO    Thread-34 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/19reyxdo-media/images/Bounding Box Debugger/Images_0_8.png
+2022-01-10 07:45:45,268 INFO    Thread-25 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/3ra2tjwl-media/metadata/boxes2D/Bounding Box Debugger/Images_0_30.boxes2D.json
+2022-01-10 07:45:45,284 INFO    Thread-17 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1w0yedh1-media/images/Validation_0_1.jpg
+2022-01-10 07:45:45,317 INFO    Thread-23 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/9ga7ugbn-media/metadata/boxes2D/Bounding Box Debugger/Images_0_20.boxes2D.json
+2022-01-10 07:45:45,317 INFO    Thread-28 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/21qey63x-media/images/Bounding Box Debugger/Images_0_5.png
+2022-01-10 07:45:45,322 INFO    Thread-31 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/3u0yfz6i-media/metadata/boxes2D/Bounding Box Debugger/Images_0_60.boxes2D.json
+2022-01-10 07:45:45,352 INFO    Thread-29 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/3w1g2bwt-media/metadata/boxes2D/Bounding Box Debugger/Images_0_50.boxes2D.json
+2022-01-10 07:45:45,361 INFO    Thread-20 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/25c65chv-media/images/Bounding Box Debugger/Images_0_1.png
+2022-01-10 07:45:45,387 INFO    Thread-27 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/385urdxb-media/metadata/boxes2D/Bounding Box Debugger/Images_0_40.boxes2D.json
+2022-01-10 07:45:45,390 INFO    Thread-18 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/3mxj93u7-media/images/Bounding Box Debugger/Images_0_0.png
+2022-01-10 07:45:45,432 INFO    Thread-30 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/26fkppws-media/images/Bounding Box Debugger/Images_0_6.png
+2022-01-10 07:45:45,441 INFO    Thread-26 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1fymltnq-media/images/Bounding Box Debugger/Images_0_4.png
+2022-01-10 07:45:45,456 INFO    Thread-22 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/xgpgrxv1-media/images/Bounding Box Debugger/Images_0_2.png
+2022-01-10 07:45:46,879 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:48,570 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: log_artifact
+2022-01-10 07:45:48,570 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: log_artifact
+2022-01-10 07:45:48,893 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:48,893 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_0.png
+2022-01-10 07:45:48,894 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_4.png
+2022-01-10 07:45:48,894 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_1.png
+2022-01-10 07:45:48,895 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_3.png
+2022-01-10 07:45:48,896 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_2.png
+2022-01-10 07:45:48,896 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images
+2022-01-10 07:45:51,263 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:51,914 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:56,372 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:56,525 INFO    Thread-37 :9175 [upload_job.py:push():95] Uploaded file /Users/gs0029/.cache/wandb/artifacts/obj/md5/63/fb77f86a188c81e013b70d03d35fe1
+2022-01-10 07:45:57,549 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:57,549 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Results_1_0.png with policy now
+2022-01-10 07:45:57,550 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:57,550 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Results_1_1.png with policy now
+2022-01-10 07:45:57,551 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:57,551 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Results_1_2.png with policy now
+2022-01-10 07:45:57,554 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:57,554 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Results_1_3.png with policy now
+2022-01-10 07:45:57,556 DEBUG   SenderThread:9175 [sender.py:send():185] send: files
+2022-01-10 07:45:57,556 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file media/images/Results_1_4.png with policy now
+2022-01-10 07:45:57,560 DEBUG   SenderThread:9175 [sender.py:send():185] send: history
+2022-01-10 07:45:57,560 DEBUG   SenderThread:9175 [sender.py:send():185] send: summary
+2022-01-10 07:45:57,562 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2022-01-10 07:45:57,563 DEBUG   SenderThread:9175 [sender.py:send():185] send: telemetry
+2022-01-10 07:45:57,563 DEBUG   SenderThread:9175 [sender.py:send():185] send: exit
+2022-01-10 07:45:57,563 INFO    SenderThread:9175 [sender.py:send_exit():294] handling exit code: 0
+2022-01-10 07:45:57,564 INFO    SenderThread:9175 [sender.py:send_exit():296] handling runtime: 47
+2022-01-10 07:45:57,567 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2022-01-10 07:45:57,567 INFO    SenderThread:9175 [sender.py:send_exit():306] send defer
+2022-01-10 07:45:57,568 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:57,568 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:57,569 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:57,569 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 0
+2022-01-10 07:45:57,569 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:57,569 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 0
+2022-01-10 07:45:57,569 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 1
+2022-01-10 07:45:57,570 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:57,570 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 1
+2022-01-10 07:45:57,756 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:57,756 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:57,756 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 1
+2022-01-10 07:45:57,757 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 2
+2022-01-10 07:45:57,757 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:57,758 DEBUG   SenderThread:9175 [sender.py:send():185] send: stats
+2022-01-10 07:45:57,758 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:57,759 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 2
+2022-01-10 07:45:57,759 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:57,759 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 2
+2022-01-10 07:45:57,759 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 3
+2022-01-10 07:45:57,760 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:57,760 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 3
+2022-01-10 07:45:57,760 DEBUG   SenderThread:9175 [sender.py:send():185] send: summary
+2022-01-10 07:45:57,761 INFO    SenderThread:9175 [sender.py:_save_file():879] saving file wandb-summary.json with policy end
+2022-01-10 07:45:57,762 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:57,762 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 3
+2022-01-10 07:45:57,762 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 4
+2022-01-10 07:45:57,762 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:57,762 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 4
+2022-01-10 07:45:57,762 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:57,763 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 4
+2022-01-10 07:45:57,860 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:57,948 INFO    Thread-8  :9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/wandb-summary.json
+2022-01-10 07:45:57,995 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 5
+2022-01-10 07:45:57,995 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:57,996 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:57,996 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 5
+2022-01-10 07:45:57,996 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:57,996 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 5
+2022-01-10 07:45:57,996 INFO    SenderThread:9175 [dir_watcher.py:finish():283] shutting down directory watcher
+2022-01-10 07:45:58,097 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:58,473 INFO    Thread-39 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/2qqsto8t-media/images/Results_1_1.png
+2022-01-10 07:45:58,545 INFO    Thread-40 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/292sjmus-media/images/Results_1_2.png
+2022-01-10 07:45:58,586 INFO    Thread-42 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/206dvje2-media/images/Results_1_4.png
+2022-01-10 07:45:58,617 INFO    Thread-41 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/1y2ywqw8-media/images/Results_1_3.png
+2022-01-10 07:45:58,647 INFO    Thread-38 :9175 [upload_job.py:push():137] Uploaded file /var/folders/82/mb8p3fs14n5cvhlxjnbksvs40000gp/T/tmp4vbrj53wwandb/mxyswd7r-media/images/Results_1_0.png
+2022-01-10 07:45:58,953 INFO    SenderThread:9175 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/config.yaml
+2022-01-10 07:45:58,953 INFO    SenderThread:9175 [dir_watcher.py:finish():313] scan: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files
+2022-01-10 07:45:58,953 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/requirements.txt requirements.txt
+2022-01-10 07:45:58,954 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log output.log
+2022-01-10 07:45:58,956 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/config.yaml config.yaml
+2022-01-10 07:45:58,958 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/wandb-summary.json wandb-summary.json
+2022-01-10 07:45:58,962 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/conda-environment.yaml conda-environment.yaml
+2022-01-10 07:45:58,962 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/wandb-metadata.json wandb-metadata.json
+2022-01-10 07:45:58,969 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_0.png media/images/Results_1_0.png
+2022-01-10 07:45:58,969 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_1.png media/images/Results_1_1.png
+2022-01-10 07:45:58,969 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_3.png media/images/Results_1_3.png
+2022-01-10 07:45:58,969 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_2.png media/images/Results_1_2.png
+2022-01-10 07:45:58,969 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Results_1_4.png media/images/Results_1_4.png
+2022-01-10 07:45:58,970 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Validation_0_0.jpg media/images/Validation_0_0.jpg
+2022-01-10 07:45:58,970 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Validation_0_1.jpg media/images/Validation_0_1.jpg
+2022-01-10 07:45:58,970 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_2.jpg media/images/Labels_0_2.jpg
+2022-01-10 07:45:58,970 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_3.jpg media/images/Labels_0_3.jpg
+2022-01-10 07:45:58,970 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_1.jpg media/images/Labels_0_1.jpg
+2022-01-10 07:45:58,970 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Labels_0_0.jpg media/images/Labels_0_0.jpg
+2022-01-10 07:45:58,971 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_8.png media/images/Bounding Box Debugger/Images_0_8.png
+2022-01-10 07:45:58,971 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_4.png media/images/Bounding Box Debugger/Images_0_4.png
+2022-01-10 07:45:58,971 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_5.png media/images/Bounding Box Debugger/Images_0_5.png
+2022-01-10 07:45:58,971 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_7.png media/images/Bounding Box Debugger/Images_0_7.png
+2022-01-10 07:45:58,971 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_6.png media/images/Bounding Box Debugger/Images_0_6.png
+2022-01-10 07:45:58,971 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_2.png media/images/Bounding Box Debugger/Images_0_2.png
+2022-01-10 07:45:58,971 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_3.png media/images/Bounding Box Debugger/Images_0_3.png
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_1.png media/images/Bounding Box Debugger/Images_0_1.png
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/images/Bounding Box Debugger/Images_0_0.png media/images/Bounding Box Debugger/Images_0_0.png
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_30.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_30.boxes2D.json
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_70.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_70.boxes2D.json
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_00.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_00.boxes2D.json
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_40.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_40.boxes2D.json
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_50.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_50.boxes2D.json
+2022-01-10 07:45:58,972 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_10.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_10.boxes2D.json
+2022-01-10 07:45:58,973 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_60.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_60.boxes2D.json
+2022-01-10 07:45:58,973 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_20.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_20.boxes2D.json
+2022-01-10 07:45:58,973 INFO    SenderThread:9175 [dir_watcher.py:finish():327] scan save: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/media/metadata/boxes2D/Bounding Box Debugger/Images_0_80.boxes2D.json media/metadata/boxes2D/Bounding Box Debugger/Images_0_80.boxes2D.json
+2022-01-10 07:45:58,973 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 6
+2022-01-10 07:45:58,973 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:58,973 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:58,973 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 6
+2022-01-10 07:45:58,974 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:58,974 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 6
+2022-01-10 07:45:58,974 INFO    SenderThread:9175 [file_pusher.py:finish():177] shutting down file pusher
+2022-01-10 07:45:59,078 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,078 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,182 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,182 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,288 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,289 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,394 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,394 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,501 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,501 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,535 INFO    Thread-45 :9175 [upload_job.py:push():137] Uploaded file /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/config.yaml
+2022-01-10 07:45:59,536 INFO    Thread-46 :9175 [upload_job.py:push():137] Uploaded file /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/wandb-summary.json
+2022-01-10 07:45:59,537 INFO    Thread-43 :9175 [upload_job.py:push():137] Uploaded file /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/requirements.txt
+2022-01-10 07:45:59,562 INFO    Thread-44 :9175 [upload_job.py:push():137] Uploaded file /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/output.log
+2022-01-10 07:45:59,606 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,607 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,699 INFO    Thread-47 :9175 [upload_job.py:push():137] Uploaded file /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/files/conda-environment.yaml
+2022-01-10 07:45:59,711 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,711 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,815 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:45:59,816 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:45:59,905 INFO    Thread-7  :9175 [sender.py:transition_state():319] send defer: 7
+2022-01-10 07:45:59,905 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:45:59,905 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 7
+2022-01-10 07:45:59,906 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:45:59,906 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 7
+2022-01-10 07:45:59,920 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:46:00,050 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 8
+2022-01-10 07:46:00,050 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:46:00,051 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:46:00,051 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 8
+2022-01-10 07:46:00,051 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:46:00,051 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 8
+2022-01-10 07:46:00,051 INFO    SenderThread:9175 [sender.py:transition_state():319] send defer: 9
+2022-01-10 07:46:00,052 DEBUG   SenderThread:9175 [sender.py:send():185] send: final
+2022-01-10 07:46:00,052 DEBUG   SenderThread:9175 [sender.py:send():185] send: footer
+2022-01-10 07:46:00,052 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: defer
+2022-01-10 07:46:00,052 INFO    HandlerThread:9175 [handler.py:handle_request_defer():143] handle defer: 9
+2022-01-10 07:46:00,052 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: defer
+2022-01-10 07:46:00,053 INFO    SenderThread:9175 [sender.py:send_request_defer():315] handle sender defer: 9
+2022-01-10 07:46:00,153 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: poll_exit
+2022-01-10 07:46:00,154 DEBUG   SenderThread:9175 [sender.py:send_request():199] send_request: poll_exit
+2022-01-10 07:46:00,154 INFO    SenderThread:9175 [file_pusher.py:join():182] waiting for file pusher
+2022-01-10 07:46:00,348 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: get_summary
+2022-01-10 07:46:00,349 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: sampled_history
+2022-01-10 07:46:00,350 DEBUG   HandlerThread:9175 [handler.py:handle_request():126] handle_request: shutdown
+2022-01-10 07:46:00,351 INFO    HandlerThread:9175 [handler.py:finish():683] shutting down handler
+2022-01-10 07:46:01,052 INFO    WriterThread:9175 [datastore.py:close():281] close: /Users/gs0029/repos/dental_disease/notebooks/wandb/run-20220110_074501-2hs6wyts/run-2hs6wyts.wandb
+2022-01-10 07:46:01,347 INFO    SenderThread:9175 [sender.py:finish():985] shutting down sender
+2022-01-10 07:46:01,347 INFO    SenderThread:9175 [file_pusher.py:finish():177] shutting down file pusher
+2022-01-10 07:46:01,347 INFO    SenderThread:9175 [file_pusher.py:join():182] waiting for file pusher
+2022-01-10 07:46:01,348 INFO    MainThread:9175 [internal.py:handle_exit():76] Internal process exited
