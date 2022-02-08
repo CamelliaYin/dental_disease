@@ -369,18 +369,18 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     model.eval()
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo # gets the cyolo prdictions for the batch
                     batch_pred_bcc, _, _ = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
-                    print('target_volunteers_bcc: ', target_volunteers_bcc)
-                    print('target_volunteers_bcc size: ', target_volunteers_bcc.size())
-                    print('batch_pred_bcc: ', batch_pred_bcc)
-                    print('batch_pred_bcc.size(): ', batch_pred_bcc.size())
-                    print("batch_pcm['variational']: ", batch_pcm['variational'])
-                    print("batch_pcm['variational'].size(): ", batch_pcm['variational'].size())
-                    print("batch_pcm['prior']: ", batch_pcm['prior'])
-                    print("batch_pcm['prior'].size(): ", batch_pcm['prior'].size())
+                    # print('target_volunteers_bcc: ', target_volunteers_bcc)
+                    # print('target_volunteers_bcc size: ', target_volunteers_bcc.size())
+                    # print('batch_pred_bcc: ', batch_pred_bcc)
+                    # print('batch_pred_bcc.size(): ', batch_pred_bcc.size())
+                    # print("batch_pcm['variational']: ", batch_pcm['variational'])
+                    # print("batch_pcm['variational'].size(): ", batch_pcm['variational'].size())
+                    # print("batch_pcm['prior']: ", batch_pcm['prior'])
+                    # print("batch_pcm['prior'].size(): ", batch_pcm['prior'].size())
                     batch_qtargets, _, batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
-                    print('batch_qtargets', batch_qtargets)
-                    print('batch_lb', batch_lb)
-                    exit().asd123
+                    # print('batch_qtargets', batch_qtargets)
+                    # print('batch_lb', batch_lb)
+                    # exit().asd123
                     #batch_pcm['variational']
                     #batch_lb = batch_lb.tolist()
                     #torch.cuda.empty_cache()
