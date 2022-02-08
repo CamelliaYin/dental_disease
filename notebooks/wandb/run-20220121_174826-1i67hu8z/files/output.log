@@ -1,0 +1,88 @@
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7025023 parameters, 7025023 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.0005625000000000001
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\iid-tvt\labels\train.cache' images and labels... 262 found, 18 missing, 0 empty, 0 corrupted: 100%|██████████| 280/280 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\iid-tvt\labels\val.cache' images and labels... 67 found, 13 missing, 0 empty, 0 corrupted: 100%|██████████| 80/80 [00:00<?, ?it/s]
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 6.02, Best Possible Recall (BPR) = 1.0000
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns\train\test1122
+Starting training for 2 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+Only YOLO
+
+
+       0/1     3.99G    0.1166   0.03833   0.02702        22       640: 100%|██████████| 16/16 [00:05<00:00,  2.86it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/3 [00:00<?, ?it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 3/3 [00:02<00:00,  1.11it/s]
+
+
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  81%|████████▏ | 13/16 [00:04<00:01,  2.88it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 16/16 [00:05<00:00,  2.93it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+Only YOLO
+       1/1     3.98G    0.1046   0.04041   0.02384        22       640: 100%|██████████| 16/16 [00:01<00:00,  8.72it/s]
+
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  33%|███▎      | 1/3 [00:02<00:04,  2.48s/it]
+                 all         80        220     0.0029    0.00515   0.000562   0.000107
+           bone-loss         80        194    0.00581     0.0103    0.00112   0.000214
+
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 3/3 [00:03<00:00,  1.30s/it]
+
+
+
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  88%|████████▊ | 14/16 [00:07<00:00,  2.14it/s]
+                 all        280        961   0.000979      0.033   0.000481   9.64e-05
+           bone-loss        280        858    0.00175     0.0466   0.000918   0.000184
+
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 16/16 [00:08<00:00,  1.95it/s]
+2 epochs completed in 0.010 hours.
+Fusing layers...
+Model Summary: 213 layers, 7015519 parameters, 0 gradients, 15.8 GFLOPs
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/3 [00:00<?, ?it/s]
+                 all         80        220    0.00284    0.00515   0.000541   0.000102
+Evaluating pycocotools mAP... saving runs\train\test1122\_predictions.json...
+[31m[1mrequirements:[39m[22m pycocotools not found and is required by YOLOv5, attempting auto-update...
+[31m[1mrequirements:[39m[22m Command 'pip install 'pycocotools'' returned non-zero exit status 1.
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 3/3 [00:02<00:00,  1.25it/s]
+Fusing layers...
+                 all         80        220    0.00284    0.00515   0.000541   0.000102
+Evaluating pycocotools mAP... saving runs\train\test1122\_predictions.json...
+[31m[1mrequirements:[39m[22m pycocotools not found and is required by YOLOv5, attempting auto-update...
+Model Summary: 213 layers, 7015519 parameters, 0 gradients, 15.8 GFLOPs
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 3/3 [00:01<00:00,  2.93it/s]
+[31m[1mrequirements:[39m[22m Command 'pip install 'pycocotools'' returned non-zero exit status 1.
+pycocotools unable to run: No module named 'pycocotools'
+Optimizer stripped from runs\train\test1122\weights\last.pt, 14.3MB
+Optimizer stripped from runs\train\test1122\weights\best.pt, 14.3MB

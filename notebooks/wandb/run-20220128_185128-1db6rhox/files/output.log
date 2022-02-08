@@ -1,0 +1,105 @@
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7025023 parameters, 7025023 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.00046875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\bcc-tvt\labels\train.cache' images and labels... 70 found, 0 missing, 3 empty, 0 corrupted: 100%|██████████| 70/70 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\iid-tvt\labels\val.cache' images and labels... 67 found, 13 missing, 0 empty, 0 corrupted: 100%|██████████| 80/80 [00:00<?, ?it/s]
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 6.03, Best Possible Recall (BPR) = 1.0000
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns\train\test209954
+Starting training for 80 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/4 [00:00<?, ?it/s]
+Minimum probs (c1, c2, bkgd): [1e-05, 1.4e-05, 0.890137]
+Maximum probs (c1, c2, bkgd): [0.075563, 0.064747, 1.0]
+rho:  tensor([[[-8.59668e+00, -8.68223e+00, -4.88401e-04],
+         [-8.44789e+00, -8.39284e+00, -4.88401e-04],
+         [-7.86954e+00, -8.14682e+00, -4.88401e-04],
+         ...,
+         [-5.31091e+00, -5.21565e+00, -1.03068e-02],
+         [-5.41939e+00, -5.33087e+00, -9.32065e-03],
+         [-5.27354e+00, -5.52163e+00, -9.32065e-03]],
+        [[-8.49728e+00, -8.48389e+00, -4.88401e-04],
+         [-8.38799e+00, -8.18838e+00, -4.88401e-04],
+         [-7.91518e+00, -7.98913e+00, -4.88401e-04],
+         ...,
+         [-5.40077e+00, -5.23177e+00, -9.81362e-03],
+         [-5.45368e+00, -5.28681e+00, -9.32065e-03],
+         [-5.35755e+00, -5.55632e+00, -8.82791e-03]],
+        [[-8.37446e+00, -8.22955e+00, -4.88401e-04],
+         [-8.32274e+00, -7.94466e+00, -4.88401e-04],
+         [-7.62656e+00, -7.56034e+00, -9.77040e-04],
+         ...,
+         [-5.09052e+00, -4.98861e+00, -1.32713e-02],
+         [-5.24254e+00, -5.25110e+00, -1.08003e-02],
+         [-5.06386e+00, -5.35786e+00, -1.12940e-02]],
+        ...,
+        [[-8.37696e+00, -8.32379e+00, -4.88401e-04],
+         [-8.25306e+00, -8.05814e+00, -4.88401e-04],
+         [-7.72210e+00, -7.81663e+00, -9.77040e-04],
+         ...,
+         [-5.44952e+00, -5.22586e+00, -9.81362e-03],
+         [-5.48285e+00, -5.39146e+00, -8.82791e-03],
+         [-5.27337e+00, -5.58485e+00, -8.82791e-03]],
+        [[-8.32793e+00, -8.09591e+00, -4.88401e-04],
+         [-8.26867e+00, -7.81176e+00, -4.88401e-04],
+         [-7.75258e+00, -7.64634e+00, -9.77040e-04],
+         ...,
+         [-5.19449e+00, -5.04898e+00, -1.17880e-02],
+         [-5.38698e+00, -5.33898e+00, -9.32065e-03],
+         [-5.19127e+00, -5.49455e+00, -9.81362e-03]],
+        [[-8.77206e+00, -8.67994e+00, -4.88401e-04],
+         [-8.62368e+00, -8.41527e+00, -4.88401e-04],
+         [-8.15801e+00, -8.10513e+00, -4.88401e-04],
+         ...,
+         [-5.24945e+00, -5.06713e+00, -1.17880e-02],
+         [-5.36998e+00, -5.30967e+00, -9.81362e-03],
+         [-5.15376e+00, -5.44542e+00, -1.03068e-02]]], device='cuda:0')
+simple_transpose:  tensor([[-1.53874, -1.53874, -1.38528],
+        [-1.53874, -1.53874, -1.38528],
+        [-1.53874, -1.53874, -1.38528],
+        ...,
+        [-1.53874, -1.53874, -1.38528],
+        [-1.53874, -1.53874, -1.38528],
+        [-1.53874, -1.53874, -1.38528]], device='cuda:0', dtype=torch.float64)
+simple_transpose size:  torch.Size([504000, 3])
+simple_transpose:  tensor([[-1.53874, -1.53874, -1.38528],
+        [-1.53874, -1.53874, -1.38528],
+        [-1.53874, -1.53874, -1.38528],
+        ...,
+        [-1.53874, -1.53874, -1.38528],
+        [-1.53874, -1.53874, -1.38528],
+
+  0%|          | 0/4 [00:02<?, ?it/s]

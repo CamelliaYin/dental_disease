@@ -1,0 +1,456 @@
+2022-02-04 17:10:57,878 INFO    MainThread:29460 [internal.py:wandb_internal():89] W&B internal server running at pid: 29460, started at: 2022-02-04 17:10:57.878761
+2022-02-04 17:10:57,880 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: check_version
+2022-02-04 17:10:57,880 INFO    WriterThread:29460 [datastore.py:open_for_write():77] open: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\run-1fwh4v9q.wandb
+2022-02-04 17:10:57,883 DEBUG   SenderThread:29460 [sender.py:send():235] send: header
+2022-02-04 17:10:57,883 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: check_version
+2022-02-04 17:10:57,955 DEBUG   SenderThread:29460 [sender.py:send():235] send: run
+2022-02-04 17:10:57,964 INFO    SenderThread:29460 [sender.py:_maybe_setup_resume():489] checking resume status for None/YOLOv5/1fwh4v9q
+2022-02-04 17:10:58,319 INFO    SenderThread:29460 [dir_watcher.py:__init__():169] watching files in: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files
+2022-02-04 17:10:58,319 INFO    SenderThread:29460 [sender.py:_start_run_threads():809] run started: 1fwh4v9q with start time 1643994656
+2022-02-04 17:10:58,319 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:10:58,320 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:10:58,320 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: run_start
+2022-02-04 17:10:59,330 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:11:00,605 DEBUG   HandlerThread:29460 [meta.py:__init__():36] meta init
+2022-02-04 17:11:00,605 DEBUG   HandlerThread:29460 [meta.py:__init__():50] meta init done
+2022-02-04 17:11:00,605 DEBUG   HandlerThread:29460 [meta.py:probe():210] probe
+2022-02-04 17:11:00,611 DEBUG   HandlerThread:29460 [meta.py:_save_pip():54] save pip
+2022-02-04 17:11:00,612 DEBUG   HandlerThread:29460 [meta.py:_save_pip():68] save pip done
+2022-02-04 17:11:00,612 DEBUG   HandlerThread:29460 [meta.py:_save_conda():75] save conda
+2022-02-04 17:11:01,345 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\conda-environment.yaml
+2022-02-04 17:11:01,345 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\requirements.txt
+2022-02-04 17:11:03,346 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:11:05,361 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:11:09,580 DEBUG   HandlerThread:29460 [meta.py:_save_conda():85] save conda done
+2022-02-04 17:11:09,580 DEBUG   HandlerThread:29460 [meta.py:probe():248] probe done
+2022-02-04 17:11:09,583 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-04 17:11:09,583 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: stop_status
+2022-02-04 17:11:09,767 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:11:09,767 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:11:09,767 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-metadata.json with policy now
+2022-02-04 17:11:10,318 INFO    Thread-11 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\3w47wagb-wandb-metadata.json
+2022-02-04 17:11:10,408 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\conda-environment.yaml
+2022-02-04 17:11:10,409 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-metadata.json
+2022-02-04 17:11:23,361 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-04 17:11:23,361 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: stop_status
+2022-02-04 17:11:29,548 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\config.yaml
+2022-02-04 17:11:31,567 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:11:31,607 DEBUG   SenderThread:29460 [sender.py:send():235] send: stats
+2022-02-04 17:11:38,501 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-04 17:11:38,501 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: stop_status
+2022-02-04 17:11:53,674 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-04 17:11:53,674 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: stop_status
+2022-02-04 17:11:55,721 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:11:57,734 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:01,767 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:03,783 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:04,742 DEBUG   SenderThread:29460 [sender.py:send():235] send: stats
+2022-02-04 17:12:05,798 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:06,549 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:06,549 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Labels_0_0.jpg with policy now
+2022-02-04 17:12:06,550 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:06,551 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Labels_0_1.jpg with policy now
+2022-02-04 17:12:06,595 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:06,595 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:06,595 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:06,813 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:06,814 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Labels_0_1.jpg
+2022-02-04 17:12:06,814 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Labels_0_0.jpg
+2022-02-04 17:12:06,814 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images
+2022-02-04 17:12:06,814 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media
+2022-02-04 17:12:07,227 INFO    Thread-13 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\ze5e4pbt-media/images/Labels_0_1.jpg
+2022-02-04 17:12:07,252 INFO    Thread-12 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\jyct00j7-media/images/Labels_0_0.jpg
+2022-02-04 17:12:07,814 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:08,830 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-04 17:12:08,830 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: stop_status
+2022-02-04 17:12:09,830 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:11,487 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:11,487 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:11,487 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:11,846 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:11,847 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:13,860 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:15,862 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:16,202 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:16,202 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Mosaics_2_0.jpg with policy now
+2022-02-04 17:12:16,211 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:16,211 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Mosaics_2_1.jpg with policy now
+2022-02-04 17:12:16,213 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:16,213 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Mosaics_2_2.jpg with policy now
+2022-02-04 17:12:16,294 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:16,294 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:16,295 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:16,875 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:16,876 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Mosaics_2_0.jpg
+2022-02-04 17:12:16,876 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Mosaics_2_1.jpg
+2022-02-04 17:12:16,876 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Mosaics_2_2.jpg
+2022-02-04 17:12:16,876 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images
+2022-02-04 17:12:16,906 INFO    Thread-14 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2puiu5sp-media/images/Mosaics_2_0.jpg
+2022-02-04 17:12:16,914 INFO    Thread-15 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\n4ivmazu-media/images/Mosaics_2_1.jpg
+2022-02-04 17:12:16,922 INFO    Thread-16 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1yoi8bsl-media/images/Mosaics_2_2.jpg
+2022-02-04 17:12:17,877 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:19,908 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:20,755 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:20,755 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:20,755 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:20,908 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:21,924 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:23,940 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:23,970 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-04 17:12:23,970 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: stop_status
+2022-02-04 17:12:24,880 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:24,880 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:24,881 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:24,952 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:24,952 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:25,955 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:26,956 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:27,971 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:28,913 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:28,913 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:28,914 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:28,986 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:28,986 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:30,002 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:31,018 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:32,034 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:32,785 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:32,786 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:32,786 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:33,048 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:33,048 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:34,048 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:35,064 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:36,067 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:37,079 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:37,899 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,899 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_0.png with policy now
+2022-02-04 17:12:37,900 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,900 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_00.boxes2D.json with policy now
+2022-02-04 17:12:37,901 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,901 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,901 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_1.png with policy now
+2022-02-04 17:12:37,906 DEBUG   SenderThread:29460 [sender.py:send():235] send: stats
+2022-02-04 17:12:37,906 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,906 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_10.boxes2D.json with policy now
+2022-02-04 17:12:37,908 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,909 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,909 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_2.png with policy now
+2022-02-04 17:12:37,915 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,915 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_20.boxes2D.json with policy now
+2022-02-04 17:12:37,919 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,920 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,920 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_3.png with policy now
+2022-02-04 17:12:37,924 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,925 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_30.boxes2D.json with policy now
+2022-02-04 17:12:37,927 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,928 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,928 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_4.png with policy now
+2022-02-04 17:12:37,935 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,935 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_40.boxes2D.json with policy now
+2022-02-04 17:12:37,942 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,942 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,942 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_5.png with policy now
+2022-02-04 17:12:37,947 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,948 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_50.boxes2D.json with policy now
+2022-02-04 17:12:37,954 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,955 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,955 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_6.png with policy now
+2022-02-04 17:12:37,960 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,960 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_60.boxes2D.json with policy now
+2022-02-04 17:12:37,969 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,969 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,969 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_7.png with policy now
+2022-02-04 17:12:37,973 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,973 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_70.boxes2D.json with policy now
+2022-02-04 17:12:37,980 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,980 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,980 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_8.png with policy now
+2022-02-04 17:12:37,985 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,985 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_80.boxes2D.json with policy now
+2022-02-04 17:12:37,991 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:37,993 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,993 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_9.png with policy now
+2022-02-04 17:12:37,999 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:37,999 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_90.boxes2D.json with policy now
+2022-02-04 17:12:38,005 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:38,005 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,005 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_10.png with policy now
+2022-02-04 17:12:38,014 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,014 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_100.boxes2D.json with policy now
+2022-02-04 17:12:38,019 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:38,020 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,020 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_11.png with policy now
+2022-02-04 17:12:38,028 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,028 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_110.boxes2D.json with policy now
+2022-02-04 17:12:38,035 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:38,035 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,035 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_12.png with policy now
+2022-02-04 17:12:38,041 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,041 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_120.boxes2D.json with policy now
+2022-02-04 17:12:38,047 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:38,047 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,047 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_13.png with policy now
+2022-02-04 17:12:38,052 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,052 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_130.boxes2D.json with policy now
+2022-02-04 17:12:38,057 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:38,058 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,058 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_14.png with policy now
+2022-02-04 17:12:38,063 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,063 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_140.boxes2D.json with policy now
+2022-02-04 17:12:38,070 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:38,070 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,070 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\images\Bounding Box Debugger_7_15.png with policy now
+2022-02-04 17:12:38,075 DEBUG   SenderThread:29460 [sender.py:send():235] send: files
+2022-02-04 17:12:38,076 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file media\metadata\boxes2D\Bounding Box Debugger_7_150.boxes2D.json with policy now
+2022-02-04 17:12:38,082 DEBUG   SenderThread:29460 [sender.py:send():235] send: config
+2022-02-04 17:12:38,083 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:38,083 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:38,084 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:38,120 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:38,121 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:38,121 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_13.png
+2022-02-04 17:12:38,121 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_150.boxes2D.json
+2022-02-04 17:12:38,121 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_80.boxes2D.json
+2022-02-04 17:12:38,121 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_120.boxes2D.json
+2022-02-04 17:12:38,122 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_40.boxes2D.json
+2022-02-04 17:12:38,122 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_90.boxes2D.json
+2022-02-04 17:12:38,122 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_110.boxes2D.json
+2022-02-04 17:12:38,122 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_6.png
+2022-02-04 17:12:38,123 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_11.png
+2022-02-04 17:12:38,126 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_20.boxes2D.json
+2022-02-04 17:12:38,127 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_5.png
+2022-02-04 17:12:38,128 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_10.boxes2D.json
+2022-02-04 17:12:38,131 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_140.boxes2D.json
+2022-02-04 17:12:38,131 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_00.boxes2D.json
+2022-02-04 17:12:38,132 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_0.png
+2022-02-04 17:12:38,133 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_50.boxes2D.json
+2022-02-04 17:12:38,134 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_8.png
+2022-02-04 17:12:38,137 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_130.boxes2D.json
+2022-02-04 17:12:38,138 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_3.png
+2022-02-04 17:12:38,141 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_4.png
+2022-02-04 17:12:38,142 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_1.png
+2022-02-04 17:12:38,143 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_100.boxes2D.json
+2022-02-04 17:12:38,143 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_30.boxes2D.json
+2022-02-04 17:12:38,143 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_15.png
+2022-02-04 17:12:38,143 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_14.png
+2022-02-04 17:12:38,144 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_2.png
+2022-02-04 17:12:38,145 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_7.png
+2022-02-04 17:12:38,146 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_10.png
+2022-02-04 17:12:38,148 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_60.boxes2D.json
+2022-02-04 17:12:38,149 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_12.png
+2022-02-04 17:12:38,151 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_70.boxes2D.json
+2022-02-04 17:12:38,153 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_9.png
+2022-02-04 17:12:38,154 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images
+2022-02-04 17:12:38,155 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media
+2022-02-04 17:12:38,155 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata
+2022-02-04 17:12:38,156 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D
+2022-02-04 17:12:38,462 INFO    Thread-22 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\213m7ja8-media/metadata/boxes2D/Bounding Box Debugger_7_20.boxes2D.json
+2022-02-04 17:12:38,471 INFO    Thread-18 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\498zr9ee-media/metadata/boxes2D/Bounding Box Debugger_7_00.boxes2D.json
+2022-02-04 17:12:38,475 INFO    Thread-20 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\18wnaob4-media/metadata/boxes2D/Bounding Box Debugger_7_10.boxes2D.json
+2022-02-04 17:12:38,481 INFO    Thread-26 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1gr07fcs-media/metadata/boxes2D/Bounding Box Debugger_7_40.boxes2D.json
+2022-02-04 17:12:38,484 INFO    Thread-24 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\12ndy18n-media/metadata/boxes2D/Bounding Box Debugger_7_30.boxes2D.json
+2022-02-04 17:12:38,528 INFO    Thread-38 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\dg7hiw0z-media/metadata/boxes2D/Bounding Box Debugger_7_100.boxes2D.json
+2022-02-04 17:12:38,546 INFO    Thread-30 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2ccc4wu0-media/metadata/boxes2D/Bounding Box Debugger_7_60.boxes2D.json
+2022-02-04 17:12:38,551 INFO    Thread-32 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2gu27y64-media/metadata/boxes2D/Bounding Box Debugger_7_70.boxes2D.json
+2022-02-04 17:12:38,554 INFO    Thread-36 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2rfl3ht2-media/metadata/boxes2D/Bounding Box Debugger_7_90.boxes2D.json
+2022-02-04 17:12:38,562 INFO    Thread-28 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2kcrwrav-media/metadata/boxes2D/Bounding Box Debugger_7_50.boxes2D.json
+2022-02-04 17:12:38,564 INFO    Thread-42 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\11qb3d6n-media/metadata/boxes2D/Bounding Box Debugger_7_120.boxes2D.json
+2022-02-04 17:12:38,571 INFO    Thread-40 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1j9iikkz-media/metadata/boxes2D/Bounding Box Debugger_7_110.boxes2D.json
+2022-02-04 17:12:38,593 INFO    Thread-46 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\31jax5wf-media/metadata/boxes2D/Bounding Box Debugger_7_140.boxes2D.json
+2022-02-04 17:12:38,623 INFO    Thread-44 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\21o65uuy-media/metadata/boxes2D/Bounding Box Debugger_7_130.boxes2D.json
+2022-02-04 17:12:38,633 INFO    Thread-48 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2z83id5z-media/metadata/boxes2D/Bounding Box Debugger_7_150.boxes2D.json
+2022-02-04 17:12:38,635 INFO    Thread-17 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1a0hwdkx-media/images/Bounding Box Debugger_7_0.png
+2022-02-04 17:12:38,655 INFO    Thread-21 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1kngsal6-media/images/Bounding Box Debugger_7_2.png
+2022-02-04 17:12:38,661 INFO    Thread-23 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1tqythzz-media/images/Bounding Box Debugger_7_3.png
+2022-02-04 17:12:38,675 INFO    Thread-25 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\3l76j18y-media/images/Bounding Box Debugger_7_4.png
+2022-02-04 17:12:38,685 INFO    Thread-29 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1m6xrk1j-media/images/Bounding Box Debugger_7_6.png
+2022-02-04 17:12:38,692 INFO    Thread-27 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\3kypq4tt-media/images/Bounding Box Debugger_7_5.png
+2022-02-04 17:12:38,694 INFO    Thread-33 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1e4b1kkq-media/images/Bounding Box Debugger_7_8.png
+2022-02-04 17:12:38,694 INFO    Thread-34 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2qbdryyl-media/metadata/boxes2D/Bounding Box Debugger_7_80.boxes2D.json
+2022-02-04 17:12:38,696 INFO    Thread-31 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1natqdi4-media/images/Bounding Box Debugger_7_7.png
+2022-02-04 17:12:38,698 INFO    Thread-19 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\95cst7x9-media/images/Bounding Box Debugger_7_1.png
+2022-02-04 17:12:38,722 INFO    Thread-35 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1mb9ogon-media/images/Bounding Box Debugger_7_9.png
+2022-02-04 17:12:38,730 INFO    Thread-41 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1ifu47wu-media/images/Bounding Box Debugger_7_12.png
+2022-02-04 17:12:38,733 INFO    Thread-39 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\2gjq15aj-media/images/Bounding Box Debugger_7_11.png
+2022-02-04 17:12:38,760 INFO    Thread-37 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\3agnpseo-media/images/Bounding Box Debugger_7_10.png
+2022-02-04 17:12:38,767 INFO    Thread-45 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\1z38u2kn-media/images/Bounding Box Debugger_7_14.png
+2022-02-04 17:12:38,769 INFO    Thread-43 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\3l8a1o1w-media/images/Bounding Box Debugger_7_13.png
+2022-02-04 17:12:38,782 INFO    Thread-47 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpv5emkf61wandb\3hhvfccd-media/images/Bounding Box Debugger_7_15.png
+2022-02-04 17:12:39,130 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:39,143 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-04 17:12:39,143 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: stop_status
+2022-02-04 17:12:40,144 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:41,158 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:41,639 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:41,639 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:41,640 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:42,175 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:42,176 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:43,191 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:44,208 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:45,168 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:45,169 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:45,169 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:45,223 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:45,223 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:46,237 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:47,253 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:48,270 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:48,775 DEBUG   SenderThread:29460 [sender.py:send():235] send: history
+2022-02-04 17:12:48,775 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:48,776 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:49,287 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:49,287 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:50,300 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:50,427 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: pause
+2022-02-04 17:12:50,427 INFO    HandlerThread:29460 [handler.py:handle_request_pause():620] stopping system metrics thread
+2022-02-04 17:12:50,523 DEBUG   SenderThread:29460 [sender.py:send():235] send: stats
+2022-02-04 17:12:51,311 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:52,314 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:53,331 INFO    Thread-8  :29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:53,345 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:53,346 DEBUG   SenderThread:29460 [sender.py:send():235] send: telemetry
+2022-02-04 17:12:53,346 DEBUG   SenderThread:29460 [sender.py:send():235] send: exit
+2022-02-04 17:12:53,346 INFO    SenderThread:29460 [sender.py:send_exit():371] handling exit code: 0
+2022-02-04 17:12:53,346 INFO    SenderThread:29460 [sender.py:send_exit():373] handling runtime: 112
+2022-02-04 17:12:53,347 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:53,347 INFO    SenderThread:29460 [sender.py:send_exit():379] send defer
+2022-02-04 17:12:53,347 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:53,347 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:53,347 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 0
+2022-02-04 17:12:53,347 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:53,348 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 0
+2022-02-04 17:12:53,348 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 1
+2022-02-04 17:12:53,348 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:53,348 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 1
+2022-02-04 17:12:53,348 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:53,348 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 1
+2022-02-04 17:12:53,348 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 2
+2022-02-04 17:12:53,348 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:53,348 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 2
+2022-02-04 17:12:53,348 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:53,348 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 2
+2022-02-04 17:12:53,349 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 3
+2022-02-04 17:12:53,349 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:53,349 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 3
+2022-02-04 17:12:53,349 DEBUG   SenderThread:29460 [sender.py:send():235] send: summary
+2022-02-04 17:12:53,350 INFO    SenderThread:29460 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-04 17:12:53,350 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:53,350 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 3
+2022-02-04 17:12:53,350 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 4
+2022-02-04 17:12:53,350 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:53,350 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 4
+2022-02-04 17:12:53,350 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:53,350 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 4
+2022-02-04 17:12:53,454 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:53,532 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 5
+2022-02-04 17:12:53,532 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:53,533 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:53,533 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 5
+2022-02-04 17:12:53,533 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:53,533 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 5
+2022-02-04 17:12:53,533 INFO    SenderThread:29460 [dir_watcher.py:finish():283] shutting down directory watcher
+2022-02-04 17:12:53,642 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:54,348 INFO    SenderThread:29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:54,348 INFO    SenderThread:29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\config.yaml
+2022-02-04 17:12:54,348 INFO    SenderThread:29460 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:54,349 INFO    SenderThread:29460 [dir_watcher.py:finish():313] scan: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files
+2022-02-04 17:12:54,349 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\conda-environment.yaml conda-environment.yaml
+2022-02-04 17:12:54,349 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\config.yaml config.yaml
+2022-02-04 17:12:54,349 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log output.log
+2022-02-04 17:12:54,352 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\requirements.txt requirements.txt
+2022-02-04 17:12:54,355 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-metadata.json wandb-metadata.json
+2022-02-04 17:12:54,355 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json wandb-summary.json
+2022-02-04 17:12:54,362 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_0.png media\images\Bounding Box Debugger_7_0.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_1.png media\images\Bounding Box Debugger_7_1.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_10.png media\images\Bounding Box Debugger_7_10.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_11.png media\images\Bounding Box Debugger_7_11.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_12.png media\images\Bounding Box Debugger_7_12.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_13.png media\images\Bounding Box Debugger_7_13.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_14.png media\images\Bounding Box Debugger_7_14.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_15.png media\images\Bounding Box Debugger_7_15.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_2.png media\images\Bounding Box Debugger_7_2.png
+2022-02-04 17:12:54,363 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_3.png media\images\Bounding Box Debugger_7_3.png
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_4.png media\images\Bounding Box Debugger_7_4.png
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_5.png media\images\Bounding Box Debugger_7_5.png
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_6.png media\images\Bounding Box Debugger_7_6.png
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_7.png media\images\Bounding Box Debugger_7_7.png
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_8.png media\images\Bounding Box Debugger_7_8.png
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Bounding Box Debugger_7_9.png media\images\Bounding Box Debugger_7_9.png
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Labels_0_0.jpg media\images\Labels_0_0.jpg
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Labels_0_1.jpg media\images\Labels_0_1.jpg
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Mosaics_2_0.jpg media\images\Mosaics_2_0.jpg
+2022-02-04 17:12:54,364 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Mosaics_2_1.jpg media\images\Mosaics_2_1.jpg
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\images\Mosaics_2_2.jpg media\images\Mosaics_2_2.jpg
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_00.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_00.boxes2D.json
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_10.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_10.boxes2D.json
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_100.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_100.boxes2D.json
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_110.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_110.boxes2D.json
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_120.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_120.boxes2D.json
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_130.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_130.boxes2D.json
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_140.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_140.boxes2D.json
+2022-02-04 17:12:54,365 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_150.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_150.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_20.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_20.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_30.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_30.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_40.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_40.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_50.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_50.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_60.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_60.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_70.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_70.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_80.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_80.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\media\metadata\boxes2D\Bounding Box Debugger_7_90.boxes2D.json media\metadata\boxes2D\Bounding Box Debugger_7_90.boxes2D.json
+2022-02-04 17:12:54,366 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 6
+2022-02-04 17:12:54,366 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:54,367 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:54,367 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 6
+2022-02-04 17:12:54,367 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:54,367 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 6
+2022-02-04 17:12:54,367 INFO    SenderThread:29460 [file_pusher.py:finish():177] shutting down file pusher
+2022-02-04 17:12:54,469 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:54,469 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:54,579 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:54,579 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:54,689 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:54,689 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:54,798 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:54,798 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:54,834 INFO    Thread-52 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\requirements.txt
+2022-02-04 17:12:54,838 INFO    Thread-53 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\wandb-summary.json
+2022-02-04 17:12:54,845 INFO    Thread-49 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\conda-environment.yaml
+2022-02-04 17:12:54,847 INFO    Thread-50 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\config.yaml
+2022-02-04 17:12:54,905 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:54,906 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:55,015 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:55,015 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:55,043 INFO    Thread-51 :29460 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\files\output.log
+2022-02-04 17:12:55,126 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:55,126 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:55,235 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:55,235 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:55,250 INFO    Thread-7  :29460 [sender.py:transition_state():392] send defer: 7
+2022-02-04 17:12:55,250 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:55,250 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 7
+2022-02-04 17:12:55,250 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:55,250 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 7
+2022-02-04 17:12:55,345 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-04 17:12:55,901 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 8
+2022-02-04 17:12:55,901 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: poll_exit
+2022-02-04 17:12:55,902 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:55,902 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 8
+2022-02-04 17:12:55,902 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:55,902 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 8
+2022-02-04 17:12:55,902 INFO    SenderThread:29460 [sender.py:transition_state():392] send defer: 9
+2022-02-04 17:12:55,902 DEBUG   SenderThread:29460 [sender.py:send():235] send: final
+2022-02-04 17:12:55,903 DEBUG   SenderThread:29460 [sender.py:send():235] send: footer
+2022-02-04 17:12:55,903 DEBUG   HandlerThread:29460 [handler.py:handle_request():131] handle_request: defer
+2022-02-04 17:12:55,903 INFO    HandlerThread:29460 [handler.py:handle_request_defer():154] handle defer: 9
+2022-02-04 17:12:55,903 DEBUG   SenderThread:29460 [sender.py:send_request():249] send_request: defer
+2022-02-04 17:12:55,903 INFO    SenderThread:29460 [sender.py:send_request_defer():388] handle sender defer: 9
+2022-02-04 17:12:59,804 WARNING MainThread:29460 [internal.py:is_dead():380] Internal process exiting, parent pid 23332 disappeared
+2022-02-04 17:12:59,804 ERROR   MainThread:29460 [internal.py:wandb_internal():148] Internal process shutdown.
+2022-02-04 17:12:59,924 INFO    HandlerThread:29460 [handler.py:finish():739] shutting down handler
+2022-02-04 17:12:59,924 INFO    WriterThread:29460 [datastore.py:close():281] close: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220204_171056-1fwh4v9q\run-1fwh4v9q.wandb
+2022-02-04 17:12:59,924 INFO    SenderThread:29460 [sender.py:finish():1075] shutting down sender
+2022-02-04 17:12:59,924 INFO    SenderThread:29460 [file_pusher.py:finish():177] shutting down file pusher
+2022-02-04 17:12:59,924 INFO    SenderThread:29460 [file_pusher.py:join():182] waiting for file pusher
+2022-02-04 17:12:59,937 INFO    MainThread:29460 [internal.py:handle_exit():79] Internal process exited

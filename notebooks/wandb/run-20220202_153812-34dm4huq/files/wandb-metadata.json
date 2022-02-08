@@ -1,0 +1,29 @@
+{
+    "os": "Windows-10-10.0.19042-SP0",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-02-02T15:38:16.328901",
+    "startedAt": "2022-02-02T15:38:12.298757",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "cpu_count": 20,
+    "cuda": null,
+    "args": [
+        "--data",
+        "../data/All_Volunteers_IID.yaml",
+        "--batch-size",
+        "20",
+        "--epochs",
+        "2",
+        "--device",
+        "0",
+        "--name",
+        "testIIDZOON"
+    ],
+    "state": "running",
+    "program": "../yolov5-master/train.py",
+    "codePath": "..\\yolov5-master\\train.py",
+    "host": "UWS65067",
+    "username": "rb01243",
+    "executable": "C:\\Users\\rb01243\\Anaconda3\\python.exe"
+}

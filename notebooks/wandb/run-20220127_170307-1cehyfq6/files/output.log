@@ -1,0 +1,144 @@
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7025023 parameters, 7025023 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.00046875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\bcc-tvt\labels\train.cache' images and labels... 70 found, 0 missing, 3 empty, 0 corrupted: 100%|██████████| 70/70 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\iid-tvt\labels\val.cache' images and labels... 67 found, 13 missing, 0 empty, 0 corrupted: 100%|██████████| 80/80 [00:00<?, ?it/s]
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 6.03, Best Possible Recall (BPR) = 1.0000
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns\train\test
+Starting training for 80 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/4 [00:00<?, ?it/s]
+Minimum probs (c1, c2, bkgd): [1e-05, 1.4e-05, 0.890137]
+
+
+      0/79     7.44G         0   0.02265         0       222       640:  25%|██▌       | 1/4 [00:04<00:13,  4.67s/it]
+Minimum probs (c1, c2, bkgd): [1.5e-05, 1.1e-05, 0.841797]
+Maximum probs (c1, c2, bkgd): [0.109224, 0.092917, 1.0]
+Minimum probs (c1, c2, bkgd): [1.2e-05, 5e-06, 0.867188]
+
+      0/79       14G   0.09173   0.04907   0.02047       114       640: 100%|██████████| 4/4 [00:09<00:00,  2.27s/it]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/2 [00:00<?, ?it/s]
+Minimum probs (c1, c2, bkgd): [2.1e-05, 1.7e-05, 0.851074]
+
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 1/2 [00:02<00:02,  2.28s/it]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:03<00:00,  1.89s/it]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 2/4 [00:01<00:01,  1.95it/s]
+                 all         70        961    0.00292     0.0163    0.00133   0.000265
+Minimum probs (c1, c2, bkgd): [6e-06, 9e-06, 0.911621]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.08it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/4 [00:00<?, ?it/s]
+Minimum probs (c1, c2, bkgd): [8e-06, 9e-06, 0.843262]
+Maximum probs (c1, c2, bkgd): [0.107325, 0.094174, 1.0]
+Minimum probs (c1, c2, bkgd): [1.1e-05, 4e-06, 0.835449]
+Maximum probs (c1, c2, bkgd): [0.131572, 0.065398, 1.0]
+Minimum probs (c1, c2, bkgd): [1.4e-05, 1.6e-05, 0.844727]
+      1/79     15.6G      0.12   0.08097   0.02777       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.57it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/2 [00:00<?, ?it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:02<00:00,  1.06s/it]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  25%|██▌       | 1/4 [00:00<00:01,  2.01it/s]
+                 all         70        961    0.00287     0.0163    0.00134    0.00028
+Minimum probs (c1, c2, bkgd): [4e-06, 8e-06, 0.913086]
+Maximum probs (c1, c2, bkgd): [0.059156, 0.054958, 1.0]
+Minimum probs (c1, c2, bkgd): [2e-06, 8e-06, 0.871582]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.36it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      2/79     12.2G    0.1181   0.07587    0.0278       222       640:  25%|██▌       | 1/4 [00:00<00:01,  2.17it/s]
+Minimum probs (c1, c2, bkgd): [1.1e-05, 3e-06, 0.826172]
+Maximum probs (c1, c2, bkgd): [0.1385, 0.066644, 1.0]
+Minimum probs (c1, c2, bkgd): [7e-06, 1.7e-05, 0.836914]
+      2/79     15.6G    0.1162   0.08936   0.02781       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.43it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 1/2 [00:00<00:00,  1.73it/s]
+                 all         80        220    0.00136    0.00515   0.000458    9.6e-05
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.34it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.64it/s]
+Minimum probs (c1, c2, bkgd): [7e-06, 6e-06, 0.900879]
+Maximum probs (c1, c2, bkgd): [0.07898, 0.060387, 1.0]
+Minimum probs (c1, c2, bkgd): [0.0, 4e-06, 0.889648]
+Maximum probs (c1, c2, bkgd): [0.094523, 0.051963, 1.0]
+Minimum probs (c1, c2, bkgd): [8e-06, 3e-06, 0.836914]
+Maximum probs (c1, c2, bkgd): [0.126334, 0.070716, 1.0]
+Minimum probs (c1, c2, bkgd): [6e-06, 1.5e-05, 0.864258]
+Maximum probs (c1, c2, bkgd): [0.075579, 0.080199, 1.0]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      3/79     15.6G    0.1105    0.1011   0.02774       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.62it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/2 [00:00<?, ?it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.36it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  25%|██▌       | 1/4 [00:00<00:01,  2.45it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.77it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/4 [00:00<?, ?it/s]
+[34m[1mtrain: [39m[22mbcc_epoch=0, qtfilter_epoch=-1, qt_thres_mode=, qt_thres=0.0, hybrid_entropy_thres=0.0, hybrid_conf_thres=0.0, weights=yolov5s.pt, cfg=, data=../data/cyolo.yaml, hyp=../data/hyps/hyp.scratch.yaml, epochs=80, batch_size=20, imgsz=640, rect=False, resume=False, nosave=False, noval=False, noautoanchor=False, evolve=None, bucket=, cache=None, image_weights=False, device=, multi_scale=False, single_cls=False, adam=False, sync_bn=False, workers=8, project=runs/train, entity=None, name=test, exist_ok=False, quad=False, linear_lr=False, label_smoothing=0.0, upload_dataset=False, bbox_interval=-1, save_period=-1, artifact_alias=latest, local_rank=-1, freeze=0, patience=1100
+[34m[1mgithub: [39m[22mskipping check (not a git repository), for updates see https://github.com/ultralytics/yolov5
+YOLOv5  2022-1-18 torch 1.10.1+cu113 CUDA:0 (NVIDIA GeForce RTX 3090, 24575.5MB)
+[34m[1mhyperparameters: [39m[22mlr0=0.01, lrf=0.2, momentum=0.937, weight_decay=0.0005, warmup_epochs=3.0, warmup_momentum=0.8, warmup_bias_lr=0.1, box=0.05, obj=1.0, cls=0.5, cls_pw=1.0, obj_pw=1.0, iou_t=0.2, anchor_t=4.0, fl_gamma=0, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, degrees=0.0, translate=0.1, scale=0.5, shear=0.0, perspective=0.0, flipud=0.0, fliplr=0.5, mosaic=1.0, mixup=0.0, copy_paste=0.0
+[34m[1mTensorBoard: [39m[22mStart with 'tensorboard --logdir runs\train', view at http://localhost:6006/
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+Model Summary: 270 layers, 7025023 parameters, 7025023 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.00046875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias

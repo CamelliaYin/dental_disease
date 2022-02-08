@@ -1,0 +1,113 @@
+Overriding model.yaml nc=80 with nc=3
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     21576  models.yolo.Detect                      [3, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7027720 parameters, 7027720 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.00046875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\All_Volunteers_Crowdsourced\labels\train.cache' images and labels... 2103 found, 0 missing, 0 empty, 0 corrupted: 100%|██████████| 2103/2103 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\All_Volunteers_IID\labels\val' images and labels...860 found, 0 missing, 0 empty, 2 corrupted: 100%|██████████| 860/860 [00:03<00:00, 218.94it/s]
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.1f089314ef9273e4647b.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.9c62fc6bf51ff6f1eafe.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Cache directory ..\data\datasets\All_Volunteers_IID\labels is not writeable: [WinError 183] Cannot create a file when that file already exists: '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache.npy' -> '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache'
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 5.23, Best Possible Recall (BPR) = 0.9990
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns\train\Expset2_all_cyolo92
+Starting training for 2 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/106 [00:00<?, ?it/s]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [5e-06, 2e-06, 4e-06, 0.737411]
+Maximum probs (c1, c2, bkgd): [0.160834, 0.074815, 0.090352, 0.99994]
+
+       0/1        0G         0    0.0239         0       257       640:   1%|          | 1/106 [00:36<1:03:46, 36.44s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 3e-06, 5e-06, 0.775054]
+Maximum probs (c1, c2, bkgd): [0.178985, 0.097395, 0.080178, 0.999955]
+       0/1        0G         0   0.02373         0       291       640:   2%|▏         | 2/106 [01:11<1:01:22, 35.41s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 2e-06, 3e-06, 0.806651]
+Maximum probs (c1, c2, bkgd): [0.142317, 0.0663, 0.074184, 0.999957]
+       0/1        0G         0   0.02353         0       173       640:   3%|▎         | 3/106 [01:46<1:00:26, 35.21s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [2e-06, 1e-06, 3e-06, 0.768456]
+Maximum probs (c1, c2, bkgd): [0.123518, 0.076562, 0.09834, 0.999977]
+       0/1        0G         0   0.02335         0       251       640:   4%|▍         | 4/106 [02:20<59:03, 34.74s/it]  C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [4e-06, 2e-06, 3e-06, 0.754239]
+Maximum probs (c1, c2, bkgd): [0.17922, 0.070546, 0.107897, 0.999964]
+       0/1        0G         0   0.02316         0       270       640:   5%|▍         | 5/106 [02:56<59:31, 35.36s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 0.0, 3e-06, 0.835728]
+Maximum probs (c1, c2, bkgd): [0.060655, 0.068185, 0.059214, 0.999959]
+       0/1        0G         0   0.02293         0       196       640:   6%|▌         | 6/106 [03:32<59:13, 35.54s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [6e-06, 2e-06, 3e-06, 0.868821]
+Maximum probs (c1, c2, bkgd): [0.055294, 0.065858, 0.066153, 0.999949]
+       0/1        0G         0   0.02265         0       194       640:   7%|▋         | 7/106 [04:08<59:05, 35.82s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 2e-06, 3e-06, 0.856791]
+Maximum probs (c1, c2, bkgd): [0.079157, 0.094415, 0.05019, 0.999962]
+       0/1        0G         0   0.02239         0       197       640:   8%|▊         | 8/106 [04:55<1:04:02, 39.21s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 2e-06, 2e-06, 0.858364]
+Maximum probs (c1, c2, bkgd): [0.061299, 0.06621, 0.064411, 0.999945]
+       0/1        0G         0   0.02212         0       291       640:   8%|▊         | 9/106 [05:38<1:05:13, 40.35s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [4e-06, 1e-06, 2e-06, 0.753901]
+Maximum probs (c1, c2, bkgd): [0.175304, 0.056279, 0.082568, 0.999956]
+       0/1        0G         0   0.02185         0       283       640:   9%|▉         | 10/106 [06:22<1:06:35, 41.62s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 1e-06, 2e-06, 0.854515]
+Maximum probs (c1, c2, bkgd): [0.07918, 0.053725, 0.058287, 0.999967]
+       0/1        0G         0   0.02157         0       302       640:  10%|█         | 11/106 [07:00<1:04:09, 40.52s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 1e-06, 2e-06, 0.819628]
+Maximum probs (c1, c2, bkgd): [0.109328, 0.037192, 0.052893, 0.99996]
+       0/1        0G         0    0.0213         0       295       640:  11%|█▏        | 12/106 [07:39<1:02:26, 39.86s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [2e-06, 2e-06, 2e-06, 0.786823]
+Maximum probs (c1, c2, bkgd): [0.156013, 0.052595, 0.055065, 0.999951]
+       0/1        0G         0   0.02103         0       325       640:  12%|█▏        | 13/106 [08:16<1:00:51, 39.26s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [2e-06, 2e-06, 2e-06, 0.837968]
+Maximum probs (c1, c2, bkgd): [0.087545, 0.051855, 0.054747, 0.99996]
+       0/1        0G         0   0.02076         0       252       640:  13%|█▎        | 14/106 [08:55<59:47, 38.99s/it]  C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 2e-06, 2e-06, 0.845722]
+Maximum probs (c1, c2, bkgd): [0.066214, 0.051704, 0.076772, 0.999973]
+       0/1        0G         0    0.0205         0       280       640:  14%|█▍        | 15/106 [09:33<58:45, 38.74s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+Minimum probs (c1, c2, bkgd): [3e-06, 1e-06, 2e-06, 0.823794]
+Maximum probs (c1, c2, bkgd): [0.118045, 0.043007, 0.094981, 0.999968]
+       0/1        0G         0   0.02024         0       190       640:  15%|█▌        | 16/106 [10:11<57:45, 38.51s/it]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')

@@ -1,0 +1,181 @@
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7025023 parameters, 7025023 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.00046875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\bcc-tvt\labels\train.cache' images and labels... 70 found, 0 missing, 3 empty, 0 corrupted: 100%|██████████| 70/70 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\iid-tvt\labels\val.cache' images and labels... 67 found, 13 missing, 0 empty, 0 corrupted: 100%|██████████| 80/80 [00:00<?, ?it/s]
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 6.03, Best Possible Recall (BPR) = 1.0000
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns\train\test209975
+Starting training for 80 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/4 [00:00<?, ?it/s]
+Minimum probs (c1, c2, bkgd): [1e-05, 1.4e-05, 0.890137]
+
+      0/79     3.82G         0   0.02265         0       222       640:  25%|██▌       | 1/4 [00:04<00:12,  4.06s/it]
+Minimum probs (c1, c2, bkgd): [1.5e-05, 1.1e-05, 0.841797]
+Maximum probs (c1, c2, bkgd): [0.109224, 0.092917, 1.0]
+Minimum probs (c1, c2, bkgd): [1.2e-05, 5e-06, 0.867188]
+Maximum probs (c1, c2, bkgd): [0.106465, 0.060069, 1.0]
+Minimum probs (c1, c2, bkgd): [2.1e-05, 1.7e-05, 0.851074]
+      0/79     12.3G   0.09173   0.04893   0.02044       114       640: 100%|██████████| 4/4 [00:05<00:00,  1.40s/it]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:02<00:00,  1.21s/it]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/4 [00:00<?, ?it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.54it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/4 [00:00<?, ?it/s]
+                 all         70        961    0.00293     0.0163    0.00135   0.000268
+Minimum probs (c1, c2, bkgd): [6e-06, 9e-06, 0.911621]
+Maximum probs (c1, c2, bkgd): [0.06067, 0.057665, 1.0]
+Minimum probs (c1, c2, bkgd): [8e-06, 9e-06, 0.843262]
+Maximum probs (c1, c2, bkgd): [0.107374, 0.094099, 1.0]
+Minimum probs (c1, c2, bkgd): [1.1e-05, 4e-06, 0.835938]
+Maximum probs (c1, c2, bkgd): [0.131377, 0.065334, 1.0]
+Minimum probs (c1, c2, bkgd): [1.5e-05, 1.6e-05, 0.845215]
+      1/79     13.6G      0.12   0.08082   0.02777       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.39it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 1/2 [00:00<00:00,  1.86it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.40it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.80it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      2/79     12.5G    0.1164   0.09259   0.02792       289       640:  75%|███████▌  | 3/4 [00:01<00:00,  1.99it/s]
+                 all         70        961    0.00285     0.0163    0.00134   0.000277
+Minimum probs (c1, c2, bkgd): [4e-06, 8e-06, 0.912598]
+Maximum probs (c1, c2, bkgd): [0.05898, 0.055088, 1.0]
+Minimum probs (c1, c2, bkgd): [2e-06, 8e-06, 0.867188]
+Maximum probs (c1, c2, bkgd): [0.102616, 0.080889, 1.0]
+Minimum probs (c1, c2, bkgd): [1.2e-05, 4e-06, 0.824219]
+Maximum probs (c1, c2, bkgd): [0.140176, 0.066766, 1.0]
+Minimum probs (c1, c2, bkgd): [7e-06, 1.7e-05, 0.832031]
+Maximum probs (c1, c2, bkgd): [0.077914, 0.111806, 1.0]
+      2/79       14G    0.1162   0.08947   0.02778       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.33it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.47it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  25%|██▌       | 1/4 [00:00<00:01,  2.52it/s]
+                 all         70        961     0.0027     0.0235    0.00112   0.000249
+Minimum probs (c1, c2, bkgd): [5e-06, 7e-06, 0.897949]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  3.00it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      3/79     13.9G    0.1105    0.1021   0.02769       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.34it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 1/2 [00:00<00:00,  1.96it/s]
+Minimum probs (c1, c2, bkgd): [1e-06, 5e-06, 0.890625]
+Maximum probs (c1, c2, bkgd): [0.094464, 0.057855, 1.0]
+Minimum probs (c1, c2, bkgd): [1e-05, 3e-06, 0.810547]
+Maximum probs (c1, c2, bkgd): [0.150389, 0.078118, 1.0]
+Minimum probs (c1, c2, bkgd): [8e-06, 1.7e-05, 0.821289]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.53it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  75%|███████▌  | 3/4 [00:01<00:00,  2.67it/s]
+                 all         80        220   0.000657     0.0605   0.000362   9.33e-05
+                 all         70        961    0.00283     0.0338    0.00137   0.000348
+Minimum probs (c1, c2, bkgd): [7e-06, 1e-05, 0.875]
+Maximum probs (c1, c2, bkgd): [0.101502, 0.077357, 1.0]
+Minimum probs (c1, c2, bkgd): [0.0, 4e-06, 0.880859]
+Maximum probs (c1, c2, bkgd): [0.096442, 0.064359, 1.0]
+Minimum probs (c1, c2, bkgd): [8e-06, 3e-06, 0.818848]
+Maximum probs (c1, c2, bkgd): [0.140579, 0.085813, 1.0]
+Minimum probs (c1, c2, bkgd): [7e-06, 1.4e-05, 0.844727]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.96it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      4/79     12.4G    0.1045    0.1198   0.02768       289       640:  75%|███████▌  | 3/4 [00:01<00:00,  2.11it/s]
+      4/79       14G    0.1044    0.1159   0.02762       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.41it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.44it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  25%|██▌       | 1/4 [00:00<00:01,  2.70it/s]
+                 all         70        961    0.00345     0.0284    0.00166   0.000346
+Minimum probs (c1, c2, bkgd): [9e-06, 1e-05, 0.875488]
+Maximum probs (c1, c2, bkgd): [0.066625, 0.085062, 1.0]
+Minimum probs (c1, c2, bkgd): [0.0, 4e-06, 0.870117]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  3.03it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      5/79     9.13G    0.1001    0.1235   0.02718       336       640:  50%|█████     | 2/4 [00:00<00:00,  2.12it/s]
+Minimum probs (c1, c2, bkgd): [7e-06, 4e-06, 0.804688]
+Maximum probs (c1, c2, bkgd): [0.149931, 0.10279, 1.0]
+Minimum probs (c1, c2, bkgd): [6e-06, 1.1e-05, 0.825195]
+      5/79     13.9G   0.09955    0.1266   0.02756       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.43it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.42it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.73it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/4 [00:00<?, ?it/s]
+                 all         80        220   0.000746      0.049   0.000399   0.000118
+                 all         70        961    0.00476     0.0223    0.00207   0.000428
+Minimum probs (c1, c2, bkgd): [7e-06, 7e-06, 0.842285]
+      6/79       14G   0.09544    0.1364   0.02751       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.39it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 1/2 [00:00<00:00,  1.61it/s]
+Minimum probs (c1, c2, bkgd): [1e-06, 5e-06, 0.835449]
+Maximum probs (c1, c2, bkgd): [0.114884, 0.103089, 1.0]
+Minimum probs (c1, c2, bkgd): [7e-06, 4e-06, 0.799316]
+Maximum probs (c1, c2, bkgd): [0.15212, 0.117778, 1.0]
+Minimum probs (c1, c2, bkgd): [4e-06, 1.2e-05, 0.81543]
+Maximum probs (c1, c2, bkgd): [0.104592, 0.101041, 1.0]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:01<00:00,  1.23it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 2/4 [00:00<00:00,  2.32it/s]
+                 all         70        961    0.00418     0.0435    0.00245   0.000458
+Minimum probs (c1, c2, bkgd): [7e-06, 8e-06, 0.780273]
+Maximum probs (c1, c2, bkgd): [0.106285, 0.122527, 1.0]
+Minimum probs (c1, c2, bkgd): [1e-06, 6e-06, 0.733398]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.56it/s]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      7/79     9.17G   0.09252     0.141     0.027       336       640:  50%|█████     | 2/4 [00:00<00:00,  2.12it/s]
+Minimum probs (c1, c2, bkgd): [9e-06, 5e-06, 0.803711]
+Maximum probs (c1, c2, bkgd): [0.145099, 0.126092, 1.0]
+Minimum probs (c1, c2, bkgd): [4e-06, 1.1e-05, 0.81543]
+      7/79       14G    0.0926    0.1434   0.02743       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.41it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/2 [00:00<?, ?it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 2/2 [00:03<00:00,  1.70s/it]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:   0%|          | 0/4 [00:00<?, ?it/s]
+
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:01<00:00,  2.07it/s]
+Minimum probs (c1, c2, bkgd): [7e-06, 8e-06, 0.666992]
+Maximum probs (c1, c2, bkgd): [0.151833, 0.181065, 1.0]
+Minimum probs (c1, c2, bkgd): [1e-06, 6e-06, 0.597656]
+Maximum probs (c1, c2, bkgd): [0.13026, 0.279314, 1.0]
+Minimum probs (c1, c2, bkgd): [1e-05, 5e-06, 0.828125]
+Maximum probs (c1, c2, bkgd): [0.11831, 0.132824, 1.0]
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+      8/79     12.4G   0.09052    0.1528   0.02738       289       640:  75%|███████▌  | 3/4 [00:01<00:00,  2.02it/s]
+Minimum probs (c1, c2, bkgd): [4e-06, 1.1e-05, 0.808594]
+      8/79     13.9G   0.09069    0.1466   0.02732       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.25it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 1/2 [00:00<00:00,  1.08it/s]
+      8/79     13.9G   0.09069    0.1466   0.02732       114       640: 100%|██████████| 4/4 [00:01<00:00,  2.25it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 2/4 [00:01<00:01,  1.57it/s]
+               Class     Images     Labels          P          R     mAP@.5 mAP@.5:.95:  50%|█████     | 2/4 [00:01<00:01,  1.57it/s]
+YOLO+BCCch   gpu_mem       box       obj       cls    labels  img_sizeAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:02<00:00,  1.78it/s]
+YOLO+BCCch   gpu_mem       box       obj       cls    labels  img_sizeAP@.5 mAP@.5:.95: 100%|██████████| 4/4 [00:02<00:00,  1.78it/s]
+  0%|          | 0/4 [00:00<?, ?it/s]

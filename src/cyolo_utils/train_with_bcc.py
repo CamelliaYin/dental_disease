@@ -16,9 +16,27 @@ import torch
 
 DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
 
-# This mapping is followed throughout for volunteer ids.
+# This mapping is followed throughout for volunteer ids. TODO: This only works if there are only these volunteers, it doesnt account for otherers (fixed using extract_volunteers)
 VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
 SINGLE_VOL_ID_MAP = {'Camellia': 0}
+
+# this creates a dictionary for all volunteers
+def extract_volunteers(dataDict):
+    curdir = os.getcwd()
+    id_map = {}
+    count = 0
+    direct = os.path.join(curdir, dataDict['train'], '..', '..', 'volunteers')
+    direct = os.path.join(direct, 'train')
+    for files in os.listdir(direct):
+        with open(os.path.join(direct, files), 'r') as text:
+            for line in text:
+                for vol in line.split():
+                    if vol not in id_map.keys():
+                        id_map[vol] = count
+                        count += 1
+    VOL_ID_MAP = id_map
+    return (id_map)
+
 
 def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45):
     n_images = batch_qtargets.shape[0]
@@ -156,11 +174,11 @@ def plot_results(n_epoch, metrics):
     plt.show()
 
 # This is directly taken from the BCC algorithm. We have 3 classes, dental-caries, bone-loss, and background.
-def init_bcc_params(K=4):
-    bcc_params = {'n_classes': 3,
+def init_bcc_params(K=4, classes=3, diagPrior=1e-1, cnvrgThresh=1e-6):
+    bcc_params = {'n_classes': classes,
                   'n_crowd_members': K,
-                  'confusion_matrix_diagonal_prior': 1e-1,
-                  'convergence_threshold': 1e-6}
+                  'confusion_matrix_diagonal_prior': diagPrior,
+                  'convergence_threshold': cnvrgThresh}
     return bcc_params
 
 # Initialise the metrics of interest.

@@ -1,0 +1,130 @@
+Overriding model.yaml nc=80 with nc=3
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     21576  models.yolo.Detect                      [3, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7027720 parameters, 7027720 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.0005078125
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\All_Volunteers_Crowdsourced\labels\train.cache' images and labels... 2103 found, 0 missing, 0 empty, 0 corrupted: 100%|██████████| 2103/2103 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\All_Volunteers_IID\labels\val' images and labels...860 found, 0 missing, 0 empty, 2 corrupted: 100%|██████████| 860/860 [00:03<00:00, 218.58it/s]
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.1f089314ef9273e4647b.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.9c62fc6bf51ff6f1eafe.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Cache directory ..\data\datasets\All_Volunteers_IID\labels is not writeable: [WinError 183] Cannot create a file when that file already exists: '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache.npy' -> '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache'
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 5.23, Best Possible Recall (BPR) = 0.9990
+Image sizes 640 train, 640 val
+Using 5 dataloader workers
+Logging results to [1mruns\train\Expset2_all_cyolo85
+Starting training for 2 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/421 [00:00<?, ?it/s]
+Minimum probs (c1, c2, bkgd): [7e-06, 8e-06, 9e-06, 0.907227]
+
+
+       0/1     1.94G         0   0.02389         0        57       640:   0%|          | 1/421 [00:08<56:21,  8.05s/it]
+Minimum probs (c1, c2, bkgd): [5e-06, 3e-06, 5e-06, 0.871094]
+
+       0/1     2.77G         0   0.02387         0        58       640:   0%|          | 2/421 [00:12<43:10,  6.18s/it]
+Minimum probs (c1, c2, bkgd): [5e-06, 1e-06, 4e-06, 0.818848]
+
+       0/1     3.61G         0   0.02383         0        61       640:   1%|          | 3/421 [00:18<41:11,  5.91s/it]
+Minimum probs (c1, c2, bkgd): [4e-06, 2e-06, 4e-06, 0.734375]
+
+       0/1     4.42G         0    0.0237         0        81       640:   1%|          | 4/421 [00:23<38:25,  5.53s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 4e-06, 4e-06, 0.822266]
+
+       0/1     5.22G         0    0.0236         0        41       640:   1%|          | 5/421 [00:28<36:25,  5.25s/it]
+Minimum probs (c1, c2, bkgd): [5e-06, 2e-06, 4e-06, 0.813965]
+Maximum probs (c1, c2, bkgd): [0.145651, 0.056038, 0.064411, 1.0]
+Minimum probs (c1, c2, bkgd): [4e-06, 2e-06, 4e-06, 0.712891]
+
+
+       0/1     6.83G         0   0.02349         0        91       640:   2%|▏         | 7/421 [00:37<34:33,  5.01s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 4e-06, 4e-06, 0.866211]
+
+       0/1     7.65G         0   0.02343         0        67       640:   2%|▏         | 8/421 [00:42<34:25,  5.00s/it]
+Minimum probs (c1, c2, bkgd): [5e-06, 4e-06, 4e-06, 0.836914]
+
+       0/1     8.45G         0   0.02334         0        39       640:   2%|▏         | 9/421 [00:47<34:19,  5.00s/it]
+Minimum probs (c1, c2, bkgd): [2e-06, 2e-06, 2e-06, 0.87207]
+
+       0/1     9.25G         0   0.02328         0        40       640:   2%|▏         | 10/421 [00:52<34:32,  5.04s/it]
+Minimum probs (c1, c2, bkgd): [4e-06, 5e-06, 2e-06, 0.868164]
+
+       0/1     10.1G         0   0.02321         0        58       640:   3%|▎         | 11/421 [00:58<34:31,  5.05s/it]
+Minimum probs (c1, c2, bkgd): [2e-06, 2e-06, 3e-06, 0.900391]
+
+       0/1     10.9G         0   0.02314         0        36       640:   3%|▎         | 12/421 [01:03<34:15,  5.03s/it]
+Minimum probs (c1, c2, bkgd): [1e-06, 3e-06, 3e-06, 0.893555]
+
+       0/1     11.7G         0   0.02304         0        33       640:   3%|▎         | 13/421 [01:07<33:56,  4.99s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 1e-06, 3e-06, 0.90332]
+
+       0/1     12.5G         0   0.02295         0        88       640:   3%|▎         | 14/421 [01:13<34:08,  5.03s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 4e-06, 2e-06, 0.908203]
+
+       0/1     13.3G         0   0.02288         0        69       640:   4%|▎         | 15/421 [01:18<33:53,  5.01s/it]
+Minimum probs (c1, c2, bkgd): [4e-06, 1e-06, 2e-06, 0.814453]
+
+       0/1     14.1G         0    0.0228         0        61       640:   4%|▍         | 16/421 [01:23<34:18,  5.08s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 5e-06, 3e-06, 0.814453]
+
+       0/1     14.9G         0   0.02273         0        64       640:   4%|▍         | 17/421 [01:28<33:55,  5.04s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 1e-06, 3e-06, 0.758789]
+
+       0/1     15.7G         0   0.02264         0        62       640:   4%|▍         | 18/421 [01:33<34:12,  5.09s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 4e-06, 3e-06, 0.84668]
+
+       0/1     16.5G         0   0.02257         0       111       640:   5%|▍         | 19/421 [01:38<34:25,  5.14s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 3e-06, 3e-06, 0.816406]
+
+       0/1     17.3G         0   0.02249         0        33       640:   5%|▍         | 20/421 [01:43<33:45,  5.05s/it]
+Minimum probs (c1, c2, bkgd): [3e-06, 0.0, 3e-06, 0.875488]
+
+       0/1     18.2G         0    0.0224         0        21       640:   5%|▍         | 21/421 [01:48<33:34,  5.04s/it]
+Minimum probs (c1, c2, bkgd): [2e-06, 2e-06, 2e-06, 0.777832]
+Maximum probs (c1, c2, bkgd): [0.091117, 0.08116, 0.096306, 1.0]
+Minimum probs (c1, c2, bkgd): [2e-06, 0.0, 3e-06, 0.908203]
+
+
+       0/1     19.8G         0   0.02222         0        67       640:   5%|▌         | 23/421 [01:58<33:41,  5.08s/it]
+Minimum probs (c1, c2, bkgd): [2e-06, 1e-06, 3e-06, 0.78418]
+Maximum probs (c1, c2, bkgd): [0.102342, 0.088679, 0.059753, 1.0]
+Minimum probs (c1, c2, bkgd): [3e-06, 3e-06, 3e-06, 0.831543]
+
+
+       0/1     21.4G         0   0.02205         0        58       640:   6%|▌         | 25/421 [02:08<33:20,  5.05s/it]
+Minimum probs (c1, c2, bkgd): [4e-06, 2e-06, 2e-06, 0.884277]
+Maximum probs (c1, c2, bkgd): [0.045743, 0.049445, 0.056233, 1.0]
+Minimum probs (c1, c2, bkgd): [3e-06, 1e-06, 3e-06, 0.909668]
+
+
+
+       0/1       23G         0   0.02187         0        60       640:   6%|▋         | 27/421 [02:20<34:10,  5.20s/it]

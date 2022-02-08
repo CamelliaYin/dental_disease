@@ -1,4 +1,4 @@
-path: datasets/iid-tvt # dataset root dir
+path: ../data/datasets/iid-tvt # dataset root dir. paths are from the run .py file
 train: images/train  # train images (relative to 'path') 128 images
 val: images/val  # val images (relative to 'path') 128 images
 test: images/test # test images (optional)

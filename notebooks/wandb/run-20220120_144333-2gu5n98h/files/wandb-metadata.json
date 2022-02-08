@@ -1,0 +1,31 @@
+{
+    "os": "Windows-10-10.0.19042-SP0",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-01-20T14:43:38.021319",
+    "startedAt": "2022-01-20T14:43:33.585992",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "cpu_count": 20,
+    "cuda": null,
+    "args": [
+        "--data",
+        "../data/iid-tvt.yaml",
+        "--batch-size",
+        "2",
+        "--epochs",
+        "18",
+        "--bcc_epoch",
+        "-1",
+        "--cfg",
+        "../src/models/yolov5s.yaml",
+        "--name",
+        "exp2099"
+    ],
+    "state": "running",
+    "program": "../src/train.py",
+    "codePath": "..\\src\\train.py",
+    "host": "UWS65067",
+    "username": "rb01243",
+    "executable": "C:\\Users\\rb01243\\Anaconda3\\python.exe"
+}

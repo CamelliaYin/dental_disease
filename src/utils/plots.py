@@ -288,6 +288,8 @@ def plot_study_txt(path='', x=None):  # from utils.plots import *; plot_study_tx
 def plot_labels(labels, names=(), save_dir=Path('')):
     # plot dataset labels
     print('Plotting labels... ')
+    # plot dataset labels
+
     c, b = labels[:, 0], labels[:, 1:].transpose()  # classes, boxes
     nc = int(c.max() + 1)  # number of classes
     x = pd.DataFrame(b.transpose(), columns=['x', 'y', 'width', 'height'])
@@ -296,7 +298,6 @@ def plot_labels(labels, names=(), save_dir=Path('')):
     sn.pairplot(x, corner=True, diag_kind='auto', kind='hist', diag_kws=dict(bins=50), plot_kws=dict(pmax=0.9))
     plt.savefig(save_dir / 'labels_correlogram.jpg', dpi=200)
     plt.close()
-
     # matplotlib labels
     matplotlib.use('svg')  # faster
     ax = plt.subplots(2, 2, figsize=(8, 8), tight_layout=True)[1].ravel()

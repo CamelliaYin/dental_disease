@@ -1,0 +1,11 @@
+2022-02-01 16:03:19,392 INFO    MainThread:20032 [internal.py:wandb_internal():87] W&B internal server running at pid: 20032, started at: 2022-02-01 16:03:19.391091
+2022-02-01 16:03:19,393 DEBUG   HandlerThread:20032 [handler.py:handle_request():130] handle_request: check_version
+2022-02-01 16:03:19,393 INFO    WriterThread:20032 [datastore.py:open_for_write():77] open: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220201_160318-18t6nvb8\run-18t6nvb8.wandb
+2022-02-01 16:03:19,395 DEBUG   SenderThread:20032 [sender.py:send():234] send: header
+2022-02-01 16:03:19,403 DEBUG   SenderThread:20032 [sender.py:send_request():248] send_request: check_version
+2022-02-01 16:03:36,534 WARNING MainThread:20032 [internal.py:is_dead():366] Internal process exiting, parent pid 8864 disappeared
+2022-02-01 16:03:36,534 ERROR   MainThread:20032 [internal.py:wandb_internal():142] Internal process shutdown.
+2022-02-01 16:03:36,607 INFO    SenderThread:20032 [sender.py:finish():1070] shutting down sender
+2022-02-01 16:03:37,529 INFO    WriterThread:20032 [datastore.py:close():281] close: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220201_160318-18t6nvb8\run-18t6nvb8.wandb
+2022-02-01 16:03:37,529 INFO    HandlerThread:20032 [handler.py:finish():731] shutting down handler
+2022-02-01 16:03:37,529 INFO    MainThread:20032 [internal.py:handle_exit():77] Internal process exited

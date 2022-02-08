@@ -11,7 +11,7 @@ def torch_max_fun(t1, t2):
         t2 = torch.tensor(t2)
     return torch.max(t1, t2)
 
-def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=False, device=None, invert_classes = False):
+def  VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=False, device=None, invert_classes = False):
     """
     performs one iteration of variational inference update for BCCNet (E-step)
     -- update for approximating posterior of true labels and confusion matrices
@@ -34,6 +34,7 @@ def VB_iteration(X, nn_output, alpha_volunteers, alpha0_volunteers, torchMode=Fa
     ElogPi_volunteer = expected_log_Dirichlet_parameters(alpha_volunteers, torchMode, device=device)
 
     # q_t
+    #print('X: ', X, 'nn_output: ', nn_output, 'ElogPi_volunteer: ', ElogPi_volunteer, 'torchMode: ', torchMode)
     q_t, Njl, rho = expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode, device=device)
 
     # q_pi_workers
@@ -100,19 +101,19 @@ def expected_log_Dirichlet_parameters(param, torchMode=False, device=None):
         raise Exception('param can have no more than 3 dimensions')
     return result
 
-
+# speed is determined on the number of volunteers
 def expected_true_labels(X, nn_output, ElogPi_volunteer, torchMode=False, device=None):
     base_lib, copy_fn, simple_transpose, maxwithdim_fn, maximum_fn = get_modules(torchMode, ['base_lib', 'copy', 'simple_transpose', 'maxwithdim', 'maximum'])
     I, U, K = X.shape  # I = no. of image, U = no. of anc hor boxes in total, K = no. of volunteers
     M = ElogPi_volunteer.shape[0]  # M = Number of classes
     N = ElogPi_volunteer.shape[1]  # N = Number of classes used by volunteers
-
     rho = copy_fn(nn_output)  # I x U x M logits
     # eq. 12:
+    # loops for the number of volunteers
     for k in range(K):
         inds = tuple([x.long() for x in base_lib.where(X[:, :, k] > -1)])  # rule out missing values
-        rho[inds[0], inds[1], :] += simple_transpose(
-            ElogPi_volunteer[:, base_lib.squeeze(X[inds[0], inds[1], k]).long(), k])
+        rho[inds[0], inds[1], :] += simple_transpose(ElogPi_volunteer[:, base_lib.squeeze(X[inds[0], inds[1], k]).long(), k])
+
 
     # normalisation: (minus the max of each anchor)
     rho -= simple_transpose(base_lib.tile(simple_transpose(maxwithdim_fn(rho, 2)), (M, 1, 1)))

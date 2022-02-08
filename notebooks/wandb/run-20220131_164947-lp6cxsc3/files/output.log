@@ -1,0 +1,99 @@
+Overriding model.yaml nc=80 with nc=3
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     21576  models.yolo.Detect                      [3, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7027720 parameters, 7027720 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.001171875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\All_Volunteers_Crowdsourced\labels\train.cache' images and labels... 2103 found, 0 missing, 0 empty, 0 corrupted: 100%|██████████| 2103/2103 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\All_Volunteers_IID\labels\val' images and labels...860 found, 0 missing, 0 empty, 2 corrupted: 100%|██████████| 860/860 [00:05<00:00, 161.09it/s]
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.1f089314ef9273e4647b.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.9c62fc6bf51ff6f1eafe.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Cache directory ..\data\datasets\All_Volunteers_IID\labels is not writeable: [WinError 183] Cannot create a file when that file already exists: '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache.npy' -> '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache'
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 5.23, Best Possible Recall (BPR) = 0.9990
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns\train\Expset2_all_cyolo69
+Starting training for 5 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+
+  0%|          | 0/15 [00:23<?, ?it/s]
+YOLOv5  2022-1-18 torch 1.10.1+cu113 CUDA:'1' (NVIDIA GeForce RTX 3090, 24575.5MB)
+[34m[1mhyperparameters: [39m[22mlr0=0.01, lrf=0.2, momentum=0.937, weight_decay=0.0005, warmup_epochs=3.0, warmup_momentum=0.8, warmup_bias_lr=0.1, box=0.05, obj=1.0, cls=0.5, cls_pw=1.0, obj_pw=1.0, iou_t=0.2, anchor_t=4.0, fl_gamma=0, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, degrees=0.0, translate=0.1, scale=0.5, shear=0.0, perspective=0.0, flipud=0.0, fliplr=0.5, mosaic=1.0, mixup=0.0, copy_paste=0.0
+[34m[1mTensorBoard: [39m[22mStart with 'tensorboard --logdir runs\train', view at http://localhost:6006/
+Overriding model.yaml nc=80 with nc=3
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     21576  models.yolo.Detect                      [3, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+Model Summary: 270 layers, 7027720 parameters, 7027720 gradients, 15.9 GFLOPs
+Transferred 344/350 items from yolov5s.pt
+Scaled weight_decay = 0.001171875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mbcc_epoch=0, confusion_matrix_diagonal_prior_hyp=0.1, convergence_threshold_hyp=1e-06, qtfilter_epoch=-1, qt_thres_mode=, qt_thres=0.0, hybrid_entropy_thres=0.0, hybrid_conf_thres=0.0, weights=yolov5s.pt, cfg=, data=../data/All_Volunteers_Crowdsourced.yaml, hyp=../data/hyps/hyp.scratch.yaml, epochs=5, batch_size=150, imgsz=640, rect=False, resume=False, nosave=False, noval=False, noautoanchor=False, evolve=None, bucket=, cache=None, image_weights=False, device='1', multi_scale=False, single_cls=False, adam=False, sync_bn=False, workers=8, project=runs/train, entity=None, name=Expset2_all_cyolo, exist_ok=False, quad=False, linear_lr=False, label_smoothing=0.0, upload_dataset=False, bbox_interval=-1, save_period=-1, artifact_alias=latest, local_rank=-1, freeze=0, patience=1100
+[34m[1mgithub: [39m[22mskipping check (not a git repository), for updates see https://github.com/ultralytics/yolov5
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\All_Volunteers_Crowdsourced\labels\train.cache' images and labels... 2103 found, 0 missing, 0 empty, 0 corrupted: 100%|██████████| 2103/2103 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\All_Volunteers_IID\labels\val' images and labels...860 found, 0 missing, 0 empty, 2 corrupted: 100%|██████████| 860/860 [00:04<00:00, 182.71it/s]
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.9c62fc6bf51ff6f1eafe.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Ignoring corrupted image and/or label ..\data\datasets\All_Volunteers_IID\images\val\Unknown-X-20191113-153036-XKNMQ7OPXKU-3.1f089314ef9273e4647b.JPG: non-normalized or out of bounds coordinate labels
+[34m[1mval: [39m[22mWARNING: Cache directory ..\data\datasets\All_Volunteers_IID\labels is not writeable: [WinError 183] Cannot create a file when that file already exists: '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache.npy' -> '..\\data\\datasets\\All_Volunteers_IID\\labels\\val.cache'
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 5.23, Best Possible Recall (BPR) = 0.9990
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns\train\Expset2_all_cyolo70
+Starting training for 5 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0%|          | 0/15 [00:49<?, ?it/s]
+KeyboardInterrupt

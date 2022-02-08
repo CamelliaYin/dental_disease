@@ -1,0 +1,47 @@
+2022-02-02 14:58:18,521 INFO    MainThread:26240 [internal.py:wandb_internal():89] W&B internal server running at pid: 26240, started at: 2022-02-02 14:58:18.521342
+2022-02-02 14:58:18,522 INFO    WriterThread:26240 [datastore.py:open_for_write():77] open: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\run-2hduj1fi.wandb
+2022-02-02 14:58:18,523 DEBUG   HandlerThread:26240 [handler.py:handle_request():131] handle_request: check_version
+2022-02-02 14:58:18,525 DEBUG   SenderThread:26240 [sender.py:send():235] send: header
+2022-02-02 14:58:18,529 DEBUG   SenderThread:26240 [sender.py:send_request():249] send_request: check_version
+2022-02-02 14:58:18,578 DEBUG   SenderThread:26240 [sender.py:send():235] send: run
+2022-02-02 14:58:18,587 INFO    SenderThread:26240 [sender.py:_maybe_setup_resume():489] checking resume status for None/YOLOv5/2hduj1fi
+2022-02-02 14:58:18,931 INFO    SenderThread:26240 [dir_watcher.py:__init__():169] watching files in: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files
+2022-02-02 14:58:18,932 INFO    SenderThread:26240 [sender.py:_start_run_threads():809] run started: 2hduj1fi with start time 1643813897
+2022-02-02 14:58:18,932 DEBUG   SenderThread:26240 [sender.py:send():235] send: summary
+2022-02-02 14:58:18,932 DEBUG   HandlerThread:26240 [handler.py:handle_request():131] handle_request: run_start
+2022-02-02 14:58:18,932 INFO    SenderThread:26240 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-02 14:58:19,941 INFO    Thread-8  :26240 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\wandb-summary.json
+2022-02-02 14:58:21,215 DEBUG   HandlerThread:26240 [meta.py:__init__():36] meta init
+2022-02-02 14:58:21,215 DEBUG   HandlerThread:26240 [meta.py:__init__():50] meta init done
+2022-02-02 14:58:21,215 DEBUG   HandlerThread:26240 [meta.py:probe():210] probe
+2022-02-02 14:58:21,235 DEBUG   HandlerThread:26240 [meta.py:_save_pip():54] save pip
+2022-02-02 14:58:21,236 DEBUG   HandlerThread:26240 [meta.py:_save_pip():68] save pip done
+2022-02-02 14:58:21,236 DEBUG   HandlerThread:26240 [meta.py:_save_conda():75] save conda
+2022-02-02 14:58:21,955 INFO    Thread-8  :26240 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\conda-environment.yaml
+2022-02-02 14:58:21,955 INFO    Thread-8  :26240 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\requirements.txt
+2022-02-02 14:58:30,211 DEBUG   HandlerThread:26240 [meta.py:_save_conda():85] save conda done
+2022-02-02 14:58:30,211 DEBUG   HandlerThread:26240 [meta.py:probe():248] probe done
+2022-02-02 14:58:30,214 DEBUG   SenderThread:26240 [sender.py:send():235] send: files
+2022-02-02 14:58:30,214 INFO    SenderThread:26240 [sender.py:_save_file():944] saving file wandb-metadata.json with policy now
+2022-02-02 14:58:30,906 INFO    Thread-11 :26240 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmp7kejzzzewandb\1fhu43nr-wandb-metadata.json
+2022-02-02 14:58:31,017 INFO    Thread-8  :26240 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\conda-environment.yaml
+2022-02-02 14:58:31,017 INFO    Thread-8  :26240 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\wandb-metadata.json
+2022-02-02 14:58:35,628 WARNING MainThread:26240 [internal.py:is_dead():380] Internal process exiting, parent pid 26036 disappeared
+2022-02-02 14:58:35,628 ERROR   MainThread:26240 [internal.py:wandb_internal():148] Internal process shutdown.
+2022-02-02 14:58:36,281 INFO    WriterThread:26240 [datastore.py:close():281] close: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\run-2hduj1fi.wandb
+2022-02-02 14:58:36,281 INFO    HandlerThread:26240 [handler.py:finish():739] shutting down handler
+2022-02-02 14:58:36,281 INFO    SenderThread:26240 [sender.py:finish():1075] shutting down sender
+2022-02-02 14:58:36,281 INFO    SenderThread:26240 [dir_watcher.py:finish():283] shutting down directory watcher
+2022-02-02 14:58:37,064 INFO    SenderThread:26240 [dir_watcher.py:finish():313] scan: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files
+2022-02-02 14:58:37,064 INFO    SenderThread:26240 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\conda-environment.yaml conda-environment.yaml
+2022-02-02 14:58:37,065 INFO    SenderThread:26240 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\config.yaml config.yaml
+2022-02-02 14:58:37,065 INFO    SenderThread:26240 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\requirements.txt requirements.txt
+2022-02-02 14:58:37,068 INFO    SenderThread:26240 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\wandb-metadata.json wandb-metadata.json
+2022-02-02 14:58:37,068 INFO    SenderThread:26240 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\wandb-summary.json wandb-summary.json
+2022-02-02 14:58:37,071 INFO    SenderThread:26240 [file_pusher.py:finish():177] shutting down file pusher
+2022-02-02 14:58:37,071 INFO    SenderThread:26240 [file_pusher.py:join():182] waiting for file pusher
+2022-02-02 14:58:37,570 INFO    Thread-14 :26240 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\requirements.txt
+2022-02-02 14:58:37,596 INFO    Thread-12 :26240 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\conda-environment.yaml
+2022-02-02 14:58:37,607 INFO    Thread-15 :26240 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\wandb-summary.json
+2022-02-02 14:58:37,619 INFO    Thread-13 :26240 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220202_145817-2hduj1fi\files\config.yaml
+2022-02-02 14:58:38,222 INFO    MainThread:26240 [internal.py:handle_exit():79] Internal process exited

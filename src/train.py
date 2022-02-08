@@ -13,10 +13,12 @@ import os
 import random
 import sys
 import time
+import gc
 from timeit import default_timer as timer
 from collections import defaultdict
 from copy import deepcopy
 from pathlib import Path
+
 import numpy as np
 import torch
 import torch.distributed as dist
@@ -28,7 +30,7 @@ from tqdm import tqdm
 import yaml
 
 from cyolo_utils.train_with_bcc import VOL_ID_MAP, SINGLE_VOL_ID_MAP, \
-    convert_target_volunteers_yolo2bcc, get_file_volunteers_dict, \
+    convert_target_volunteers_yolo2bcc, get_file_volunteers_dict, extract_volunteers, \
     nn_predict, init_bcc_params, compute_param_confusion_matrices, init_metrics
 from cyolo_utils.label_converter import BACKGROUND_CLASS_ID, qt2yolo_optimized, yolo2bcc_newer
 from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
@@ -70,7 +72,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.weights, opt.single_cls, opt.evolve, opt.data, opt.cfg, \
         opt.resume, opt.noval, opt.nosave, opt.workers, opt.freeze
     vol_id_map = SINGLE_VOL_ID_MAP if 'single' in data else VOL_ID_MAP
-    
+
+
     bcc_epoch = opt.bcc_epoch
     qtfilter_epoch = opt.qtfilter_epoch
     qt_thres_mode = opt.qt_thres_mode
@@ -219,13 +222,15 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     if opt.sync_bn and cuda and RANK != -1:
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model).to(device)
         LOGGER.info('Using SyncBatchNorm()')
-    
+
     # Trainloader
     train_loader, dataset = create_dataloader(train_path, imgsz, batch_size // WORLD_SIZE, gs, single_cls,
                                               hyp=hyp, augment=False, cache=opt.cache, rect=opt.rect, rank=RANK,
                                               workers=workers, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '))
+
     if bcc_epoch != -1:
+        vol_id_map = extract_volunteers(data_dict)
         file_volunteers_dict = get_file_volunteers_dict(data_dict, vol_id_map = vol_id_map)
 
     n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
@@ -285,7 +290,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     stopper = EarlyStopping(patience=opt.patience)
     compute_loss = ComputeLoss(model)  # init loss class
     if bcc_epoch != -1:
-        bcc_params = init_bcc_params(K=len(vol_id_map))
+        cls_num = data_dict['nc'] + 1
+        bcc_params = init_bcc_params(K=len(vol_id_map), classes=cls_num, diagPrior=opt.confusion_matrix_diagonal_prior_hyp, cnvrgThresh=opt.convergence_threshold_hyp)
         bcc_params['n_epoch'] = epochs
         batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
         # pred0_bcc = init_nn_output(dataset.n, grid_ratios, n_anchor_choices, bcc_params)
@@ -305,7 +311,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         qtfilter_flag = False if qtfilter_epoch == -1 else (epoch - start_epoch >= qtfilter_epoch)
         if not bcc_flag and qtfilter_flag:
             qtfilter_flag = False
-        LBs = []
         model.train()
         # Update image weights (optional, single-GPU only)
         if opt.image_weights:
@@ -314,7 +319,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             dataset.indices = random.choices(range(dataset.n), weights=iw, k=dataset.n)  # rand weighted idx
 
         # Update mosaic border (optional)
-        
+
         mloss = torch.zeros(3, device=device)  # mean losses
         if RANK != -1:
             train_loader.sampler.set_epoch(epoch)
@@ -334,6 +339,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 batch_size = np.where(dataset.batch==i)[0].shape[0]
                 target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
                 # batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
+                #del target_volunteers, batch_volunteers, batch_volunteers_list, batch_filenames
+                #torch.cuda.empty_cache()
             ni = i + nb * epoch  # number integrated batches (since train start)
             imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
 
@@ -360,10 +367,23 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 pred = model(imgs)
                 if bcc_flag:
                     model.eval()
-                    batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo
-                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc
-                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
-                    LBs.append(batch_lb)
+                    batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo # gets the cyolo prdictions for the batch
+                    batch_pred_bcc, _, _ = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
+                    print('target_volunteers_bcc: ', target_volunteers_bcc)
+                    print('target_volunteers_bcc size: ', target_volunteers_bcc.size())
+                    print('batch_pred_bcc: ', batch_pred_bcc)
+                    print('batch_pred_bcc.size(): ', batch_pred_bcc.size())
+                    print("batch_pcm['variational']: ", batch_pcm['variational'])
+                    print("batch_pcm['variational'].size(): ", batch_pcm['variational'].size())
+                    print("batch_pcm['prior']: ", batch_pcm['prior'])
+                    print("batch_pcm['prior'].size(): ", batch_pcm['prior'].size())
+                    batch_qtargets, _, batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
+                    print('batch_qtargets', batch_qtargets)
+                    print('batch_lb', batch_lb)
+                    exit().asd123
+                    #batch_pcm['variational']
+                    #batch_lb = batch_lb.tolist()
+                    #torch.cuda.empty_cache()
                     with torch.no_grad():
                         batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
                         batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
@@ -410,6 +430,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 pbar.set_description(('%10s' * 2 + '%10.4g' * 5) % (
                     f'{epoch}/{epochs - 1}', mem, *mloss, targets.shape[0], imgs.shape[-1]))
                 callbacks.on_train_batch_end(ni, model, imgs, targets, paths, plots, opt.sync_bn)
+
+            torch.cuda.empty_cache()
             # end batch ------------------------------------------------------------------------------------------------
 
         # Scheduler
@@ -434,26 +456,28 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            plots=plots and final_epoch,
                                            callbacks=callbacks,
                                            compute_loss=compute_loss)
-
-                train_results, train_maps, _ = val.run(data_dict,
-                                                       batch_size=batch_size // WORLD_SIZE * 2,
-                                                       imgsz=imgsz,
-                                                       model=ema.ema,
-                                                       single_cls=single_cls,
-                                                       dataloader=train_loader,
-                                                       save_dir=save_dir,
-                                                       save_json=is_coco and final_epoch,
-                                                       verbose=nc < 50 and final_epoch,
-                                                       plots=plots and final_epoch,
-                                                       callbacks=callbacks,
-                                                       compute_loss=compute_loss,
-                                                       prefix='train')
+                try:
+                    train_results, train_maps, _ = val.run(data_dict,
+                                                           batch_size=batch_size // WORLD_SIZE * 2,
+                                                           imgsz=imgsz,
+                                                           model=ema.ema,
+                                                           single_cls=single_cls,
+                                                           dataloader=train_loader,
+                                                           save_dir=save_dir,
+                                                           save_json=is_coco and final_epoch,
+                                                           verbose=nc < 50 and final_epoch,
+                                                           plots=plots and final_epoch,
+                                                           callbacks=callbacks,
+                                                           compute_loss=compute_loss,
+                                                           prefix='train')
+                except:
+                    print('Unable to Create train results')
                 # yhat_train = pred
                 # y_train = dataset.labels
                 # yhat_test = results
                 # y_test = val_dataset.labels
                 # update_bcc_metrics(bcc_metrics, qtargets, yhat_train, y_train, yhat_test, y_test, epoch)
-            
+
             # Update best mAP
             fi = fitness(np.array(results).reshape(1, -1))  # weighted combination of [P, R, mAP@.5, mAP@.5-.95]
             if fi > best_fitness:
@@ -482,24 +506,25 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             if stopper(epoch=epoch, fitness=fi):
                 break
         try:
-            lb = LBs[-1]
-            if epoch > start_epoch and torch.abs((lb - old_lb) / old_lb) < bcc_params['convergence_threshold']:
+            if epoch > start_epoch and torch.abs((batch_lb - old_lb) / old_lb) < bcc_params['convergence_threshold']:
                 print('Convergence reached!')
                 break
-            old_lb = lb
+            else:
+                old_lb = batch_lb
         except IndexError:
             pass
 
         try:
-            del batch_pred_yolo, batch_pred_bcc, batch_pred_yolo_wh, batch_qtargets, batch_qtargets_yolo
+            del batch_pred_yolo, batch_pred_bcc, batch_qtargets, batch_qtargets_yolo
+            #, batch_pred_yolo_wh
         except UnboundLocalError:
             pass
-        
+
 
         torch.cuda.empty_cache()
 
         # end epoch ----------------------------------------------------------------------------------------------------
-    
+
     # end training -----------------------------------------------------------------------------------------------------
     if RANK in [-1, 0]:
         LOGGER.info(f'\n{epoch - start_epoch + 1} epochs completed in {(time.time() - t0) / 3600:.3f} hours.')
@@ -530,6 +555,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('--bcc_epoch', type=int, default=0, help='start-epoch for BCC+YOLO run; use -1 for no BCC.')
+    parser.add_argument('--confusion_matrix_diagonal_prior_hyp', type=float, default=1e-1, help='BCC parameter to determine the diagonal prior for the matrix.')
+    parser.add_argument('--convergence_threshold_hyp', type=float, default=1e-6, help='BCC parameter to determine the convergence threshold.')
     parser.add_argument('--qtfilter_epoch', type=int, default=-1, help='start-epoch for qt-filter; use -1 for no qt-filter.')
     parser.add_argument('--qt_thres_mode', type=str, default='', help="one of '', 'conf-count', 'entropy', 'conf-val'")
     parser.add_argument('--qt_thres', type=float, default=0.0, help="the threshold value.")
@@ -600,6 +627,7 @@ def main(opt):
 
     # DDP mode
     device = select_device(opt.device, batch_size=opt.batch_size)
+    print('device: ', device)
     if LOCAL_RANK != -1:
         from datetime import timedelta
         assert torch.cuda.device_count() > LOCAL_RANK, 'insufficient CUDA devices for DDP command'

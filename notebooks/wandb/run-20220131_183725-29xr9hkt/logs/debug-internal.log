@@ -1,0 +1,6 @@
+2022-01-31 18:37:26,984 INFO    MainThread:12140 [internal.py:wandb_internal():87] W&B internal server running at pid: 12140, started at: 2022-01-31 18:37:26.984373
+2022-01-31 18:39:12,769 WARNING MainThread:12140 [internal.py:is_dead():366] Internal process exiting, parent pid 9068 disappeared
+2022-01-31 18:39:12,769 ERROR   MainThread:12140 [internal.py:wandb_internal():142] Internal process shutdown.
+2022-01-31 18:39:12,769 INFO    HandlerThread:12140 [handler.py:finish():731] shutting down handler
+2022-01-31 18:39:13,778 INFO    SenderThread:12140 [sender.py:finish():1070] shutting down sender
+2022-01-31 18:39:13,779 INFO    MainThread:12140 [internal.py:handle_exit():77] Internal process exited

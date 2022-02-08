@@ -1,0 +1,78 @@
+2022-01-21 15:45:27,587 INFO    MainThread:34580 [internal.py:wandb_internal():87] W&B internal server running at pid: 34580, started at: 2022-01-21 15:45:27.587278
+2022-01-21 15:45:27,588 DEBUG   HandlerThread:34580 [handler.py:handle_request():130] handle_request: check_version
+2022-01-21 15:45:27,588 INFO    WriterThread:34580 [datastore.py:open_for_write():77] open: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220121_154526-12e3nrs1\run-12e3nrs1.wandb
+2022-01-21 15:45:27,590 DEBUG   SenderThread:34580 [sender.py:send():234] send: header
+2022-01-21 15:45:27,596 DEBUG   SenderThread:34580 [sender.py:send_request():248] send_request: check_version
+2022-01-21 15:45:27,662 DEBUG   SenderThread:34580 [sender.py:send():234] send: run
+2022-01-21 15:45:27,670 INFO    SenderThread:34580 [sender.py:_maybe_setup_resume():484] checking resume status for None/YOLOv5/12e3nrs1
+2022-01-21 15:45:28,663 INFO    HandlerThread:34580 [handler.py:finish():731] shutting down handler
+2022-01-21 15:45:28,679 INFO    WriterThread:34580 [datastore.py:close():281] close: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220121_154526-12e3nrs1\run-12e3nrs1.wandb
+2022-01-21 15:45:28,679 ERROR   MainThread:34580 [internal.py:wandb_internal():158] Thread SenderThread:
+Traceback (most recent call last):
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\apis\normalize.py", line 24, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\internal_api.py", line 784, in run_resume_status
+    response = self.gql(
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\lib\retry.py", line 102, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\internal_api.py", line 141, in execute
+    return self.client.execute(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\vendor\gql-0.2.0\gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\vendor\gql-0.2.0\gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\vendor\gql-0.2.0\gql\transport\requests.py", line 41, in execute
+    result = request.json()
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\requests\models.py", line 910, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\rb01243\Anaconda3\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Users\rb01243\Anaconda3\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+json.decoder.JSONDecodeError: Expecting value: line 1 column 1 (char 0)
+
+During handling of the above exception, another exception occurred:
+
+Traceback (most recent call last):
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\internal_util.py", line 52, in run
+    self._run()
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\internal_util.py", line 102, in _run
+    self._process(record)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\internal.py", line 291, in _process
+    self._sm.send(record)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\sender.py", line 236, in send
+    send_handler(record)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\sender.py", line 657, in send_run
+    error = self._maybe_setup_resume(run)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\sender.py", line 487, in _maybe_setup_resume
+    resume_status = self._api.run_resume_status(
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\apis\normalize.py", line 62, in wrapper
+    six.reraise(CommError, CommError(message, err), sys.exc_info()[2])
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\six.py", line 718, in reraise
+    raise value.with_traceback(tb)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\apis\normalize.py", line 24, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\internal_api.py", line 784, in run_resume_status
+    response = self.gql(
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\lib\retry.py", line 102, in __call__
+    result = self._call_fn(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\internal\internal_api.py", line 141, in execute
+    return self.client.execute(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\vendor\gql-0.2.0\gql\client.py", line 52, in execute
+    result = self._get_result(document, *args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\vendor\gql-0.2.0\gql\client.py", line 60, in _get_result
+    return self.transport.execute(document, *args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\vendor\gql-0.2.0\gql\transport\requests.py", line 41, in execute
+    result = request.json()
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\requests\models.py", line 910, in json
+    return complexjson.loads(self.text, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\json\__init__.py", line 346, in loads
+    return _default_decoder.decode(s)
+  File "C:\Users\rb01243\Anaconda3\lib\json\decoder.py", line 337, in decode
+    obj, end = self.raw_decode(s, idx=_w(s, 0).end())
+  File "C:\Users\rb01243\Anaconda3\lib\json\decoder.py", line 355, in raw_decode
+    raise JSONDecodeError("Expecting value", s, err.value) from None
+wandb.errors.CommError: Expecting value: line 1 column 1 (char 0)
+2022-01-21 15:45:30,704 INFO    MainThread:34580 [internal.py:handle_exit():77] Internal process exited

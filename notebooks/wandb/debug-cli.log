@@ -1,0 +1,45 @@
+2022-01-21 17:02:51 ERROR 404 response executing GraphQL.
+2022-01-21 17:02:51 ERROR 404 page not found
+
+2022-01-21 17:02:53 ERROR 404 response executing GraphQL.
+2022-01-21 17:02:53 ERROR 404 page not found
+
+2022-01-21 17:07:24 ERROR Traceback (most recent call last):
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\cli\cli.py", line 86, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\cli\cli.py", line 224, in login
+    settings=wandb.Settings(
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_settings.py", line 456, in __init__
+    self._update(kwargs, _source=self.Source.SETTINGS)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_settings.py", line 907, in _update
+    self._check_invalid(k, v)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_settings.py", line 882, in _check_invalid
+    raise UsageError("Settings field `{}`: {}".format(k, invalid))
+wandb.errors.UsageError: Settings field `base_url`: https://wandb.ai/dddetection is not a valid server address, did you mean https://api.wandb.ai?
+
+2022-01-21 17:08:00 ERROR Traceback (most recent call last):
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\cli\cli.py", line 86, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\cli\cli.py", line 224, in login
+    settings=wandb.Settings(
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_settings.py", line 456, in __init__
+    self._update(kwargs, _source=self.Source.SETTINGS)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_settings.py", line 907, in _update
+    self._check_invalid(k, v)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_settings.py", line 882, in _check_invalid
+    raise UsageError("Settings field `{}`: {}".format(k, invalid))
+wandb.errors.UsageError: Settings field `base_url`: https://wandb.ai is not a valid server address, did you mean https://api.wandb.ai?
+
+2022-01-21 17:08:06 ERROR Traceback (most recent call last):
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\cli\cli.py", line 86, in wrapper
+    return func(*args, **kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\cli\cli.py", line 235, in login
+    wandb.login(relogin=relogin, key=key, anonymous=anon_mode, host=host, force=True)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_login.py", line 65, in login
+    configured = _login(**kwargs)
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_login.py", line 274, in _login
+    wlogin.prompt_api_key()
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_login.py", line 209, in prompt_api_key
+    raise UsageError("api_key not configured (no-tty). call " + directive)
+wandb.errors.UsageError: api_key not configured (no-tty). call wandb login [your_api_key]
+

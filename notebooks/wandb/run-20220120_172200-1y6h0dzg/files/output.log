@@ -1,0 +1,195 @@
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      1216  models.common.Focus                     [1, 32, 3]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  3    156928  models.common.C3                        [128, 128, 3]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1    656896  models.common.SPP                       [512, 512, [5, 9, 13]]
+  9                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+C:\Users\rb01243\Anaconda3\lib\site-packages\torch\functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  ..\aten\src\ATen\native\TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 283 layers, 7063935 parameters, 7063935 gradients, 15.9 GFLOPs
+Transferred 308/362 items from yolov5s.pt
+Scaled weight_decay = 0.0005
+[34m[1moptimizer:[39m[22m SGD with parameter groups 59 weight, 62 weight (no decay), 62 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\iid-tvt\labels\train.cache' images and labels... 262 found, 18 missing, 0 empty, 0 corrupted: 100%|██████████| 280/280 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning '..\data\datasets\iid-tvt\labels\val.cache' images and labels... 67 found, 13 missing, 0 empty, 0 corrupted: 100%|██████████| 80/80 [00:00<?, ?it/s]
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 6.02, Best Possible Recall (BPR) = 1.0000
+imgs:
+tensor([[[[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]]],
+        [[[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]]]])
+Image sizes 640 train, 640 val
+Using 2 dataloader workers
+Logging results to [1mruns\train\test209915
+Starting training for 18 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+Only YOLO
+  0%|          | 0/140 [00:00<?, ?it/s]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+  0%|          | 0/140 [00:00<?, ?it/s]
+YOLOv5  2022-1-18 torch 1.10.1+cpu CPU
+[34m[1mhyperparameters: [39m[22mlr0=0.01, lrf=0.2, momentum=0.937, weight_decay=0.0005, warmup_epochs=3.0, warmup_momentum=0.8, warmup_bias_lr=0.1, box=0.05, obj=1.0, cls=0.5, cls_pw=1.0, obj_pw=1.0, iou_t=0.2, anchor_t=4.0, fl_gamma=0, hsv_h=0.015, hsv_s=0.7, hsv_v=0.4, degrees=0.0, translate=0.1, scale=0.5, shear=0.0, perspective=0.0, flipud=0.0, fliplr=0.5, mosaic=1.0, mixup=0.0, copy_paste=0.0
+[34m[1mTensorBoard: [39m[22mStart with 'tensorboard --logdir runs\train', view at http://localhost:6006/
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      1216  models.common.Focus                     [1, 32, 3]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  3    156928  models.common.C3                        [128, 128, 3]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1    656896  models.common.SPP                       [512, 512, [5, 9, 13]]
+  9                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+Model Summary: 283 layers, 7063935 parameters, 7063935 gradients, 15.9 GFLOPs
+Transferred 308/362 items from yolov5s.pt
+Scaled weight_decay = 0.0005
+[34m[1moptimizer:[39m[22m SGD with parameter groups 59 weight, 62 weight (no decay), 62 bias
+[34m[1mtrain: [39m[22mScanning '..\data\datasets\iid-tvt\labels\train.cache' images and labels... 262 found, 18 missing, 0 empty, 0 corrupted: 100%|██████████| 280/280 [00:00<?, ?it/s]
+[34m[1mtrain: [39m[22mbcc_epoch=-1, qtfilter_epoch=-1, qt_thres_mode=, qt_thres=0.0, hybrid_entropy_thres=0.0, hybrid_conf_thres=0.0, weights=yolov5s.pt, cfg=../src/models/yolov5s.yaml, data=../data/iid-tvt.yaml, hyp=../data/hyps/hyp.scratch.yaml, epochs=18, batch_size=2, imgsz=640, rect=False, resume=False, nosave=False, noval=False, noautoanchor=False, evolve=None, bucket=, cache=None, image_weights=False, device=, multi_scale=False, single_cls=False, adam=False, sync_bn=False, workers=8, project=runs/train, entity=None, name=test2099, exist_ok=False, quad=False, linear_lr=False, label_smoothing=0.0, upload_dataset=False, bbox_interval=-1, save_period=-1, artifact_alias=latest, local_rank=-1, freeze=0, patience=1100
+[34m[1mgithub: [39m[22mskipping check (not a git repository), for updates see https://github.com/ultralytics/yolov5
+[34m[1mval: [39m[22mScanning '..\data\datasets\iid-tvt\labels\val.cache' images and labels... 67 found, 13 missing, 0 empty, 0 corrupted: 100%|██████████| 80/80 [00:00<?, ?it/s]
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 6.02, Best Possible Recall (BPR) = 1.0000
+imgs:
+<class 'torch.Tensor'>
+tensor([[[[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]]],
+        [[[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]],
+         [[0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          ...,
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706],
+          [0.44706, 0.44706, 0.44706,  ..., 0.44706, 0.44706, 0.44706]]]])
+Image sizes 640 train, 640 val
+Using 2 dataloader workers
+Logging results to [1mruns\train\test209916
+Starting training for 18 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+Only YOLO
+  0%|          | 0/140 [00:00<?, ?it/s]C:\Users\rb01243\Anaconda3\lib\site-packages\torch\autocast_mode.py:141: UserWarning: User provided device_type of 'cuda', but CUDA is not available. Disabling
+  warnings.warn('User provided device_type of \'cuda\', but CUDA is not available. Disabling')
+  0%|          | 0/140 [00:00<?, ?it/s]
+Note: you may need to restart the kernel to use updated packages.
+Requirement already satisfied: seaborn in c:\users\rb01243\anaconda3\lib\site-packages (0.11.2)
+Requirement already satisfied: scipy>=1.0 in c:\users\rb01243\anaconda3\lib\site-packages (from seaborn) (1.7.1)
+Requirement already satisfied: matplotlib>=2.2 in c:\users\rb01243\anaconda3\lib\site-packages (from seaborn) (3.4.3)
+Requirement already satisfied: pandas>=0.23 in c:\users\rb01243\anaconda3\lib\site-packages (from seaborn) (1.3.4)
+Requirement already satisfied: numpy>=1.15 in c:\users\rb01243\anaconda3\lib\site-packages (from seaborn) (1.20.3)
+Requirement already satisfied: kiwisolver>=1.0.1 in c:\users\rb01243\anaconda3\lib\site-packages (from matplotlib>=2.2->seaborn) (1.3.1)
+Requirement already satisfied: python-dateutil>=2.7 in c:\users\rb01243\anaconda3\lib\site-packages (from matplotlib>=2.2->seaborn) (2.8.2)
+Requirement already satisfied: pillow>=6.2.0 in c:\users\rb01243\anaconda3\lib\site-packages (from matplotlib>=2.2->seaborn) (8.4.0)
+Requirement already satisfied: cycler>=0.10 in c:\users\rb01243\anaconda3\lib\site-packages (from matplotlib>=2.2->seaborn) (0.10.0)
+Requirement already satisfied: pyparsing>=2.2.1 in c:\users\rb01243\anaconda3\lib\site-packages (from matplotlib>=2.2->seaborn) (3.0.4)
+Requirement already satisfied: six in c:\users\rb01243\anaconda3\lib\site-packages (from cycler>=0.10->matplotlib>=2.2->seaborn) (1.16.0)
+Requirement already satisfied: pytz>=2017.3 in c:\users\rb01243\anaconda3\lib\site-packages (from pandas>=0.23->seaborn) (2021.3)

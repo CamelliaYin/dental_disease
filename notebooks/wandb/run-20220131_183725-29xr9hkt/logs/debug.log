@@ -1,0 +1,27 @@
+2022-01-31 18:37:25,599 INFO    MainThread:9068 [wandb_setup.py:_flush():71] setting env: {}
+2022-01-31 18:37:25,599 INFO    MainThread:9068 [wandb_setup.py:_flush():71] setting login settings: {'login_timeout': 30}
+2022-01-31 18:37:25,599 INFO    MainThread:9068 [wandb_setup.py:_flush():71] setting login settings: {}
+2022-01-31 18:37:25,599 INFO    MainThread:9068 [wandb_init.py:_log_setup():371] Logging user logs to C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220131_183725-29xr9hkt\logs\debug.log
+2022-01-31 18:37:25,599 INFO    MainThread:9068 [wandb_init.py:_log_setup():372] Logging internal logs to C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\dental_disease\notebooks\wandb\run-20220131_183725-29xr9hkt\logs\debug-internal.log
+2022-01-31 18:37:25,600 INFO    MainThread:9068 [wandb_init.py:_jupyter_setup():321] configuring jupyter hooks <wandb.sdk.wandb_init._WandbInit object at 0x000001E7A8D6EDC0>
+2022-01-31 18:37:25,600 INFO    MainThread:9068 [wandb_init.py:init():404] calling init triggers
+2022-01-31 18:37:25,600 INFO    MainThread:9068 [wandb_init.py:init():409] wandb.init called with sweep_config: {}
+config: {'weights': '..\\yolov5-master\\yolov5s.pt', 'cfg': '', 'data': '../data/All_Volunteers_IID.yaml', 'hyp': {'lr0': 0.01, 'lrf': 0.1, 'momentum': 0.937, 'weight_decay': 0.0005, 'warmup_epochs': 3.0, 'warmup_momentum': 0.8, 'warmup_bias_lr': 0.1, 'box': 0.05, 'cls': 0.5, 'cls_pw': 1.0, 'obj': 1.0, 'obj_pw': 1.0, 'iou_t': 0.2, 'anchor_t': 4.0, 'fl_gamma': 0.0, 'hsv_h': 0.015, 'hsv_s': 0.7, 'hsv_v': 0.4, 'degrees': 0.0, 'translate': 0.1, 'scale': 0.5, 'shear': 0.0, 'perspective': 0.0, 'flipud': 0.0, 'fliplr': 0.5, 'mosaic': 1.0, 'mixup': 0.0, 'copy_paste': 0.0}, 'epochs': 2, 'batch_size': 20, 'imgsz': 640, 'rect': False, 'resume': False, 'nosave': False, 'noval': False, 'noautoanchor': False, 'evolve': None, 'bucket': '', 'cache': None, 'image_weights': False, 'device': '0', 'multi_scale': False, 'single_cls': False, 'optimizer': 'SGD', 'sync_bn': False, 'workers': 8, 'project': '..\\yolov5-master\\runs\\train', 'name': 'testIIDZOON', 'exist_ok': False, 'quad': False, 'linear_lr': False, 'label_smoothing': 0.0, 'patience': 100, 'freeze': [0], 'save_period': -1, 'local_rank': -1, 'entity': None, 'upload_dataset': False, 'bbox_interval': -1, 'artifact_alias': 'latest', 'save_dir': '..\\yolov5-master\\runs\\train\\testIIDZOON7'}
+2022-01-31 18:37:25,600 INFO    MainThread:9068 [wandb_init.py:init():460] starting backend
+2022-01-31 18:37:25,600 INFO    MainThread:9068 [backend.py:_multiprocessing_setup():99] multiprocessing start_methods=spawn, using: spawn
+2022-01-31 18:37:25,604 INFO    MainThread:9068 [backend.py:ensure_launched():216] starting backend process...
+2022-01-31 18:37:25,672 WARNING MainThread:9068 [wandb_init.py:init():952] interrupted
+Traceback (most recent call last):
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_init.py", line 931, in init
+    run = wi.init()
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\wandb_init.py", line 467, in init
+    backend.ensure_launched()
+  File "C:\Users\rb01243\Anaconda3\lib\site-packages\wandb\sdk\backend\backend.py", line 219, in ensure_launched
+    self.wandb_process.start()
+  File "C:\Users\rb01243\Anaconda3\lib\multiprocessing\process.py", line 121, in start
+    self._popen = self._Popen(self)
+  File "C:\Users\rb01243\Anaconda3\lib\multiprocessing\context.py", line 327, in _Popen
+    return Popen(process_obj)
+  File "C:\Users\rb01243\Anaconda3\lib\multiprocessing\popen_spawn_win32.py", line 95, in __init__
+    set_spawning_popen(None)
+KeyboardInterrupt

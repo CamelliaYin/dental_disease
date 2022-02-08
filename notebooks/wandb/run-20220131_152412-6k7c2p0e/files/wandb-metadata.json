@@ -1,0 +1,29 @@
+{
+    "os": "Windows-10-10.0.19042-SP0",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-01-31T15:24:16.548934",
+    "startedAt": "2022-01-31T15:24:12.432918",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "cpu_count": 20,
+    "cuda": null,
+    "args": [
+        "--data",
+        "../data/All_Volunteers_Crowdsourced.yaml",
+        "--batch-size",
+        "20",
+        "--epochs",
+        "15",
+        "--bcc_epoch",
+        "0",
+        "--name",
+        "Expset2_all_cyolo"
+    ],
+    "state": "running",
+    "program": "../src/train.py",
+    "codePath": "..\\src\\train.py",
+    "host": "UWS65067",
+    "username": "rb01243",
+    "executable": "C:\\Users\\rb01243\\Anaconda3\\python.exe"
+}
