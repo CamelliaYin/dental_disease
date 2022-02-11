@@ -5,4 +5,4 @@ test: All_Volunteers_Crowdsourced/images/test # test images
 
 # Classes
 nc: 3  # number of classes
-names: ['calculus-plaque', 'dental-caries', 'bone-loss']  # class names
+names: ['bone-loss', 'dental-caries', 'calculus-plaque']  # class names

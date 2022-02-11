@@ -223,9 +223,14 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         model = torch.nn.SyncBatchNorm.convert_sync_batchnorm(model).to(device)
         LOGGER.info('Using SyncBatchNorm()')
 
+    # removes augmentation when using Cyolo
+    aug = True
+    if bcc_epoch != -1:
+        aug = False
+    print('Augmentation is: ', aug)
     # Trainloader
     train_loader, dataset = create_dataloader(train_path, imgsz, batch_size // WORLD_SIZE, gs, single_cls,
-                                              hyp=hyp, augment=False, cache=opt.cache, rect=opt.rect, rank=RANK,
+                                              hyp=hyp, augment=aug, cache=opt.cache, rect=opt.rect, rank=RANK,
                                               workers=workers, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '))
 
@@ -338,6 +343,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
                 batch_size = np.where(dataset.batch==i)[0].shape[0]
                 target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
+                target_volunteers_bcc = target_volunteers_bcc.to(device)
                 # batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
                 #del target_volunteers, batch_volunteers, batch_volunteers_list, batch_filenames
                 #torch.cuda.empty_cache()
@@ -379,6 +385,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     # print("batch_pcm['prior'].size(): ", batch_pcm['prior'].size())
                     batch_qtargets, _, batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
                     # print('batch_qtargets', batch_qtargets)
+                    # print('batch_qtargets size', batch_qtargets.size())
                     # print('batch_lb', batch_lb)
                     # exit().asd123
                     #batch_pcm['variational']
