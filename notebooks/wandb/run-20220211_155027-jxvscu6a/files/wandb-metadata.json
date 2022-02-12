@@ -1,0 +1,31 @@
+{
+    "os": "Windows-10-10.0.19042-SP0",
+    "python": "3.9.7",
+    "heartbeatAt": "2022-02-11T15:50:31.740027",
+    "startedAt": "2022-02-11T15:50:27.422222",
+    "docker": null,
+    "gpu": "NVIDIA GeForce RTX 3090",
+    "gpu_count": 1,
+    "cpu_count": 20,
+    "cuda": null,
+    "args": [
+        "--data",
+        "../data/All_Volunteers_Calc_Removed_Crowdsourced.yaml",
+        "--batch-size",
+        "25",
+        "--epochs",
+        "10",
+        "--bcc_epoch",
+        "0",
+        "--device",
+        "0",
+        "--name",
+        "ex1_Zoon_without_Calc_10epo_Test_Val_CS"
+    ],
+    "state": "running",
+    "program": "../src/train.py",
+    "codePath": "..\\src\\train.py",
+    "host": "UWS65067",
+    "username": "rb01243",
+    "executable": "C:\\Users\\rb01243\\Anaconda3\\python.exe"
+}

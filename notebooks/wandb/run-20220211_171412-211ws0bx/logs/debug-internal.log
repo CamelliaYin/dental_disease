@@ -1,0 +1,179 @@
+2022-02-11 17:14:14,159 INFO    MainThread:28888 [internal.py:wandb_internal():89] W&B internal server running at pid: 28888, started at: 2022-02-11 17:14:14.159309
+2022-02-11 17:14:14,160 INFO    WriterThread:28888 [datastore.py:open_for_write():77] open: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\run-211ws0bx.wandb
+2022-02-11 17:14:14,160 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: check_version
+2022-02-11 17:14:14,165 DEBUG   SenderThread:28888 [sender.py:send():235] send: header
+2022-02-11 17:14:14,165 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: check_version
+2022-02-11 17:14:14,250 DEBUG   SenderThread:28888 [sender.py:send():235] send: run
+2022-02-11 17:14:14,259 INFO    SenderThread:28888 [sender.py:_maybe_setup_resume():489] checking resume status for None/YOLOv5/211ws0bx
+2022-02-11 17:14:14,692 INFO    SenderThread:28888 [dir_watcher.py:__init__():169] watching files in: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files
+2022-02-11 17:14:14,692 INFO    SenderThread:28888 [sender.py:_start_run_threads():809] run started: 211ws0bx with start time 1644599652
+2022-02-11 17:14:14,692 DEBUG   SenderThread:28888 [sender.py:send():235] send: summary
+2022-02-11 17:14:14,692 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: run_start
+2022-02-11 17:14:14,693 INFO    SenderThread:28888 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-11 17:14:15,699 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\wandb-summary.json
+2022-02-11 17:14:17,129 DEBUG   HandlerThread:28888 [meta.py:__init__():36] meta init
+2022-02-11 17:14:17,129 DEBUG   HandlerThread:28888 [meta.py:__init__():50] meta init done
+2022-02-11 17:14:17,129 DEBUG   HandlerThread:28888 [meta.py:probe():210] probe
+2022-02-11 17:14:17,144 DEBUG   HandlerThread:28888 [meta.py:_save_pip():54] save pip
+2022-02-11 17:14:17,145 DEBUG   HandlerThread:28888 [meta.py:_save_pip():68] save pip done
+2022-02-11 17:14:17,145 DEBUG   HandlerThread:28888 [meta.py:_save_conda():75] save conda
+2022-02-11 17:14:17,718 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\requirements.txt
+2022-02-11 17:14:17,718 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\conda-environment.yaml
+2022-02-11 17:14:19,732 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:14:21,743 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:14:25,776 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:14:27,176 DEBUG   HandlerThread:28888 [meta.py:_save_conda():85] save conda done
+2022-02-11 17:14:27,176 DEBUG   HandlerThread:28888 [meta.py:probe():248] probe done
+2022-02-11 17:14:27,180 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:14:27,180 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:14:27,328 DEBUG   SenderThread:28888 [sender.py:send():235] send: config
+2022-02-11 17:14:27,328 DEBUG   SenderThread:28888 [sender.py:send():235] send: files
+2022-02-11 17:14:27,328 INFO    SenderThread:28888 [sender.py:_save_file():944] saving file wandb-metadata.json with policy now
+2022-02-11 17:14:27,778 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:14:27,778 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\conda-environment.yaml
+2022-02-11 17:14:27,779 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_created():217] file/dir created: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\wandb-metadata.json
+2022-02-11 17:14:27,817 INFO    Thread-11 :28888 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\AppData\Local\Temp\tmpf00eczt_wandb\1osdlofk-wandb-metadata.json
+2022-02-11 17:14:39,718 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:14:39,718 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:14:45,931 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\config.yaml
+2022-02-11 17:14:48,073 DEBUG   SenderThread:28888 [sender.py:send():235] send: stats
+2022-02-11 17:14:54,884 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:14:54,884 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:14:58,041 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:02,085 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:10,038 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:15:10,038 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:15:21,149 DEBUG   SenderThread:28888 [sender.py:send():235] send: stats
+2022-02-11 17:15:25,215 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:15:25,215 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:15:26,311 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:30,362 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:34,395 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:36,414 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:40,409 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:15:40,409 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:15:40,440 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:44,467 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:46,483 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:50,514 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:54,176 DEBUG   SenderThread:28888 [sender.py:send():235] send: stats
+2022-02-11 17:15:54,533 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:15:55,558 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:15:55,558 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:15:58,573 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:02,601 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:06,648 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:10,686 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:10,717 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:16:10,717 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:16:14,726 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:18,750 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:22,796 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:25,901 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:16:25,901 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:16:26,835 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:27,164 DEBUG   SenderThread:28888 [sender.py:send():235] send: stats
+2022-02-11 17:16:30,874 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:34,911 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:36,852 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: pause
+2022-02-11 17:16:36,852 INFO    HandlerThread:28888 [handler.py:handle_request_pause():620] stopping system metrics thread
+2022-02-11 17:16:36,890 DEBUG   SenderThread:28888 [sender.py:send():235] send: stats
+2022-02-11 17:16:38,934 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:41,056 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: stop_status
+2022-02-11 17:16:41,056 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: stop_status
+2022-02-11 17:16:48,868 DEBUG   SenderThread:28888 [sender.py:send():235] send: telemetry
+2022-02-11 17:16:48,869 DEBUG   SenderThread:28888 [sender.py:send():235] send: exit
+2022-02-11 17:16:48,869 INFO    SenderThread:28888 [sender.py:send_exit():371] handling exit code: 0
+2022-02-11 17:16:48,869 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-11 17:16:48,869 INFO    SenderThread:28888 [sender.py:send_exit():373] handling runtime: 142
+2022-02-11 17:16:48,870 INFO    SenderThread:28888 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-11 17:16:48,870 INFO    SenderThread:28888 [sender.py:send_exit():379] send defer
+2022-02-11 17:16:48,870 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: poll_exit
+2022-02-11 17:16:48,870 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:48,870 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 0
+2022-02-11 17:16:48,870 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:48,871 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 0
+2022-02-11 17:16:48,871 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 1
+2022-02-11 17:16:48,871 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:48,871 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 1
+2022-02-11 17:16:48,871 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:48,871 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 1
+2022-02-11 17:16:48,871 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 2
+2022-02-11 17:16:48,871 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:48,871 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 2
+2022-02-11 17:16:48,871 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:48,871 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 2
+2022-02-11 17:16:48,871 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 3
+2022-02-11 17:16:48,872 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:48,872 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 3
+2022-02-11 17:16:48,872 DEBUG   SenderThread:28888 [sender.py:send():235] send: summary
+2022-02-11 17:16:48,872 INFO    SenderThread:28888 [sender.py:_save_file():944] saving file wandb-summary.json with policy end
+2022-02-11 17:16:48,872 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:48,873 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 3
+2022-02-11 17:16:48,873 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 4
+2022-02-11 17:16:48,873 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:48,873 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 4
+2022-02-11 17:16:48,873 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:48,873 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 4
+2022-02-11 17:16:48,978 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-11 17:16:49,026 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:49,026 INFO    Thread-8  :28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\wandb-summary.json
+2022-02-11 17:16:49,052 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 5
+2022-02-11 17:16:49,052 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: poll_exit
+2022-02-11 17:16:49,052 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:49,052 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 5
+2022-02-11 17:16:49,052 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:49,053 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 5
+2022-02-11 17:16:49,053 INFO    SenderThread:28888 [dir_watcher.py:finish():283] shutting down directory watcher
+2022-02-11 17:16:49,166 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-11 17:16:50,028 INFO    SenderThread:28888 [dir_watcher.py:_on_file_modified():230] file/dir modified: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\config.yaml
+2022-02-11 17:16:50,028 INFO    SenderThread:28888 [dir_watcher.py:finish():313] scan: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files
+2022-02-11 17:16:50,028 INFO    SenderThread:28888 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\conda-environment.yaml conda-environment.yaml
+2022-02-11 17:16:50,028 INFO    SenderThread:28888 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\config.yaml config.yaml
+2022-02-11 17:16:50,029 INFO    SenderThread:28888 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log output.log
+2022-02-11 17:16:50,029 INFO    SenderThread:28888 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\requirements.txt requirements.txt
+2022-02-11 17:16:50,034 INFO    SenderThread:28888 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\wandb-metadata.json wandb-metadata.json
+2022-02-11 17:16:50,035 INFO    SenderThread:28888 [dir_watcher.py:finish():327] scan save: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\wandb-summary.json wandb-summary.json
+2022-02-11 17:16:50,039 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 6
+2022-02-11 17:16:50,039 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: poll_exit
+2022-02-11 17:16:50,039 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:50,039 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 6
+2022-02-11 17:16:50,041 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:50,041 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 6
+2022-02-11 17:16:50,041 INFO    SenderThread:28888 [file_pusher.py:finish():177] shutting down file pusher
+2022-02-11 17:16:50,152 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-11 17:16:50,152 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: poll_exit
+2022-02-11 17:16:50,257 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-11 17:16:50,257 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: poll_exit
+2022-02-11 17:16:50,364 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: poll_exit
+2022-02-11 17:16:50,364 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: poll_exit
+2022-02-11 17:16:50,510 INFO    Thread-12 :28888 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\conda-environment.yaml
+2022-02-11 17:16:50,519 INFO    Thread-13 :28888 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\config.yaml
+2022-02-11 17:16:50,519 INFO    Thread-15 :28888 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\requirements.txt
+2022-02-11 17:16:50,528 INFO    Thread-14 :28888 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\output.log
+2022-02-11 17:16:50,530 INFO    Thread-16 :28888 [upload_job.py:push():137] Uploaded file C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\files\wandb-summary.json
+2022-02-11 17:16:50,734 INFO    Thread-7  :28888 [sender.py:transition_state():392] send defer: 7
+2022-02-11 17:16:50,734 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:50,734 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 7
+2022-02-11 17:16:50,734 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:50,734 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 7
+2022-02-11 17:16:51,135 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 8
+2022-02-11 17:16:51,136 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:51,136 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 8
+2022-02-11 17:16:51,136 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:51,136 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 8
+2022-02-11 17:16:51,136 INFO    SenderThread:28888 [sender.py:transition_state():392] send defer: 9
+2022-02-11 17:16:51,136 DEBUG   SenderThread:28888 [sender.py:send():235] send: final
+2022-02-11 17:16:51,137 DEBUG   SenderThread:28888 [sender.py:send():235] send: footer
+2022-02-11 17:16:51,137 DEBUG   HandlerThread:28888 [handler.py:handle_request():131] handle_request: defer
+2022-02-11 17:16:51,137 INFO    HandlerThread:28888 [handler.py:handle_request_defer():154] handle defer: 9
+2022-02-11 17:16:51,137 DEBUG   SenderThread:28888 [sender.py:send_request():249] send_request: defer
+2022-02-11 17:16:51,137 INFO    SenderThread:28888 [sender.py:send_request_defer():388] handle sender defer: 9
+2022-02-11 17:16:56,574 WARNING MainThread:28888 [internal.py:is_dead():380] Internal process exiting, parent pid 30104 disappeared
+2022-02-11 17:16:56,574 ERROR   MainThread:28888 [internal.py:wandb_internal():148] Internal process shutdown.
+2022-02-11 17:16:57,181 INFO    WriterThread:28888 [datastore.py:close():281] close: C:\Users\rb01243\OneDrive - University of Surrey\Documents\GitHub\miccai\miccai_dental_disease\notebooks\wandb\run-20220211_171412-211ws0bx\run-211ws0bx.wandb
+2022-02-11 17:16:57,181 INFO    HandlerThread:28888 [handler.py:finish():739] shutting down handler
+2022-02-11 17:16:57,181 INFO    SenderThread:28888 [sender.py:finish():1075] shutting down sender
+2022-02-11 17:16:57,181 INFO    SenderThread:28888 [file_pusher.py:finish():177] shutting down file pusher
+2022-02-11 17:16:57,181 INFO    SenderThread:28888 [file_pusher.py:join():182] waiting for file pusher
+2022-02-11 17:16:57,183 INFO    MainThread:28888 [internal.py:handle_exit():79] Internal process exited
