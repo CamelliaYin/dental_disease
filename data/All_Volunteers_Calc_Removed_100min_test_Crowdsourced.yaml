@@ -1,0 +1,8 @@
+path: ../data/datasets # dataset root dir WARNING: THE FILE PATH IS FROM THE NOTEBOOK YOU ARE RUNNING NOT WHERE THIS YAML FILE IS SAVED
+train: All_Volunteers_Calc_Removed_100min_test_Crowdsourced/images/train # train images (relative to 'path') images
+val: All_Volunteers_Calc_Removed_100min_test_IID/images/val # val images (relative to 'path')  images
+test: All_Volunteers_Calc_Removed_100min_test_Crowdsourced/images/test # test images
+
+# Classes
+nc: 2  # number of classes
+names: ['bone-loss', 'dental-caries']  # class names

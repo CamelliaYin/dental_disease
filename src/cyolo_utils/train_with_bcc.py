@@ -35,7 +35,7 @@ def extract_volunteers(dataDict):
                         id_map[vol] = count
                         count += 1
     VOL_ID_MAP = id_map
-    return (id_map)
+    return (VOL_ID_MAP)
 
 
 def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45):
@@ -246,17 +246,23 @@ def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_
             # Don't need a loop for anchor-boxes as we are simply repeating Na times below.
             targets_per_iv_bcc_list = []
             for v in range(n_vols):
-                targets_per_iv = target_vols_per_i[target_vols_per_i[:, -1] == v][:, :-1]
-                c, x, y, w, h = targets_per_iv.T # w and h are ignored
+                # volunteer did classify this image
+                if v in target_vols_per_i[:, -1]:
+                    targets_per_iv = target_vols_per_i[target_vols_per_i[:, -1] == v][:, :-1]
+                    c, x, y, w, h = targets_per_iv.T # w and h are ignored
 
-                x_cell_ids = torch.where(x<1, x/g_frac, torch.ones(x.shape)*(np.ceil(1/g_frac))).int()
-                y_cell_ids = torch.where(y<1, y/g_frac, torch.ones(y.shape)*(np.ceil(1/g_frac))).int()
-                gc_ids = ((y_cell_ids)*(np.ceil(1/g_frac)) + x_cell_ids).long()
-                vigcwh_list.append(torch.cat([torch.tensor([v, i, g])*torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
-                
-                targets_per_iv_bcc = BACKGROUND_CLASS_ID * torch.ones(S_g)
-                targets_per_iv_bcc[gc_ids] = c
-                targets_per_iv_bcc_list.append(targets_per_iv_bcc)
+                    x_cell_ids = torch.where(x<1, x/g_frac, torch.ones(x.shape)*(np.ceil(1/g_frac))).int()
+                    y_cell_ids = torch.where(y<1, y/g_frac, torch.ones(y.shape)*(np.ceil(1/g_frac))).int()
+                    gc_ids = ((y_cell_ids)*(np.ceil(1/g_frac)) + x_cell_ids).long()
+                    vigcwh_list.append(torch.cat([torch.tensor([v, i, g])*torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+
+                    targets_per_iv_bcc = BACKGROUND_CLASS_ID * torch.ones(S_g)
+                    targets_per_iv_bcc[gc_ids] = c
+                    targets_per_iv_bcc_list.append(targets_per_iv_bcc)
+                # volunteer did not classify this image
+                else:
+                    targets_per_iv_bcc = -1 * torch.ones(S_g)
+                    targets_per_iv_bcc_list.append(targets_per_iv_bcc)
             targets_per_iga_bcc = torch.stack(tuple(targets_per_iv_bcc_list)).T
             targets_per_ig_bcc = targets_per_iga_bcc.repeat((Na, 1))
             targets_per_ig_bcc_list.append(targets_per_ig_bcc)

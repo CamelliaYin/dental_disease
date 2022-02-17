@@ -4,6 +4,7 @@ import numpy as np
 import torch
 from collections import defaultdict
 
+
 MAX_GRID_CELLS = 99999
 BACKGROUND_CLASS_ID = 2
 BKGD_WH_IS_MEAN = False

@@ -296,6 +296,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     compute_loss = ComputeLoss(model)  # init loss class
     if bcc_epoch != -1:
         cls_num = data_dict['nc'] + 1
+        BACKGROUND_CLASS_ID = data_dict['nc']
         bcc_params = init_bcc_params(K=len(vol_id_map), classes=cls_num, diagPrior=opt.confusion_matrix_diagonal_prior_hyp, cnvrgThresh=opt.convergence_threshold_hyp)
         bcc_params['n_epoch'] = epochs
         batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
@@ -343,12 +344,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
                 batch_size = np.where(dataset.batch==i)[0].shape[0]
                 target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
-                target_volunteers_bcc = target_volunteers_bcc.to(device)
+                target_volunteers_bcc = target_volunteers_bcc.to(device) # adds to cuda
                 # batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
-                #del target_volunteers, batch_volunteers, batch_volunteers_list, batch_filenames
-                #torch.cuda.empty_cache()
             ni = i + nb * epoch  # number integrated batches (since train start)
-            imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
+            imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0 TODO: Is the value 255 hard coded? it could be screwing the results??
 
             # Warmup
             if ni <= nw:
@@ -374,26 +373,14 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 if bcc_flag:
                     model.eval()
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo # gets the cyolo prdictions for the batch
-                    batch_pred_bcc, _, _ = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
-                    # print('target_volunteers_bcc: ', target_volunteers_bcc)
-                    # print('target_volunteers_bcc size: ', target_volunteers_bcc.size())
-                    # print('batch_pred_bcc: ', batch_pred_bcc)
-                    # print('batch_pred_bcc.size(): ', batch_pred_bcc.size())
-                    # print("batch_pcm['variational']: ", batch_pcm['variational'])
-                    # print("batch_pcm['variational'].size(): ", batch_pcm['variational'].size())
-                    # print("batch_pcm['prior']: ", batch_pcm['prior'])
-                    # print("batch_pcm['prior'].size(): ", batch_pcm['prior'].size())
-                    batch_qtargets, _, batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
-                    # print('batch_qtargets', batch_qtargets)
-                    # print('batch_qtargets size', batch_qtargets.size())
-                    # print('batch_lb', batch_lb)
-                    # exit().asd123
+                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
+                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
                     #batch_pcm['variational']
                     #batch_lb = batch_lb.tolist()
                     #torch.cuda.empty_cache()
                     with torch.no_grad():
                         batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
-                        batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
+                        batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :] # removed targets with background as the class
                         nms_thres = 0.2 #nms thres for q(t)
                         # orig_count = batch_qtargets_yolo.shape[0]
                         # batch_qtargets_yolo = perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres)
@@ -750,5 +737,6 @@ def run(**kwargs):
 if __name__ == "__main__":
     opt = parse_opt()
     main(opt)
+
 #torch.cuda.empty_cache()
 

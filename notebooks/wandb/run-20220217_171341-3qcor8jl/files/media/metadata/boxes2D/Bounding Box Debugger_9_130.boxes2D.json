@@ -1,0 +1,1 @@
+{"box_data": [{"position": {"minX": 166.25, "minY": 254.75, "maxX": 229.75, "maxY": 386.75}, "class_id": 1, "box_caption": "dental-caries 0.001", "scores": {"class_score": 0.00115966796875}, "domain": "pixel"}], "class_labels": {"0": "bone-loss", "1": "dental-caries"}}
