@@ -736,6 +736,23 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
+    # #opt.data = '../data/All_Volunteers_Calc_Removed_Crowdsourced.yaml'
+    # #opt.data = '../data/All_Volunteers_Calc_Removed_testtesttest_Crowdsourced.yaml'
+    # opt.data = '../data/cyolo.yaml'
+    # #opt.data = '../data/iid-tvt.yaml'
+    # opt.epochs = 50
+    # opt.batch_size = 25
+    # opt.bcc_epoch = 0
+    # opt.device = 0
+    # opt.name = 'test'
+
+    opt.data = '../data/single_toy_bcc.yaml'
+    opt.exist_ok = False
+    opt.bcc_epoch = 0
+    opt.batch_size = 16
+    opt.epochs = 5
+    torch.autograd.set_detect_anomaly(True)
+
     main(opt)
 
 #torch.cuda.empty_cache()
