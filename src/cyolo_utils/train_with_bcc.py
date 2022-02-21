@@ -17,8 +17,8 @@ import torch
 DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
 
 # This mapping is followed throughout for volunteer ids. TODO: This only works if there are only these volunteers, it doesnt account for otherers (fixed using extract_volunteers)
-VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
-SINGLE_VOL_ID_MAP = {'Camellia': 0}
+# VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
+# SINGLE_VOL_ID_MAP = {'Camellia': 0}
 
 # this creates a dictionary for all volunteers
 def extract_volunteers(dataDict):
@@ -62,7 +62,7 @@ def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45)
 
 # Reads the "volunteers" file (generally located at train/volunteers/<im_name>.txt)
 # as a filename:volunteertensor dictionary.
-def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=VOL_ID_MAP):
+def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=[]):
     vol_path = os.path.join(data_dict[mode], '..', '..','volunteers')
     vol_mode_path = os.path.join(vol_path, mode)
     file_names = [x for x in os.listdir(vol_mode_path) if not x.startswith('.')]
@@ -230,12 +230,13 @@ def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mo
 
 # This takes in a tensor in the native target volunteer format (image-class-x-y-w-h-volunteer; targets concatenated with volunteer ids)
 # to the BCC format (i.e., volunteer-image-gridchoice-gridcell-width-height) format.
-def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_G, batch_size=None, vol_id_map=VOL_ID_MAP):
+def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_G, batch_size=None, vol_id_map=[]):
     n_images = batch_size
     n_vols = len(vol_id_map)
     Ng = G.shape[0]
 
-    vigcwh_list = [] # [v]olunteer, [i]mage, [g]rid choice, grid [c]ell id, [w]idth, [h]eight    
+    vigcwh_list = [] # [v]olunteer, [i]mage, [g]rid choice, grid [c]ell id, [w]idth, [h]eight
+    # grid cell id with deci, but why
     targets_per_i_bcc_list = []
     for i in range(n_images):
         target_vols_per_i = target_volunteers[target_volunteers[:, 0] == i][:, 1:]
@@ -283,6 +284,7 @@ def xywhpc1ck_to_cxywh(y):
 def nn_predict(model, x, imgsz, offgrid_translate_flag=True, normalize_flag=True, transform_format_flag=True):
     # update of approximating posterior for the true labels and confusion matrices
     # get current predictions from a neural network
+    # x is the input with shape (i, na, 640, 640)
     y = model(x)[0]
     if offgrid_translate_flag:
         # TODO: A quickfix here is to force-translate any point lying outside the grid to the nearest grid cell.

@@ -29,10 +29,10 @@ from torch.optim import Adam, SGD, lr_scheduler
 from tqdm import tqdm
 import yaml
 
-from cyolo_utils.train_with_bcc import VOL_ID_MAP, SINGLE_VOL_ID_MAP, \
+from cyolo_utils.train_with_bcc import \
     convert_target_volunteers_yolo2bcc, get_file_volunteers_dict, extract_volunteers, \
     nn_predict, init_bcc_params, compute_param_confusion_matrices, init_metrics
-from cyolo_utils.label_converter import BACKGROUND_CLASS_ID, qt2yolo_optimized, yolo2bcc_newer
+from cyolo_utils.label_converter import BACKGROUND_CLASS_ID, qt2yolo_optimized, yolo2bcc_newer, qt2yolo_soft
 from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
 
 FILE = Path(__file__).absolute()
@@ -71,7 +71,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     save_dir, epochs, batch_size, weights, single_cls, evolve, data, cfg, resume, noval, nosave, workers, freeze, = \
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.weights, opt.single_cls, opt.evolve, opt.data, opt.cfg, \
         opt.resume, opt.noval, opt.nosave, opt.workers, opt.freeze
-    vol_id_map = SINGLE_VOL_ID_MAP if 'single' in data else VOL_ID_MAP
+    vol_id_map = 0 if 'single' in data else {0,1,2,3}
 
 
     bcc_epoch = opt.bcc_epoch
@@ -343,6 +343,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
                 batch_size = np.where(dataset.batch==i)[0].shape[0]
                 target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
+                ## target_volunteers_bcc is the list of class according vigcwh, (8,25200,1), and apparently most are 2 as bg
+                ## [v]olunteer, [i]mage, [g]rid choice, grid [c]ell id, [w]idth, [h]eight, in shape (78,6)
                 target_volunteers_bcc = target_volunteers_bcc.to(device)
                 # batch_cstargets_bcc = (cstargets_bcc[dataset.batch == i]).to(device)
                 #del target_volunteers, batch_volunteers, batch_volunteers_list, batch_filenames
@@ -374,7 +376,32 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 if bcc_flag:
                     model.eval()
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo # gets the cyolo prdictions for the batch
-                    batch_pred_bcc, _, _ = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
+                    # given transform_format_flag = False, we have (x, y, w, h, prob, c1, c2)
+                    # shape: #image x 25200 x 7
+                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
+                    # transferprob(), take out the log p
+                    # shape: #image x 25200 x 3 (last entry is bg)
+                    batch_pred_bcc_8 = batch_pred_bcc[:, :19200, :]
+                    batch_pred_bcc_rs_8 = torch.reshape(batch_pred_bcc_8, (8, 3, 80, 80, 3))
+                    batch_pred_bcc_4 = batch_pred_bcc[:, 19200:24000, :]
+                    batch_pred_bcc_rs_4 = torch.reshape(batch_pred_bcc_4, (8, 3, 40, 40, 3))
+                    batch_pred_bcc_2 = batch_pred_bcc[:, 24000:25201, :]
+                    batch_pred_bcc_rs_2 = torch.reshape(batch_pred_bcc_2, (8, 3, 20, 20, 3))
+                    # reshape the previous out for later use in updating pred
+
+                    # pred[0] = torch.cat((pred[0][..., :5], batch_pred_bcc_rs_8), 4)
+                    # pred[1] = torch.cat((pred[1][..., :5], batch_pred_bcc_rs_4), 4)
+                    # pred[2] = torch.cat((pred[2][..., :5], batch_pred_bcc_rs_2), 4)
+
+                    # not updating pred directly, but create a new list and append
+                    pred_new = []
+                    bpbrs = [batch_pred_bcc_rs_8, batch_pred_bcc_rs_4, batch_pred_bcc_rs_2]
+                    for i in range(len(pred)):
+                        elm = torch.cat([pred[i][..., :5], bpbrs[i]], 4)
+                        pred_new.append(elm)
+
+                    # batch_pred_bcc_80 = batch_pred_bcc[: ,80x80x3, :]
+                    # torch.Size([image, 25200, 3]) nn_predict used for bcc, after log
                     # print('target_volunteers_bcc: ', target_volunteers_bcc)
                     # print('target_volunteers_bcc size: ', target_volunteers_bcc.size())
                     # print('batch_pred_bcc: ', batch_pred_bcc)
@@ -383,7 +410,17 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     # print("batch_pcm['variational'].size(): ", batch_pcm['variational'].size())
                     # print("batch_pcm['prior']: ", batch_pcm['prior'])
                     # print("batch_pcm['prior'].size(): ", batch_pcm['prior'].size())
-                    batch_qtargets, _, batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
+                    batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode = torchMode, device=device, invert_classes = False)
+                    #############################################################
+                    # try: sample from the distribution given the parameter q_pi
+                    # but not working as all entries are 0.333
+                    # m = torch.distributions.dirichlet.Dirichlet(q_pi)
+                    # msample = m.sample()
+                    # dir_prob = torch.softmax(m.log_prob(msample), dim=1)
+                    # print('dir_prob', dir_prob)
+                    ##############################################################
+                    ### loss function: batch_pred_bcc x batch_qtargets elementwise, to note that we get negative output
+                    ### so we need to have mins the output later
                     # print('batch_qtargets', batch_qtargets)
                     # print('batch_qtargets size', batch_qtargets.size())
                     # print('batch_lb', batch_lb)
@@ -392,8 +429,21 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     #batch_lb = batch_lb.tolist()
                     #torch.cuda.empty_cache()
                     with torch.no_grad():
-                        batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
-                        batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :]
+                        # batch_qtargets_yolo = qt2yolo_optimized(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
+
+
+                        # removed hard label and attached soft labels in the end (201600 = 25200 x 8)
+                        batch_qtargets_yolo_rm_c = qt2yolo_soft(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
+                        # image, class, 4location
+                        batch_qtargets_lowdim = batch_qtargets.reshape((-1,)+batch_qtargets.shape[2:])
+                        batch_qtargets_yolo = torch.concat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim = -1) # imageid, 4 locations, 3 cls
+                        # for each one of 201600
+                        # NOW: image id, x, y, w, h, c0, c1, c2 (note c2 is bg)
+                        # shape: 201600 x 8
+
+
+
+                        # batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :] # filtering out if class ==2
                         nms_thres = 0.2 #nms thres for q(t)
                         # orig_count = batch_qtargets_yolo.shape[0]
                         # batch_qtargets_yolo = perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres)
@@ -402,7 +452,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
-                    loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
+                    # loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
+                    loss, loss_items = compute_loss(pred_new, batch_qtargets_yolo, batch_size)
                 else:
                     # # # # # Just for the sake of seeing the output
                     # model.eval()
@@ -749,6 +800,14 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
+    opt.data = 'data0/single_toy_bcc.yaml'
+    opt.hyp = 'data0/hyps/hyp.scratch.yaml'
+    opt.exist_ok = False
+    opt.bcc_epoch = 0
+    opt.batch_size = 16
+    opt.epochs = 5
+    torch.autograd.set_detect_anomaly(True)
     main(opt)
 #torch.cuda.empty_cache()
+
 

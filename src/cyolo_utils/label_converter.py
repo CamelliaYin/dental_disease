@@ -91,6 +91,7 @@ def find_union_cstargets(cstargets):
 # which is only possible if the dimensions match. While YOLO gives a boundingbox-class tensor (x, y, w, h, c, c1, c2),
 # what BCC needs is a gridcell-class tensor, and that too in logits.
 def yolo2bcc_newer(y_yolo, imgsz, silent = True):
+    # transform probability from o,c1,c2 to p0,p1,p2
     wh = y_yolo[:, ..., 2:4] / imgsz  # width and height
     conf = y_yolo[:, ..., 4]  # first class C1
 
@@ -99,6 +100,7 @@ def yolo2bcc_newer(y_yolo, imgsz, silent = True):
     sigma_prime_t = sigma_t / sigma_t.sum(axis=2).unsqueeze(-1)  # divides the C2, C3,... by the sum of itself for each instance
     class_prob = sigma_prime_t * p.unsqueeze(-1)  # multiplies C2, C3, ... by the first class prob C1
     bkgd_prob = 1 - p  # inverts the probabilities for the first class C1
+    # single_bcc_toy.yaml, first epoch, min bkgd_prob is 0.91 which is no good. bg is dominated
     bcc_prob = torch.cat([class_prob, bkgd_prob.unsqueeze(-1)],-1)  # concatanates C1 to new C2, C3, ... in the form of C2, C3, ..., C1
     if not silent:
         mins = [round(x, 6) for x in list(bcc_prob.min(1).values.min(0).values.cpu().detach().numpy())]
@@ -106,6 +108,7 @@ def yolo2bcc_newer(y_yolo, imgsz, silent = True):
         print('Minimum probs (c1, c2, bkgd):', mins)
         print('Maximum probs (c1, c2, bkgd):', maxs)
     bcc_logits = torch.log(bcc_prob)  # finds the logarithm of each element.
+    # note that they are log normalised probs from yolo output, i.e. log(transformprob)
     return bcc_logits, wh, conf
 
 def yolo2bcc_new(y_yolo, imgsz):
@@ -190,12 +193,12 @@ def qt2yolo_optimized(qt, G, Na, vigcwh, torchMode=False, device=None):
             S_g = np.ceil(1/g_frac).astype(int)
             n_cells = S_g*S_g
             
-            ig_indices = torch.logical_and(vigcwh[:, 1] == i, vigcwh[:, 2] == g)
-            vigcwh_ig = vigcwh[ig_indices, :]
+            ig_indices = torch.logical_and(vigcwh[:, 1] == i, vigcwh[:, 2] == g) #(78x1)
+            vigcwh_ig = vigcwh[ig_indices, :] #select the bbox which is drawn by volunteer in image i
             wh_ig = vigcwh_ig[:, -2:]
-            wh_ig_mean = wh_ig.mean(axis=0)
-            wh_init_multiplier = wh_ig_mean if BKGD_WH_IS_MEAN and wh_ig.shape[0] > 0 else -1
-            wh = wh_init_multiplier*torch.ones(n_cells, 2)
+            wh_ig_mean = wh_ig.mean(axis=0) # w,h mean within image
+            wh_init_multiplier = wh_ig_mean if BKGD_WH_IS_MEAN and wh_ig.shape[0] > 0 else -1 # always -1 dont know why in use
+            wh = wh_init_multiplier*torch.ones(n_cells, 2) # 6400 x 2
             tagged_gc_ids = vigcwh_ig[:, 3].unique().int()
             for gc in tagged_gc_ids:
                 igc_indices = torch.logical_and(ig_indices, vigcwh[:,3] == gc)
@@ -212,6 +215,44 @@ def qt2yolo_optimized(qt, G, Na, vigcwh, torchMode=False, device=None):
                 st += n_cells
     qt_yolo = torch.cat(y_bcc)
     return qt_yolo
+
+# given the previous function qt2yolo_optimized() is computing (image, class, 4location) for each bbox
+# now I want to change the single class setting to soft labels that is iamge, c1,c2,c3, 4locations
+# Start from easy task by removing the class
+def qt2yolo_soft(qt, G, Na, vigcwh, torchMode=False, device=None):
+    Ng = G.shape[0]
+    num_images = qt.shape[0]
+    y_bcc = []
+    for i in range(num_images):
+        st = 0
+        for g in range(Ng):
+            g_frac = G[g]
+            S_g = np.ceil(1 / g_frac).astype(int)
+            n_cells = S_g * S_g
+
+            ig_indices = torch.logical_and(vigcwh[:, 1] == i, vigcwh[:, 2] == g)
+            vigcwh_ig = vigcwh[ig_indices, :]
+            wh_ig = vigcwh_ig[:, -2:]
+            wh_ig_mean = wh_ig.mean(axis=0)
+            wh_init_multiplier = wh_ig_mean if BKGD_WH_IS_MEAN and wh_ig.shape[0] > 0 else -1 #why -1 all the time
+            wh = wh_init_multiplier * torch.ones(n_cells, 2)
+            tagged_gc_ids = vigcwh_ig[:, 3].unique().int()
+            for gc in tagged_gc_ids:
+                igc_indices = torch.logical_and(ig_indices, vigcwh[:, 3] == gc)
+                vigcwh_igc = vigcwh[igc_indices]
+                wh_igc = vigcwh_igc[:, -2:]
+                wh_igc_mean = wh_igc.mean(axis=0)
+                wh[gc, :] = wh_ig_mean if wh_igc.shape[0] == 0 else wh_ig_mean
+            for a in range(Na):
+                z = torch.linspace(g_frac / 2, 1 - g_frac / 2, S_g).repeat(S_g, 1).unsqueeze(-1)
+                xy = torch.cat((z.permute(1, 0, 2), z), 2).permute(1, 0, 2).reshape(n_cells, 2)
+                icxywh = torch.cat(
+                    ((i * torch.ones(n_cells, 1)).to(device), xy.to(device), wh.to(device)),1)
+                y_bcc.append(icxywh)
+                st += n_cells
+    qt_yolo_soft = torch.cat(y_bcc)
+    return qt_yolo_soft
+
 
 def qt2yolo(qt, G, Na, wh_yolo, torchMode=False, device=None):
     Ng = G.shape[0]
