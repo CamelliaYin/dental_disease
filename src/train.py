@@ -336,11 +336,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         optimizer.zero_grad()
 
         for i, (imgs, targets, paths, _) in pbar:  # batch -------------------------------------------------------------
+            # #bbox x (img_id, cls, x, y, w, h)
             if bcc_epoch != -1:
                 batch_filenames = [dataset.label_files[x].split(os.sep)[-1] for x in np.where(dataset.batch==i)[0]]
                 batch_volunteers_list = [file_volunteers_dict[fn] for fn in batch_filenames]
                 batch_volunteers = torch.cat(batch_volunteers_list)
                 target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
+                # #bbox x (img_id, cls, x, y, w, h, vol_id)
                 batch_size = np.where(dataset.batch==i)[0].shape[0]
                 target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
                 ## target_volunteers_bcc is the list of class according vigcwh, (8,25200,1), and apparently most are 2 as bg
@@ -381,12 +383,14 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
                     # transferprob(), take out the log p
                     # shape: #image x 25200 x 3 (last entry is bg)
+                    img_num = pred[0].shape[0]
+                    anch_num = pred[0].shape[1]
                     batch_pred_bcc_8 = batch_pred_bcc[:, :19200, :]
-                    batch_pred_bcc_rs_8 = torch.reshape(batch_pred_bcc_8, (8, 3, 80, 80, 3))
+                    batch_pred_bcc_rs_8 = torch.reshape(batch_pred_bcc_8, (img_num, anch_num, 80, 80, 3))
                     batch_pred_bcc_4 = batch_pred_bcc[:, 19200:24000, :]
-                    batch_pred_bcc_rs_4 = torch.reshape(batch_pred_bcc_4, (8, 3, 40, 40, 3))
+                    batch_pred_bcc_rs_4 = torch.reshape(batch_pred_bcc_4, (img_num, anch_num, 40, 40, 3))
                     batch_pred_bcc_2 = batch_pred_bcc[:, 24000:25201, :]
-                    batch_pred_bcc_rs_2 = torch.reshape(batch_pred_bcc_2, (8, 3, 20, 20, 3))
+                    batch_pred_bcc_rs_2 = torch.reshape(batch_pred_bcc_2, (img_num, anch_num, 20, 20, 3))
                     # reshape the previous out for later use in updating pred
 
                     # pred[0] = torch.cat((pred[0][..., :5], batch_pred_bcc_rs_8), 4)
@@ -397,7 +401,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     pred_new = []
                     bpbrs = [batch_pred_bcc_rs_8, batch_pred_bcc_rs_4, batch_pred_bcc_rs_2]
                     for i in range(len(pred)):
-                        elm = torch.cat([pred[i][..., :5], bpbrs[i]], 4)
+                        elm = torch.cat([pred[i][..., :4], bpbrs[i]], 4)
                         pred_new.append(elm)
 
                     # batch_pred_bcc_80 = batch_pred_bcc[: ,80x80x3, :]
@@ -434,12 +438,15 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
                         # removed hard label and attached soft labels in the end (201600 = 25200 x 8)
                         batch_qtargets_yolo_rm_c = qt2yolo_soft(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
-                        # image, class, 4location
-                        batch_qtargets_lowdim = batch_qtargets.reshape((-1,)+batch_qtargets.shape[2:])
-                        batch_qtargets_yolo = torch.concat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim = -1) # imageid, 4 locations, 3 cls
+                        # 201600 x (image, 4location)
+                        # batch_qtargets_yolo_rm_id = batch_qtargets_yolo_rm_c[:, 1:]
+                        # 201600 x 4location
+                        batch_qtargets_lowdim = batch_qtargets.view(batch_qtargets.shape[0]*batch_qtargets.shape[1], batch_qtargets.shape[2])
+                        # batch_qtargets_lowdim = batch_qtargets.reshape((-1,)+batch_qtargets.shape[2:])
+                        batch_qtargets_yolo = torch.cat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim = -1) # imageid, 4 locations, 3 cls
                         # for each one of 201600
-                        # NOW: image id, x, y, w, h, c0, c1, c2 (note c2 is bg)
-                        # shape: 201600 x 8
+                        # NOW: x, y, w, h, c0, c1, c2 (note c2 is bg)
+                        # shape: 201600 x 7
 
 
 
@@ -453,7 +460,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
                     # loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
-                    loss, loss_items = compute_loss(pred_new, batch_qtargets_yolo, batch_size)
+                    loss, loss_items = compute_loss(pred_new, batch_qtargets_yolo)
                 else:
                     # # # # # Just for the sake of seeing the output
                     # model.eval()

@@ -196,7 +196,7 @@ class ComputeLoss:
         for k in 'na', 'nc', 'nl', 'anchors':
             setattr(self, k, getattr(det, k))
 
-    def __call__(self, p, targets, bs):  # predictions, targets, model
+    def __call__(self, p, targets):  # predictions, targets, model
         device = targets.device
         lcls, lbox, lobj = torch.zeros(1, device=device), torch.zeros(1, device=device), torch.zeros(1, device=device)
         tcls, tbox, indices, anchors = self.build_targets(p, targets)  # targets
@@ -244,9 +244,87 @@ class ComputeLoss:
         lbox *= self.hyp['box']
         lobj *= self.hyp['obj']
         lcls *= self.hyp['cls']
+        bs = tobj.shape[0]
         # bs = tobj.shape[0]  # batch size
 
         return (lbox + lobj + lcls) * bs, torch.cat((lbox, lobj, lcls)).detach()
+
+    def build_targets(self, p, targets):
+        # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
+        # NEW: building target for (x,y,w,h,c0,c1,c3) 201600x8
+        na, nt = self.na, targets.shape[0]  # number of anchors = 3, targets = 201600
+        tcls, tbox, indices, anch = [], [], [], []
+        num_entry = targets.shape[1]
+        # reshape the input as 3x67200x7 where 67200 = 8x80x80 + 8x40x40 + 8x20x20
+
+        nbbox = na * (80 ** 2 + 40 ** 2 + 20 ** 2)  # total bbox per image
+        nimg = int(targets.shape[0] / nbbox)  # number of img
+        t_b = torch.reshape(targets, (nimg, nbbox, targets.shape[1]))
+        rs_img = []
+        tt = []
+        gc = [80, 40, 20]
+        rs_img.append(t_b[:, : (na * 80 ** 2), :])
+        rs_img.append(t_b[:, (na * 80 ** 2):(3 * 80 ** 2 + 3 * 40 ** 2), :])
+        rs_img.append(t_b[:, (na * 80 ** 2 + 3 * 40 ** 2):, :])
+        for i in range(len(rs_img)):
+            rs_img[i] = torch.reshape(rs_img[i], (nimg, na, gc[i], gc[i], targets.shape[1]))
+            rsan = torch.transpose(rs_img[i], 0, 1)
+            ind_an = torch.zeros_like(rsan[..., 0])
+            ind_an = torch.add(ind_an, i)
+            ind_an = torch.unsqueeze(ind_an, -1)
+            tt.append(torch.cat((rsan, ind_an), -1))
+        for i in range(len(tt)):
+            tt[i] = torch.reshape(tt[i], (3, nimg * gc[i]**2, tt[i].shape[4]))
+        targets = torch.cat(tt, dim=1)
+        gain = torch.ones(num_entry+1, device=targets.device)  # normalized to gridspace gain
+
+        g = 0.5  # bias
+        off = torch.tensor([[0, 0],
+                            [1, 0], [0, 1], [-1, 0], [0, -1],  # j,k,l,m
+                            # [1, 1], [1, -1], [-1, 1], [-1, -1],  # jk,jm,lk,lm
+                            ], device=targets.device).float() * g  # offsets
+
+        for i in range(self.nl): #for each anchor choice
+            anchors = self.anchors[i].to(targets.device) # anchors[i] is torch.Size([2]), anchors torch.Size([3, 2])
+            gain[1:5] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain
+
+            # Match targets to anchors
+            t = targets * gain # what is gain and i dont want it to affect my soft labels
+            if nt:
+                # Matches
+                r = t[:, :, 3:5] / anchors[:, None]  # wh ratio
+                j = torch.max(r, 1. / r).max(2)[0] < self.hyp['anchor_t']  # compare
+                # j = wh_iou(anchors, t[:, 4:6]) > model.hyp['iou_t']  # iou(3,n)=wh_iou(anchors(3,2), gwh(n,2))
+                t = t[j]  # filter
+
+                # Offsets
+                gxy = t[:, 1:3]  # grid xy
+                gxi = gain[[2, 3]] - gxy  # inverse
+                j, k = ((gxy % 1. < g) & (gxy > 1.)).T
+                l, m = ((gxi % 1. < g) & (gxi > 1.)).T
+                j = torch.stack((torch.ones_like(j), j, k, l, m))
+                t = t.repeat((5, 1, 1))[j]
+                offsets = (torch.zeros_like(gxy)[None] + off[:, None])[j]
+            else:
+                t = targets[0]
+                offsets = 0
+
+            # Define
+            b = t[:, 0].long().T  # image
+            gxy = t[:, 1:3]  # grid xy
+            gwh = t[:, 3:5]  # grid wh
+            c = t[:, 5:-1] #reverse counting as the l
+            gij = (gxy - offsets).long()
+            gi, gj = gij.T  # grid xy indices
+
+            # Append
+            a = t[:, -1].long()  # anchor indices
+            indices.append((b, a, gj.clamp_(0, gain[2] - 1), gi.clamp_(0, gain[1] - 1)))  # image, anchor, grid indices
+            tbox.append(torch.cat((gxy - gij, gwh), 1))  # box
+            anch.append(anchors[a])  # anchors
+            tcls.append(c)  # class
+
+        return tcls, tbox, indices, anch
 
     def build_targets_old(self, p, targets):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
@@ -304,7 +382,7 @@ class ComputeLoss:
 
         return tcls, tbox, indices, anch
 
-    def build_targets(self, p, targets):
+    def build_targets_v1(self, p, targets):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
         # NEW: building target for (image,x,y,w,h,class) 201600x8
         # p = pred, targets = batch_qtargets_yolo
@@ -314,7 +392,9 @@ class ComputeLoss:
         gain = torch.ones(num_entry+1, device=targets.device)  # normalized to gridspace gain
         # additional +1 for anchor entry
         ai = torch.arange(na, device=targets.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
+        # torch.Size([3, 201600])
         targets = torch.cat((targets.repeat(na, 1, 1), ai[:, :, None]), 2)  # append anchor indices
+
 
         g = 0.5  # bias
         off = torch.tensor([[0, 0],
@@ -322,8 +402,9 @@ class ComputeLoss:
                             # [1, 1], [1, -1], [-1, 1], [-1, -1],  # jk,jm,lk,lm
                             ], device=targets.device).float() * g  # offsets
 
-        for i in range(self.nl):
-            anchors = self.anchors[i].to(targets.device)
+
+        for i in range(self.nl): #for each anchor choice
+            anchors = self.anchors[i].to(targets.device) # anchors[i] is torch.Size([2]), anchors torch.Size([3, 2])
             gain[1:5] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain
 
             # Match targets to anchors
