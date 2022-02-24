@@ -16,17 +16,11 @@ import torch
 
 DEFAULT_G = np.array([1.0/32, 1.0/16, 1.0/8])
 
-# This mapping is followed throughout for volunteer ids. TODO: This only works if there are only these volunteers, it doesnt account for otherers (fixed using extract_volunteers)
+# This mapping is followed throughout for volunteer ids.
 # VOL_ID_MAP = {'Camellia': 0, 'Conghui': 1, 'HaoWen': 2, 'Xiongjie': 3}
 # SINGLE_VOL_ID_MAP = {'Camellia': 0}
 
-# this creates a dictionary for all volunteers
-def extract_volunteers(dataDict):
-    curdir = os.getcwd()
-    id_map = {}
-    count = 0
-    direct = os.path.join(curdir, dataDict['train'], '..', '..', 'volunteers')
-    direct = os.path.join(direct, 'train')
+def extract_volunteers_helper(id_map, count, direct):
     for files in os.listdir(direct):
         with open(os.path.join(direct, files), 'r') as text:
             for line in text:
@@ -34,6 +28,20 @@ def extract_volunteers(dataDict):
                     if vol not in id_map.keys():
                         id_map[vol] = count
                         count += 1
+    return(id_map, count)
+
+
+# this creates a dictionary for all volunteers
+def extract_volunteers(dataDict):
+    curdir = os.getcwd()
+    id_map = {}
+    count = 0
+    direct = os.path.join(curdir, dataDict['train'], '..', '..', 'volunteers', 'train')
+    direct2 = os.path.join(curdir, dataDict['val'], '..', '..', 'volunteers', 'val')
+
+    id_map, count = extract_volunteers_helper(id_map, count, direct)
+    id_map, count = extract_volunteers_helper(id_map, count, direct2)
+
     VOL_ID_MAP = id_map
     return (id_map)
 
@@ -62,16 +70,17 @@ def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45)
 
 # Reads the "volunteers" file (generally located at train/volunteers/<im_name>.txt)
 # as a filename:volunteertensor dictionary.
-def get_file_volunteers_dict(data_dict, mode='train', vol_id_map=[]):
-    vol_path = os.path.join(data_dict[mode], '..', '..','volunteers')
-    vol_mode_path = os.path.join(vol_path, mode)
-    file_names = [x for x in os.listdir(vol_mode_path) if not x.startswith('.')]
+def get_file_volunteers_dict(data_dict, mode=['train'], vol_id_map=[]):
     file_vols_dict = {}
-    for fn in file_names:
-        vol_file_path = os.path.join(vol_mode_path, fn)
-        with open(vol_file_path) as f:
-            vol_seq = [vol_id_map[x.strip()] for x in f.readlines()]
-        file_vols_dict[fn] = torch.tensor(vol_seq).int()
+    for pth in mode:
+        vol_path = os.path.join(data_dict[pth], '..', '..','volunteers')
+        vol_mode_path = os.path.join(vol_path, pth)
+        file_names = [x for x in os.listdir(vol_mode_path) if not x.startswith('.')]
+        for fn in file_names:
+            vol_file_path = os.path.join(vol_mode_path, fn)
+            with open(vol_file_path) as f:
+                vol_seq = [vol_id_map[x.strip()] for x in f.readlines()]
+            file_vols_dict[fn] = torch.tensor(vol_seq).int()
     return file_vols_dict
 
 def init_nn_output(n_train, G, n_anchor_choices, params, bkgd=False):
@@ -247,17 +256,25 @@ def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_
             # Don't need a loop for anchor-boxes as we are simply repeating Na times below.
             targets_per_iv_bcc_list = []
             for v in range(n_vols):
-                targets_per_iv = target_vols_per_i[target_vols_per_i[:, -1] == v][:, :-1]
-                c, x, y, w, h = targets_per_iv.T # w and h are ignored
+                # volunteer did classify this image
+                if v in target_vols_per_i[:, -1]:
+                    targets_per_iv = target_vols_per_i[target_vols_per_i[:, -1] == v][:, :-1]
+                    c, x, y, w, h = targets_per_iv.T  # w and h are ignored
 
-                x_cell_ids = torch.where(x<1, x/g_frac, torch.ones(x.shape)*(np.ceil(1/g_frac))).int()
-                y_cell_ids = torch.where(y<1, y/g_frac, torch.ones(y.shape)*(np.ceil(1/g_frac))).int()
-                gc_ids = ((y_cell_ids)*(np.ceil(1/g_frac)) + x_cell_ids).long()
-                vigcwh_list.append(torch.cat([torch.tensor([v, i, g])*torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
-                
-                targets_per_iv_bcc = BACKGROUND_CLASS_ID * torch.ones(S_g)
-                targets_per_iv_bcc[gc_ids] = c
-                targets_per_iv_bcc_list.append(targets_per_iv_bcc)
+                    x_cell_ids = torch.where(x < 1, x / g_frac, torch.ones(x.shape) * (np.ceil(1 / g_frac))).int()
+                    y_cell_ids = torch.where(y < 1, y / g_frac, torch.ones(y.shape) * (np.ceil(1 / g_frac))).int()
+                    gc_ids = ((y_cell_ids) * (np.ceil(1 / g_frac)) + x_cell_ids).long()
+                    vigcwh_list.append(torch.cat(
+                        [torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1),
+                         h.unsqueeze(-1)], axis=1))
+
+                    targets_per_iv_bcc = BACKGROUND_CLASS_ID * torch.ones(S_g)
+                    targets_per_iv_bcc[gc_ids] = c
+                    targets_per_iv_bcc_list.append(targets_per_iv_bcc)
+                # volunteer did not classify this image
+                else:
+                    targets_per_iv_bcc = -1 * torch.ones(S_g)
+                    targets_per_iv_bcc_list.append(targets_per_iv_bcc)
             targets_per_iga_bcc = torch.stack(tuple(targets_per_iv_bcc_list)).T
             targets_per_ig_bcc = targets_per_iga_bcc.repeat((Na, 1))
             targets_per_ig_bcc_list.append(targets_per_ig_bcc)

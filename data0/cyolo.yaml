@@ -1,6 +1,6 @@
-path: ../data/datasets # dataset root dir
+path: datasets # dataset root dir
 train: bcc-tvt/images/train  # train images (relative to 'path') 128 images
-val: iid-tvt/images/val  # val images (relative to 'path') 128 images
+val: bcc-tvt/images/val  # val images (relative to 'path') 128 images
 test: iid-tvt/images/test # test images (optional)
 
 # Classes

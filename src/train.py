@@ -234,9 +234,9 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                               workers=workers, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '))
 
-    if bcc_epoch != -1:
+    if bcc_epoch != -1: #
         vol_id_map = extract_volunteers(data_dict)
-        file_volunteers_dict = get_file_volunteers_dict(data_dict, vol_id_map = vol_id_map)
+        file_volunteers_dict = get_file_volunteers_dict(data_dict, mode = ['train', 'val'], vol_id_map = vol_id_map)
 
     n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
     grid_ratios = model.model[-1].stride.cpu().detach().numpy() / imgsz
@@ -254,8 +254,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     # Process 0
     if RANK in [-1, 0]:
         val_loader, val_dataset = create_dataloader(val_path, imgsz, batch_size // WORLD_SIZE * 2, gs, single_cls,
-                                       hyp=hyp, cache=None if noval else opt.cache, rect=True, rank=-1,
-                                       workers=workers, pad=0.5,
+                                       hyp=hyp, cache=None if noval else opt.cache, rect=opt.rect, rank=-1,
+                                       workers=workers, pad=0.0,
                                        prefix=colorstr('val: '))
 
         if not resume:
@@ -378,15 +378,18 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo # gets the cyolo prdictions for the batch
                     # given transform_format_flag = False, we have (x, y, w, h, prob, c1, c2)
                     # shape: #image x 25200 x 7
-                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=True) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
+                    # TODO: Does This Work With 4 Labels (inc background)?
+                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
                     # transferprob(), take out the log p
                     # shape: #image x 25200 x 3 (last entry is bg)
+                    anch_num = pred[0].shape[1]
+
                     batch_pred_bcc_8 = batch_pred_bcc[:, :19200, :]
-                    batch_pred_bcc_rs_8 = torch.reshape(batch_pred_bcc_8, (8, 3, 80, 80, 3))
+                    batch_pred_bcc_rs_8 = torch.reshape(batch_pred_bcc_8, (batch_size, anch_num, 80, 80, cls_num))
                     batch_pred_bcc_4 = batch_pred_bcc[:, 19200:24000, :]
-                    batch_pred_bcc_rs_4 = torch.reshape(batch_pred_bcc_4, (8, 3, 40, 40, 3))
+                    batch_pred_bcc_rs_4 = torch.reshape(batch_pred_bcc_4, (batch_size, anch_num, 40, 40, cls_num))
                     batch_pred_bcc_2 = batch_pred_bcc[:, 24000:25201, :]
-                    batch_pred_bcc_rs_2 = torch.reshape(batch_pred_bcc_2, (8, 3, 20, 20, 3))
+                    batch_pred_bcc_rs_2 = torch.reshape(batch_pred_bcc_2, (batch_size, anch_num, 20, 20, cls_num))
                     # reshape the previous out for later use in updating pred
 
                     # pred[0] = torch.cat((pred[0][..., :5], batch_pred_bcc_rs_8), 4)
@@ -397,7 +400,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     pred_new = []
                     bpbrs = [batch_pred_bcc_rs_8, batch_pred_bcc_rs_4, batch_pred_bcc_rs_2]
                     for i in range(len(pred)):
-                        elm = torch.cat([pred[i][..., :5], bpbrs[i]], 4)
+                        elm = torch.cat([pred[i][..., :4], bpbrs[i]], 4)
                         pred_new.append(elm)
 
                     # batch_pred_bcc_80 = batch_pred_bcc[: ,80x80x3, :]
@@ -421,10 +424,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     ##############################################################
                     ### loss function: batch_pred_bcc x batch_qtargets elementwise, to note that we get negative output
                     ### so we need to have mins the output later
-                    # print('batch_qtargets', batch_qtargets)
-                    # print('batch_qtargets size', batch_qtargets.size())
-                    # print('batch_lb', batch_lb)
-                    # exit().asd123
                     #batch_pcm['variational']
                     #batch_lb = batch_lb.tolist()
                     #torch.cuda.empty_cache()
@@ -435,8 +434,9 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                         # removed hard label and attached soft labels in the end (201600 = 25200 x 8)
                         batch_qtargets_yolo_rm_c = qt2yolo_soft(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
                         # image, class, 4location
-                        batch_qtargets_lowdim = batch_qtargets.reshape((-1,)+batch_qtargets.shape[2:])
+                        batch_qtargets_lowdim = batch_qtargets.view(batch_qtargets.shape[0]*batch_qtargets.shape[1], batch_qtargets.shape[2])
                         batch_qtargets_yolo = torch.concat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim = -1) # imageid, 4 locations, 3 cls
+                        #batch_qtargets_yolo = batch_qtargets_yolo[(torch.argmax(batch_qtargets_yolo[:,5:], 1)) != BACKGROUND_CLASS_ID, :] # removes background labels
                         # for each one of 201600
                         # NOW: image id, x, y, w, h, c0, c1, c2 (note c2 is bg)
                         # shape: 201600 x 8
@@ -452,8 +452,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
-                    # loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
-                    loss, loss_items = compute_loss(pred_new, batch_qtargets_yolo, batch_size)
+                    loss, loss_items = compute_loss(pred_new, batch_qtargets_yolo)
                 else:
                     # # # # # Just for the sake of seeing the output
                     # model.eval()
@@ -502,7 +501,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             ema.update_attr(model, include=['yaml', 'nc', 'hyp', 'names', 'stride', 'class_weights'])
             final_epoch = epoch + 1 == epochs
             if not noval or final_epoch:  # Calculate mAP
-                results, maps, _ = val.run(data_dict,
+                results, maps, _ = val.run(data_dict, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, val_dataset, opt,
                                            batch_size=batch_size // WORLD_SIZE * 2,
                                            imgsz=imgsz,
                                            model=ema.ema,
@@ -515,7 +514,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            callbacks=callbacks,
                                            compute_loss=compute_loss)
                 try:
-                    train_results, train_maps, _ = val.run(data_dict,
+                    train_results, train_maps, _ = val.run(data_dict, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, dataset, opt,
                                                            batch_size=batch_size // WORLD_SIZE * 2,
                                                            imgsz=imgsz,
                                                            model=ema.ema,
@@ -589,7 +588,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         if not evolve:
             if True:  # COCO dataset => true
                 for m in [last, best] if best.exists() else [last]:  # speed, mAP tests
-                    results, _, _ = val.run(data_dict,
+                    results, _, _ = val.run(data_dict, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, val_dataset, opt,
                                             batch_size=batch_size // WORLD_SIZE * 2,
                                             imgsz=imgsz,
                                             model=attempt_load(m, device),
@@ -800,13 +799,14 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
+    #opt.data = 'data0/cyolo.yaml'
     opt.data = 'data0/single_toy_bcc.yaml'
     opt.hyp = 'data0/hyps/hyp.scratch.yaml'
     opt.exist_ok = False
     opt.bcc_epoch = 0
-    opt.batch_size = 16
+    opt.batch_size = 20
     opt.epochs = 5
-    torch.autograd.set_detect_anomaly(True)
+    #torch.autograd.set_detect_anomaly(True)
     main(opt)
 #torch.cuda.empty_cache()
 

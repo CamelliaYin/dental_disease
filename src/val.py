@@ -25,10 +25,18 @@ from models.experimental import attempt_load
 from utils.datasets import create_dataloader
 from utils.general import coco80_to_coco91_class, check_dataset, check_file, check_img_size, check_requirements, \
     box_iou, non_max_suppression, scale_coords, xyxy2xywh, xywh2xyxy, set_logging, increment_path, colorstr
+
+from cyolo_utils.train_with_bcc import convert_target_volunteers_yolo2bcc, nn_predict, init_bcc_params, compute_param_confusion_matrices
+from cyolo_utils.label_converter import yolo2bcc_newer, qt2yolo_soft
+from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
+
 from utils.metrics import ap_per_class, ConfusionMatrix
 from utils.plots import plot_images, output_to_target, plot_study_txt
 from utils.torch_utils import select_device, time_sync
 from utils.callbacks import Callbacks
+import torch.nn as nn
+import math
+import random
 
 
 def save_one_txt(predn, save_conf, shape, file):
@@ -76,9 +84,8 @@ def process_batch(detections, labels, iouv):
         correct[matches[:, 1].long()] = matches[:, 2:3] >= iouv
     return correct
 
-
 @torch.no_grad()
-def run(data,
+def run(data, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, dataset, opt,
         weights=None,  # model.pt path(s)
         batch_size=32,  # batch size
         imgsz=640,  # inference size (pixels)
@@ -109,6 +116,8 @@ def run(data,
     training = model is not None
     if training:  # called by train.py
         device = next(model.parameters()).device  # get model device
+        # gs = max(int(model.stride.max()), 32)
+        # imgsz = check_img_size(imgsz, s=gs)
 
     else:  # called directly
         device = select_device(device, batch_size=batch_size)
@@ -159,6 +168,13 @@ def run(data,
     jdict, stats, ap, ap_class = [], [], [], []
     conf_thres_values = [0.001, 0.01, 0.1, 0.25]
     cms = [ConfusionMatrix(nc=nc, conf=conf_thres_value) for conf_thres_value in conf_thres_values]
+
+    # Stuff for calculating the loss
+    bcc_params = init_bcc_params(K=len(vol_id_map), classes=cls_num, diagPrior=opt.confusion_matrix_diagonal_prior_hyp, cnvrgThresh=opt.convergence_threshold_hyp)
+    batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
+    n_grid_choices, n_anchor_choices = model.model[-1].nl, model.model[-1].na
+    grid_ratios = model.model[-1].stride.cpu().detach().numpy() / imgsz
+
     for batch_i, (img, targets, paths, shapes) in enumerate(tqdm(dataloader, desc=s)):
         intermediate_path = os.path.join(save_dir, 'intermediate')
         if not os.path.exists(intermediate_path):
@@ -168,21 +184,68 @@ def run(data,
         img = img.to(device, non_blocking=True)
         img = img.half() if half else img.float()  # uint8 to fp16/32
         img /= 255.0  # 0 - 255 to 0.0 - 1.0
-        targets = targets.to(device)
         nb, _, height, width = img.shape  # batch size, channels, height, width
         t = time_sync()
         t0 += t - t_
+
+
+
+        # Adjust targets
+        # img = img.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
+        # sz = random.randrange(imgsz * 0.5, imgsz * 1.5 + gs) // gs * gs
+        # sf = sz / max(img.shape[2:])
+        # ns = [math.ceil(x * sf / gs) * gs for x in img.shape[2:]]
+        # img = nn.functional.interpolate(img, size=ns, mode='bilinear', align_corners=False)
+        if bcc_epoch != -1:
+            batch_filenames = [dataset.label_files[x].split(os.sep)[-1] for x in np.where(dataset.batch == batch_i)[0]]
+            batch_volunteers_list = [file_volunteers_dict[fn] for fn in batch_filenames]
+            batch_volunteers = torch.cat(batch_volunteers_list)
+            #batch_volunteers = batch_volunteers.to(device)
+            target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
+            batch_size = np.where(dataset.batch == batch_i)[0].shape[0]
+            target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
+            target_volunteers_bcc = target_volunteers_bcc.to(device)
 
         # Run model
         out, train_out = model(img, augment=augment)  # inference and training outputs
         t1 += time_sync() - t
 
+        if bcc_epoch != -1:
+            batch_pred_yolo = nn_predict(model, img, imgsz, transform_format_flag=False)  # y_hat_yolo # gets the cyolo prdictions for the batch
+            # given transform_format_flag = False, we have (x, y, w, h, prob, c1, c2)
+            # shape: #image x 25200 x 7
+            batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False)
+            # shape: #image x 25200 x 3 (last entry is bg)
+            anch_num = train_out[0].shape[1]
+
+            batch_pred_bcc_8 = batch_pred_bcc[:, :19200, :]
+            batch_pred_bcc_rs_8 = torch.reshape(batch_pred_bcc_8, (batch_size, anch_num, 80, 80, cls_num))
+            batch_pred_bcc_4 = batch_pred_bcc[:, 19200:24000, :]
+            batch_pred_bcc_rs_4 = torch.reshape(batch_pred_bcc_4, (batch_size, anch_num, 40, 40, cls_num))
+            batch_pred_bcc_2 = batch_pred_bcc[:, 24000:25201, :]
+            batch_pred_bcc_rs_2 = torch.reshape(batch_pred_bcc_2, (batch_size, anch_num, 20, 20, cls_num))
+
+            # not updating pred directly, but create a new list and append
+            pred_new = []
+            bpbrs = [batch_pred_bcc_rs_8, batch_pred_bcc_rs_4, batch_pred_bcc_rs_2]
+            for prd in range(len(train_out)):
+                elm = torch.cat([train_out[prd][..., :4], bpbrs[prd]], 4)
+                pred_new.append(elm)
+            train_out = pred_new
+
+            batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode=torchMode, device=device, invert_classes=False)
+
+            batch_qtargets_yolo_rm_c = qt2yolo_soft(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float() # removed hard label and attached soft labels in the end (201600 = 25200 x 8)
+            batch_qtargets_lowdim = batch_qtargets.reshape((-1,) + batch_qtargets.shape[2:]) # image, class, 4location
+            targets = torch.concat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim=-1)  # imageid, 4 locations, 3 cls
+
         # Compute loss
         if compute_loss:
+            #loss = compute_loss(train_out, targets)[1]
             loss += compute_loss([x.float() for x in train_out], targets)[1]  # box, obj, cls
 
         # Run NMS
-        targets[:, 2:] *= torch.Tensor([width, height, width, height]).to(device)  # to pixels
+        targets[:, 1:5] *= torch.Tensor([width, height, width, height]).to(device)  # to pixels
         lb = [targets[targets[:, 0] == i, 1:] for i in range(nb)] if save_hybrid else []  # for autolabelling
         t = time_sync()
         out = non_max_suppression(out, conf_thres, iou_thres, labels=lb, multi_label=True, agnostic=single_cls)
