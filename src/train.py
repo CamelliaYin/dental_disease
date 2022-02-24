@@ -746,11 +746,12 @@ if __name__ == "__main__":
     # opt.device = 0
     # opt.name = 'test'
 
-    opt.data = '../data/single_toy_bcc.yaml'
+    #opt.data = '../data/single_toy_bcc.yaml'
+    opt.data = '../data/cyolo.yaml'
     opt.exist_ok = False
     opt.bcc_epoch = 0
-    opt.batch_size = 16
-    opt.epochs = 5
+    opt.batch_size = 20
+    opt.epochs = 25
     torch.autograd.set_detect_anomaly(True)
 
     main(opt)
