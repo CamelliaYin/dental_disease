@@ -382,7 +382,7 @@ class ComputeLoss:
 
         return tcls, tbox, indices, anch
 
-    def build_targets(self, p, targets):
+    def build_targets_v1(self, p, targets):
         # Build targets for compute_loss(), input targets(image,class,x,y,w,h)
         # NEW: building target for (image,x,y,w,h,class) 201600x8
         # p = pred, targets = batch_qtargets_yolo
@@ -392,7 +392,9 @@ class ComputeLoss:
         gain = torch.ones(num_entry+1, device=targets.device)  # normalized to gridspace gain
         # additional +1 for anchor entry
         ai = torch.arange(na, device=targets.device).float().view(na, 1).repeat(1, nt)  # same as .repeat_interleave(nt)
+        # torch.Size([3, 201600])
         targets = torch.cat((targets.repeat(na, 1, 1), ai[:, :, None]), 2)  # append anchor indices
+
 
         g = 0.5  # bias
         off = torch.tensor([[0, 0],
@@ -400,8 +402,9 @@ class ComputeLoss:
                             # [1, 1], [1, -1], [-1, 1], [-1, -1],  # jk,jm,lk,lm
                             ], device=targets.device).float() * g  # offsets
 
-        for i in range(self.nl):
-            anchors = self.anchors[i].to(targets.device)
+
+        for i in range(self.nl): #for each anchor choice
+            anchors = self.anchors[i].to(targets.device) # anchors[i] is torch.Size([2]), anchors torch.Size([3, 2])
             gain[1:5] = torch.tensor(p[i].shape)[[3, 2, 3, 2]]  # xyxy gain
 
             # Match targets to anchors

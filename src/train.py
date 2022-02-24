@@ -234,7 +234,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                               workers=workers, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '))
 
-    if bcc_epoch != -1: #
+    if bcc_epoch != -1:
         vol_id_map = extract_volunteers(data_dict)
         file_volunteers_dict = get_file_volunteers_dict(data_dict, mode = ['train', 'val'], vol_id_map = vol_id_map)
 
@@ -336,11 +336,13 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
         optimizer.zero_grad()
 
         for i, (imgs, targets, paths, _) in pbar:  # batch -------------------------------------------------------------
+            # #bbox x (img_id, cls, x, y, w, h)
             if bcc_epoch != -1:
                 batch_filenames = [dataset.label_files[x].split(os.sep)[-1] for x in np.where(dataset.batch==i)[0]]
                 batch_volunteers_list = [file_volunteers_dict[fn] for fn in batch_filenames]
                 batch_volunteers = torch.cat(batch_volunteers_list)
                 target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
+                # #bbox x (img_id, cls, x, y, w, h, vol_id)
                 batch_size = np.where(dataset.batch==i)[0].shape[0]
                 target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
                 ## target_volunteers_bcc is the list of class according vigcwh, (8,25200,1), and apparently most are 2 as bg
@@ -390,6 +392,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     batch_pred_bcc_rs_4 = torch.reshape(batch_pred_bcc_4, (batch_size, anch_num, 40, 40, cls_num))
                     batch_pred_bcc_2 = batch_pred_bcc[:, 24000:25201, :]
                     batch_pred_bcc_rs_2 = torch.reshape(batch_pred_bcc_2, (batch_size, anch_num, 20, 20, cls_num))
+
                     # reshape the previous out for later use in updating pred
 
                     # pred[0] = torch.cat((pred[0][..., :5], batch_pred_bcc_rs_8), 4)
@@ -433,17 +436,18 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
                         # removed hard label and attached soft labels in the end (201600 = 25200 x 8)
                         batch_qtargets_yolo_rm_c = qt2yolo_soft(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float()
-                        # image, class, 4location
+                        # 201600 x (image, 4location)
+                        # batch_qtargets_yolo_rm_id = batch_qtargets_yolo_rm_c[:, 1:]
+                        # 201600 x 4location
                         batch_qtargets_lowdim = batch_qtargets.view(batch_qtargets.shape[0]*batch_qtargets.shape[1], batch_qtargets.shape[2])
-                        batch_qtargets_yolo = torch.concat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim = -1) # imageid, 4 locations, 3 cls
-                        #batch_qtargets_yolo = batch_qtargets_yolo[(torch.argmax(batch_qtargets_yolo[:,5:], 1)) != BACKGROUND_CLASS_ID, :] # removes background labels
+                        # batch_qtargets_lowdim = batch_qtargets.reshape((-1,)+batch_qtargets.shape[2:])
+                        batch_qtargets_yolo = torch.cat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim = -1) # imageid, 4 locations, 3 cls
                         # for each one of 201600
-                        # NOW: image id, x, y, w, h, c0, c1, c2 (note c2 is bg)
-                        # shape: 201600 x 8
-
-
+                        # NOW: x, y, w, h, c0, c1, c2 (note c2 is bg)
+                        # shape: 201600 x 7
 
                         # batch_qtargets_yolo = batch_qtargets_yolo[batch_qtargets_yolo[:,1] != BACKGROUND_CLASS_ID, :] # filtering out if class ==2
+
                         nms_thres = 0.2 #nms thres for q(t)
                         # orig_count = batch_qtargets_yolo.shape[0]
                         # batch_qtargets_yolo = perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres)
@@ -452,6 +456,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                             # qt_thres = (hybrid_entropy_thres, hybrid_conf_thres)
                         # batch_qtargets_yolo = filter_qt(batch_qtargets_yolo, qt_thres_mode, qt_thres, batch_qtargets, batch_conf, torchMode = torchMode, device=device).half().float()
                     model.train()
+                    # loss, loss_items = compute_loss(pred, batch_qtargets_yolo)
                     loss, loss_items = compute_loss(pred_new, batch_qtargets_yolo)
                 else:
                     # # # # # Just for the sake of seeing the output
