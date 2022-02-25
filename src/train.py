@@ -804,13 +804,13 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    #opt.data = 'data0/cyolo.yaml'
-    opt.data = 'data0/single_toy_bcc.yaml'
+    opt.data = 'data0/cyolo.yaml'
+    #opt.data = 'data0/single_toy_bcc.yaml'
     opt.hyp = 'data0/hyps/hyp.scratch.yaml'
     opt.exist_ok = False
     opt.bcc_epoch = 0
     opt.batch_size = 20
-    opt.epochs = 5
+    opt.epochs = 25
     #torch.autograd.set_detect_anomaly(True)
     main(opt)
 #torch.cuda.empty_cache()

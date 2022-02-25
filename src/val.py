@@ -18,6 +18,7 @@ import torch
 from tqdm import tqdm
 import pickle
 
+
 FILE = Path(__file__).absolute()
 sys.path.append(FILE.parents[0].as_posix())  # add yolov5/ to path
 
@@ -29,6 +30,8 @@ from utils.general import coco80_to_coco91_class, check_dataset, check_file, che
 from cyolo_utils.train_with_bcc import convert_target_volunteers_yolo2bcc, nn_predict, init_bcc_params, compute_param_confusion_matrices
 from cyolo_utils.label_converter import yolo2bcc_newer, qt2yolo_soft
 from lib.BCCNet.VariationalInference.VB_iteration_yolo import VB_iteration as VBi_yolo
+
+from cyolo_utils.label_converter import BACKGROUND_CLASS_ID
 
 from utils.metrics import ap_per_class, ConfusionMatrix
 from utils.plots import plot_images, output_to_target, plot_study_txt
@@ -235,24 +238,47 @@ def run(data, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, d
 
             batch_qtargets, batch_pcm['variational'], batch_lb = VBi_yolo(target_volunteers_bcc, batch_pred_bcc, batch_pcm['variational'], batch_pcm['prior'], torchMode=torchMode, device=device, invert_classes=False)
 
+            # TODO: REPLACE BATCH_QTARGETS WITH BATCH_PRED_BCC TO OVERRIDE VBI_YOLO and possibly delete the target_volunteers_bcc code above
             batch_qtargets_yolo_rm_c = qt2yolo_soft(batch_qtargets, grid_ratios, n_anchor_choices, vigcwh, torchMode = torchMode, device=device).half().float() # removed hard label and attached soft labels in the end (201600 = 25200 x 8)
             batch_qtargets_lowdim = batch_qtargets.reshape((-1,) + batch_qtargets.shape[2:]) # image, class, 4location
             targets = torch.concat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim=-1)  # imageid, 4 locations, 3 cls
+
 
         # Compute loss
         if compute_loss:
             #loss = compute_loss(train_out, targets)[1]
             loss += compute_loss([x.float() for x in train_out], targets)[1]  # box, obj, cls
 
-        # Run NMS
-        targets[:, 1:5] *= torch.Tensor([width, height, width, height]).to(device)  # to pixels
-        lb = [targets[targets[:, 0] == i, 1:] for i in range(nb)] if save_hybrid else []  # for autolabelling
+        if bcc_epoch != -1:
+            # Converts train_out into a new OUT parameter (from pre loss function output, to post loss function output)
+            grid_c = [80, 40, 20]
+            for i in range(len(train_out)):
+                train_out[i] = torch.reshape(train_out[i], (batch_size, anch_num * grid_c[i] ** 2, cls_num + 4))
+            train_out_new = torch.cat(train_out, dim=1)
+            train_out_new = torch.cat([train_out_new[:, :, :4], torch.exp(train_out_new[:, :, -cls_num:])], 2)
+
+            train_out_new[..., -1] = 1 - train_out_new.clone()[..., -1]
+            cls_list = [-cls_num + i for i in range(cls_num)]
+            train_out_new[..., cls_list] = train_out_new[..., [cls_list[-1]] + cls_list[:-1]]
+
+            # Run NMS
+            # Converts data from x, y, w, h, c0, c1, c2 to x, y, w, h, confidence, C
+            tonShape = train_out_new.shape[1]
+            train_out_new = torch.concat((train_out_new[:, :, :4], torch.max(train_out_new[:, :, 4:], dim=2)[0].reshape(batch_size, tonShape, 1), torch.argmax(train_out_new[:, :, 4:], dim=2).reshape(batch_size, tonShape, 1)), axis=2)
+            # Converts data from image, x, y, w, h, c0, c1, c2 to image, C, x, y, w, h
+            targets = torch.concat((targets[:, 0].reshape(-1,1), torch.argmax(targets[:, 5:], dim=1).reshape(-1,1), targets[:, 1:5]), axis=1)
+            targets = targets[targets[:, 1] != BACKGROUND_CLASS_ID]  # removes backgroud class in the targets
+        # More Run NMS
+        targets[:, 2:] *= torch.Tensor([width, height, width, height]).to(device)  # to pixels
+        lb=[]
+        #lb = [targets[targets[:, 0] == i, 1:] for i in range(nb)] if save_hybrid else []  # for autolabelling
         t = time_sync()
-        out = non_max_suppression(out, conf_thres, iou_thres, labels=lb, multi_label=True, agnostic=single_cls)
+        train_out_new = non_max_suppression(train_out_new, conf_thres, iou_thres, labels=lb, multi_label=True, agnostic=single_cls)
         t2 += time_sync() - t
 
+
         # Statistics per image
-        for si, pred in enumerate(out):
+        for si, pred in enumerate(train_out_new):
             batch_image_path = '.'.join([batch_path, paths[si].split(os.sep)[-1]])
             batch_image_predn_path = '.'.join([batch_image_path, 'predn.pkl'])
             batch_image_labelsn_path = '.'.join([batch_image_path, 'labelsn.pkl'])
@@ -302,7 +328,7 @@ def run(data, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, d
             f = save_dir / f'{"val" if prefix=="" else prefix}_batch{batch_i}_labels.jpg'  # labels
             Thread(target=plot_images, args=(img, targets, paths, f, names), daemon=True).start()
             f = save_dir / f'{"val" if prefix=="" else prefix}_batch{batch_i}_pred.jpg'  # predictions
-            Thread(target=plot_images, args=(img, output_to_target(out), paths, f, names), daemon=True).start()
+            Thread(target=plot_images, args=(img, output_to_target(train_out_new), paths, f, names), daemon=True).start()
 
     # Compute statistics
     stats = [np.concatenate(x, 0) for x in zip(*stats)]  # to numpy
