@@ -751,7 +751,7 @@ if __name__ == "__main__":
     opt.exist_ok = False
     opt.bcc_epoch = 0
     opt.batch_size = 20
-    opt.epochs = 25
+    opt.epochs = 8
     torch.autograd.set_detect_anomaly(True)
 
     main(opt)
