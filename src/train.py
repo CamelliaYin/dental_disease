@@ -296,6 +296,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     compute_loss = ComputeLoss(model)  # init loss class
     if bcc_epoch != -1:
         cls_num = data_dict['nc'] + 1
+        BACKGROUND_CLASS_ID = data_dict['nc']
         bcc_params = init_bcc_params(K=len(vol_id_map), classes=cls_num, diagPrior=opt.confusion_matrix_diagonal_prior_hyp, cnvrgThresh=opt.convergence_threshold_hyp)
         bcc_params['n_epoch'] = epochs
         batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
@@ -352,7 +353,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 #del target_volunteers, batch_volunteers, batch_volunteers_list, batch_filenames
                 #torch.cuda.empty_cache()
             ni = i + nb * epoch  # number integrated batches (since train start)
-            imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0
+            imgs = imgs.to(device, non_blocking=True).float() / 255.0  # uint8 to float32, 0-255 to 0.0-1.0 TODO: is the value 255.0 hard coded?
 
             # Warmup
             if ni <= nw:

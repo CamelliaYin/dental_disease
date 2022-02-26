@@ -43,7 +43,7 @@ def extract_volunteers(dataDict):
     id_map, count = extract_volunteers_helper(id_map, count, direct2)
 
     VOL_ID_MAP = id_map
-    return (id_map)
+    return (VOL_ID_MAP)
 
 
 def perform_nms_filtering(batch_qtargets_yolo, batch_qtargets, nms_thres = 0.45):
