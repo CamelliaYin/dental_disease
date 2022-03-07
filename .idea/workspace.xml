@@ -20,27 +20,19 @@
   </component>
   <component name="ChangeListManager">
     <list default="true" id="925933ac-ccb8-47e1-90f2-41b1b456a1b3" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dental_disease.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dental_disease.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
       <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/reproduce_results-checkpoint.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/coco128.zip" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/reproduce_results.ipynb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/runs/train/testtestLARGE/_predictions.json" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220120_173747-2ug29fen/files/output.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220120_173747-2ug29fen/run-2ug29fen.wandb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220121_180702-27z6ah6w/logs/debug-internal.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220125_150749-37nsqmgr/logs/debug-internal.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220129_191540-3543vyxt/logs/debug-internal.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_150944-2mosjz79/files/output.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_150944-2mosjz79/run-2mosjz79.wandb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_152851-evhjnu14/files/output.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_152851-evhjnu14/run-evhjnu14.wandb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_154238-2w4965u7/run-2w4965u7.wandb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_154905-30p8i15p/files/output.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_154905-30p8i15p/run-30p8i15p.wandb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_155616-1tuom9lq/files/output.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220201_155616-1tuom9lq/run-1tuom9lq.wandb" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/notebooks/wandb/run-20220217_191318-1x2iy6wp/logs/debug-internal.log" beforeDir="false" />
-      <change beforePath="$PROJECT_DIR$/src/coco128.zip" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/.ipynb_checkpoints/results_plot_govind-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Ryan's Scripts/.ipynb_checkpoints/BBoxViewer-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Ryan's Scripts/.ipynb_checkpoints/agregation-checkpoint.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Ryan's Scripts/BBoxViewer.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/Ryan's Scripts/agregation.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/explorer.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/results_plot_govind.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/notebooks/sanity_check.ipynb" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/lib/BCCNet/mnist.npz" beforeDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/utils/metrics.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/utils/metrics.py" afterDir="false" />
     </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
