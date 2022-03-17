@@ -442,7 +442,15 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                         # 201600 x 4location
                         batch_qtargets_lowdim = batch_qtargets.view(batch_qtargets.shape[0]*batch_qtargets.shape[1], batch_qtargets.shape[2])
                         # batch_qtargets_lowdim = batch_qtargets.reshape((-1,)+batch_qtargets.shape[2:])
-                        batch_qtargets_yolo = torch.cat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim = -1) # imageid, 4 locations, 3 cls
+                        batch_qtargets_yolo = torch.cat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim=-1) # imageid, 4 locations, 3 cls
+
+                        # rank the top 100 based on the bg prob
+                        qtargets_ranking = torch.argsort(batch_qtargets_yolo[:, -1])
+                        batch_qtargets_yolo = batch_qtargets_yolo[qtargets_ranking][:100]
+
+
+
+
                         # for each one of 201600
                         # NOW: x, y, w, h, c0, c1, c2 (note c2 is bg)
                         # shape: 201600 x 7

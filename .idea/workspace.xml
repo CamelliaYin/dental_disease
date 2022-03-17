@@ -1,7 +1,12 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
   <component name="ChangeListManager">
-    <list default="true" id="6f22c0e4-0f4b-49a1-a89d-3e9b2f4c4524" name="Changes" comment="" />
+    <list default="true" id="6f22c0e4-0f4b-49a1-a89d-3e9b2f4c4524" name="Changes" comment="">
+      <change beforePath="$PROJECT_DIR$/.idea/dental_disease.iml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/dental_disease.iml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/misc.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/misc.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/.idea/workspace.xml" beforeDir="false" afterPath="$PROJECT_DIR$/.idea/workspace.xml" afterDir="false" />
+      <change beforePath="$PROJECT_DIR$/src/train.py" beforeDir="false" afterPath="$PROJECT_DIR$/src/train.py" afterDir="false" />
+    </list>
     <option name="SHOW_DIALOG" value="false" />
     <option name="HIGHLIGHT_CONFLICTS" value="true" />
     <option name="HIGHLIGHT_NON_ACTIVE_CHANGELIST" value="false" />
@@ -73,9 +78,9 @@
       <envs>
         <env name="PYTHONUNBUFFERED" value="1" />
       </envs>
-      <option name="SDK_HOME" value="" />
+      <option name="SDK_HOME" value="$USER_HOME$/opt/anaconda3/envs/torch/bin/python" />
       <option name="WORKING_DIRECTORY" value="$PROJECT_DIR$" />
-      <option name="IS_MODULE_SDK" value="true" />
+      <option name="IS_MODULE_SDK" value="false" />
       <option name="ADD_CONTENT_ROOTS" value="true" />
       <option name="ADD_SOURCE_ROOTS" value="true" />
       <option name="SCRIPT_NAME" value="$PROJECT_DIR$/src/train.py" />
@@ -109,15 +114,49 @@
         </entry>
       </map>
     </option>
+    <option name="oldMeFiltersMigrated" value="true" />
+  </component>
+  <component name="WindowStateProjectService">
+    <state x="349" y="138" width="1117" height="960" key="#com.intellij.execution.impl.EditConfigurationsDialog" timestamp="1647516851018">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state x="349" y="138" width="1117" height="960" key="#com.intellij.execution.impl.EditConfigurationsDialog/0.0.1792.1120@0.0.1792.1120" timestamp="1647516851018" />
+    <state width="1755" height="316" key="GridCell.Tab.0.bottom" timestamp="1647521539978">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.0.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539978" />
+    <state width="1755" height="316" key="GridCell.Tab.0.center" timestamp="1647521539977">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.0.center/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539977" />
+    <state width="1755" height="316" key="GridCell.Tab.0.left" timestamp="1647521539977">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.0.left/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539977" />
+    <state width="1755" height="316" key="GridCell.Tab.0.right" timestamp="1647521539978">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.0.right/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539978" />
+    <state width="1755" height="316" key="GridCell.Tab.1.bottom" timestamp="1647521539979">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.1.bottom/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539979" />
+    <state width="1755" height="316" key="GridCell.Tab.1.center" timestamp="1647521539978">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.1.center/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539978" />
+    <state width="1755" height="316" key="GridCell.Tab.1.left" timestamp="1647521539978">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.1.left/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539978" />
+    <state width="1755" height="316" key="GridCell.Tab.1.right" timestamp="1647521539979">
+      <screen x="0" y="0" width="1792" height="1120" />
+    </state>
+    <state width="1755" height="316" key="GridCell.Tab.1.right/0.0.1792.1120@0.0.1792.1120" timestamp="1647521539979" />
   </component>
   <component name="XDebuggerManager">
     <breakpoint-manager>
       <breakpoints>
-        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
-          <url>file://$PROJECT_DIR$/src/train.py</url>
-          <line>463</line>
-          <option name="timeStamp" value="70" />
-        </line-breakpoint>
         <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
           <url>file://$PROJECT_DIR$/src/utils/plots.py</url>
           <line>197</line>
@@ -132,6 +171,11 @@
           <url>file://$PROJECT_DIR$/src/val.py</url>
           <line>266</line>
           <option name="timeStamp" value="107" />
+        </line-breakpoint>
+        <line-breakpoint enabled="true" suspend="THREAD" type="python-line">
+          <url>file://$PROJECT_DIR$/src/train.py</url>
+          <line>444</line>
+          <option name="timeStamp" value="108" />
         </line-breakpoint>
       </breakpoints>
       <default-breakpoints>
