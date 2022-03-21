@@ -47,7 +47,7 @@ from utils.general import labels_to_class_weights, increment_path, labels_to_ima
     strip_optimizer, get_latest_run, check_dataset, check_file, check_git_status, check_img_size, \
     check_requirements, print_mutation, set_logging, one_cycle, colorstr, methods
 from utils.downloads import attempt_download
-from utils.loss import ComputeLoss
+from utils.loss import ComputeLoss, ComputeLoss_val
 from utils.plots import plot_labels, plot_evolve
 from utils.torch_utils import EarlyStopping, ModelEMA, de_parallel, intersect_dicts, select_device, \
     torch_distributed_zero_first
@@ -294,6 +294,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     scaler = amp.GradScaler(enabled=cuda)
     stopper = EarlyStopping(patience=opt.patience)
     compute_loss = ComputeLoss(model)  # init loss class
+    compute_loss_val = ComputeLoss_val(model)
     if bcc_epoch != -1:
         cls_num = data_dict['nc'] + 1
         BACKGROUND_CLASS_ID = data_dict['nc']
@@ -382,7 +383,10 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                     # given transform_format_flag = False, we have (x, y, w, h, prob, c1, c2)
                     # shape: #image x 25200 x 7
                     # TODO: Does This Work With 4 Labels (inc background)?
-                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False) # y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
+
+                    # batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False)# y_hat_bcc # batch_conf # converts yolo predictions in a format that is readable by bcc
+                    # major change here, discard log
+                    batch_pred_bcc, _, batch_conf = yolo2bcc_newer(batch_pred_yolo, imgsz, silent=False)
                     # transferprob(), take out the log p
                     # shape: #image x 25200 x 3 (last entry is bg)
                     anch_num = pred[0].shape[1]
@@ -445,8 +449,8 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                         batch_qtargets_yolo = torch.cat([batch_qtargets_yolo_rm_c, batch_qtargets_lowdim], dim=-1) # imageid, 4 locations, 3 cls
 
                         # rank the top 100 based on the bg prob
-                        qtargets_ranking = torch.argsort(batch_qtargets_yolo[:, -1])
-                        batch_qtargets_yolo = batch_qtargets_yolo[qtargets_ranking][:100]
+                        # qtargets_ranking = torch.argsort(batch_qtargets_yolo[:, -1])
+                        # batch_qtargets_yolo = batch_qtargets_yolo[qtargets_ranking][:100]
 
 
 
@@ -524,25 +528,25 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                            save_dir=save_dir,
                                            save_json=is_coco and final_epoch,
                                            verbose=nc < 50 and final_epoch,
-                                           plots=plots and final_epoch,
+                                           plots=plots and final_epoch, #default is False
                                            callbacks=callbacks,
-                                           compute_loss=compute_loss)
-                try:
-                    train_results, train_maps, _ = val.run(data_dict, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, dataset, opt,
-                                                           batch_size=batch_size // WORLD_SIZE * 2,
-                                                           imgsz=imgsz,
-                                                           model=ema.ema,
-                                                           single_cls=single_cls,
-                                                           dataloader=train_loader,
-                                                           save_dir=save_dir,
-                                                           save_json=is_coco and final_epoch,
-                                                           verbose=nc < 50 and final_epoch,
-                                                           plots=plots and final_epoch,
-                                                           callbacks=callbacks,
-                                                           compute_loss=compute_loss,
-                                                           prefix='train')
-                except:
-                    print('Unable to Create train results')
+                                           compute_loss_val=compute_loss_val) #todo: LOSS NEED TO CHANGE FOR HARD
+                # try: # here, to generate evaluation, we run train data on val.py as well
+                #     train_results, train_maps, _ = val.run(data_dict, torchMode, vol_id_map, file_volunteers_dict, cls_num, bcc_epoch, dataset, opt,
+                #                                            batch_size=batch_size // WORLD_SIZE * 2,
+                #                                            imgsz=imgsz,
+                #                                            model=ema.ema,
+                #                                            single_cls=single_cls,
+                #                                            dataloader=train_loader,
+                #                                            save_dir=save_dir,
+                #                                            save_json=is_coco and final_epoch,
+                #                                            verbose=nc < 50 and final_epoch,
+                #                                            plots=plots and final_epoch,
+                #                                            callbacks=callbacks,
+                #                                            compute_loss=compute_loss,
+                #                                            prefix='train')
+                # except:
+                #     print('Unable to Create train results')
                 # yhat_train = pred
                 # y_train = dataset.labels
                 # yhat_test = results
@@ -611,7 +615,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                                             dataloader=val_loader,
                                             save_dir=save_dir,
                                             save_json=True,
-                                            plots=False)
+                                            plots=True) #default is true
             # Strip optimizers
             for f in last, best:
                 if f.exists():
@@ -795,7 +799,6 @@ def main(opt):
 
             # Write mutation results
             print_mutation(results, hyp.copy(), save_dir, opt.bucket)
-
         # Plot results
         plot_evolve(evolve_csv)
         print(f'Hyperparameter evolution finished\n'
@@ -813,13 +816,13 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
-    opt.data = 'data0/cyolo.yaml'
-    #opt.data = 'data0/single_toy_bcc.yaml'
+    # opt.data = 'data0/cyolo.yaml'
+    opt.data = 'data0/single_toy_bcc.yaml'
     opt.hyp = 'data0/hyps/hyp.scratch.yaml'
     opt.exist_ok = False
     opt.bcc_epoch = 0
     opt.batch_size = 20
-    opt.epochs = 25
+    opt.epochs = 1
     #torch.autograd.set_detect_anomaly(True)
     main(opt)
 #torch.cuda.empty_cache()

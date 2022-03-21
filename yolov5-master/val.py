@@ -223,7 +223,7 @@ def run(data,
             scale_coords(im[si].shape[1:], predn[:, :4], shape, shapes[si][1])  # native-space pred
 
             # Evaluate
-            if nl:
+            if nl: # for real targets
                 tbox = xywh2xyxy(labels[:, 1:5])  # target boxes
                 scale_coords(im[si].shape[1:], tbox, shape, shapes[si][1])  # native-space labels
                 labelsn = torch.cat((labels[:, 0:1], tbox), 1)  # native-space labels
@@ -232,7 +232,7 @@ def run(data,
                     confusion_matrix.process_batch(predn, labelsn)
             else:
                 correct = torch.zeros(pred.shape[0], niou, dtype=torch.bool)
-            stats.append((correct.cpu(), pred[:, 4].cpu(), pred[:, 5].cpu(), tcls))  # (correct, conf, pcls, tcls)
+            stats.append((correct.cpu(), pred[:, 4].cpu(), pred[:, 5].cpu(), tcls))  # (correct, conf, pcls, tcls) #todo
 
             # Save/log
             if save_txt:
@@ -249,7 +249,7 @@ def run(data,
             Thread(target=plot_images, args=(im, output_to_target(out), paths, f, names), daemon=True).start()
 
     # Compute metrics
-    stats = [np.concatenate(x, 0) for x in zip(*stats)]  # to numpy
+    stats = [np.concatenate(x, 0) for x in zip(*stats)]  # to numpy todo
     if len(stats) and stats[0].any():
         tp, fp, p, r, f1, ap, ap_class = ap_per_class(*stats, plot=plots, save_dir=save_dir, names=names)
         ap50, ap = ap[:, 0], ap.mean(1)  # AP@0.5, AP@0.5:0.95

@@ -221,7 +221,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
     # Trainloader
     train_loader, dataset = create_dataloader(train_path, imgsz, batch_size // WORLD_SIZE, gs, single_cls,
-                                              hyp=hyp, augment=True, cache=opt.cache, rect=opt.rect, rank=LOCAL_RANK,
+                                              hyp=hyp, augment=False, cache=opt.cache, rect=opt.rect, rank=LOCAL_RANK,
                                               workers=workers, image_weights=opt.image_weights, quad=opt.quad,
                                               prefix=colorstr('train: '), shuffle=True)
     mlc = int(np.concatenate(dataset.labels, 0)[:, 0].max())  # max label class
@@ -633,4 +633,9 @@ def run(**kwargs):
 
 if __name__ == "__main__":
     opt = parse_opt()
+    opt.data = 'data0/single_toy_bcc.yaml'
+    opt.hyp = 'data0/hyps/hyp.scratch.yaml'
+    opt.exist_ok = False
+    opt.batch_size = 20
+    opt.epochs = 1
     main(opt)

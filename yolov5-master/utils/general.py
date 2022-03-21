@@ -672,18 +672,20 @@ def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=Non
 
     # Settings
     min_wh, max_wh = 2, 7680  # (pixels) minimum and maximum box width and height
+    ##### todo: somehow mine max_wh is 4096
     max_nms = 30000  # maximum number of boxes into torchvision.ops.nms()
     time_limit = 10.0  # seconds to quit after
     redundant = True  # require redundant detections
     multi_label &= nc > 1  # multiple labels per box (adds 0.5ms/img)
-    merge = False  # use merge-NMS
+    merge = False  # use merge-NMS #todo: should set merge to True and check if change redunant afterwards
 
     t = time.time()
     output = [torch.zeros((0, 6), device=prediction.device)] * prediction.shape[0]
     for xi, x in enumerate(prediction):  # image index, image inference
         # Apply constraints
         # x[((x[..., 2:4] < min_wh) | (x[..., 2:4] > max_wh)).any(1), 4] = 0  # width-height
-        x = x[xc[xi]]  # confidence
+        x = x[xc[xi]]  # confidence, filter out those not pass the threshold.
+        # prediction[0] changes from 21168 to 15800
 
         # Cat apriori labels if autolabelling
         if labels and len(labels[xi]):
@@ -729,8 +731,9 @@ def non_max_suppression(prediction, conf_thres=0.25, iou_thres=0.45, classes=Non
 
         # Batched NMS
         c = x[:, 5:6] * (0 if agnostic else max_wh)  # classes
+        # by now the x transferred to xywhc. i.e. x.shape = [13252, 6]
         boxes, scores = x[:, :4] + c, x[:, 4]  # boxes (offset by class), scores
-        i = torchvision.ops.nms(boxes, scores, iou_thres)  # NMS
+        i = torchvision.ops.nms(boxes, scores, iou_thres)  # NMS (output i are indices)
         if i.shape[0] > max_det:  # limit detections
             i = i[:max_det]
         if merge and (1 < n < 3E3):  # Merge NMS (boxes merged using weighted mean)

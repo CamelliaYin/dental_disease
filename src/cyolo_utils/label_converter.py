@@ -87,10 +87,56 @@ def find_union_cstargets(cstargets):
         y_cs_union.append(torch.cat([torch.tensor(x[i]) for x in cstargets]))
     return y_cs_union
 
+# todo: discard the normalisation using sigmoid function, instead we take log directly for c1,c2,1-o
+# TODO: if not go well can try o, rahter than 1-o
+def yolo2bcc_newer_log(y_yolo, imgsz, silent = True):
+    # transform probability from o,c1,c2 to p0,p1,p2
+    wh = y_yolo[:, ..., 2:4] / imgsz  # width and height
+    conf = y_yolo[:, ..., 4]  # first class C1
+
+    p = y_yolo[..., 4]  # also first class C1?
+    class_prob = y_yolo[..., 5:]
+    # sigma_t = y_yolo[..., 5:]  # the rest of the classes C2, C3, ...
+    # sigma_prime_t = sigma_t / sigma_t.sum(axis=2).unsqueeze(-1)  # divides the C2, C3,... by the sum of itself for each instance
+    # class_prob = sigma_prime_t * p.unsqueeze(-1)  # multiplies C2, C3, ... by the first class prob C1
+    bkgd_prob = 1 - p  # inverts the probabilities for the first class C1
+    # single_bcc_toy.yaml, first epoch, min bkgd_prob is 0.91 which is no good. bg is dominated
+    bcc_prob = torch.cat([class_prob, bkgd_prob.unsqueeze(-1)],-1)  # concatanates C1 to new C2, C3, ... in the form of C2, C3, ..., C1
+    if not silent:
+        mins = [round(x, 6) for x in list(bcc_prob.min(1).values.min(0).values.cpu().detach().numpy())]
+        maxs = [round(x, 6) for x in list(bcc_prob.max(1).values.max(0).values.cpu().detach().numpy())]
+        print('Minimum probs (c1, c2, bkgd):', mins)
+        print('Maximum probs (c1, c2, bkgd):', maxs)
+    bcc_logits = torch.log(bcc_prob)  # finds the logarithm of each element.
+    # note that they are log normalised probs from yolo output, i.e. log(transformprob)
+    return bcc_logits, wh, conf
+
+def yolo2bcc_newer(y_yolo, imgsz, silent = True):
+    # transform probability from o,c1,c2 to p0,p1,p2
+    wh = y_yolo[:, ..., 2:4] / imgsz  # width and height
+    conf = y_yolo[:, ..., 4]  # first class C1
+
+    p = y_yolo[..., 4]  # also first class C1?
+    class_prob = y_yolo[..., 5:]
+    # sigma_t = y_yolo[..., 5:]  # the rest of the classes C2, C3, ...
+    # sigma_prime_t = sigma_t / sigma_t.sum(axis=2).unsqueeze(-1)  # divides the C2, C3,... by the sum of itself for each instance
+    # class_prob = sigma_prime_t * p.unsqueeze(-1)  # multiplies C2, C3, ... by the first class prob C1
+    bkgd_prob = 1 - p  # inverts the probabilities for the first class C1
+    # single_bcc_toy.yaml, first epoch, min bkgd_prob is 0.91 which is no good. bg is dominated
+    bcc_prob = torch.cat([class_prob, bkgd_prob.unsqueeze(-1)],-1)  # concatanates C1 to new C2, C3, ... in the form of C2, C3, ..., C1
+    if not silent:
+        mins = [round(x, 6) for x in list(bcc_prob.min(1).values.min(0).values.cpu().detach().numpy())]
+        maxs = [round(x, 6) for x in list(bcc_prob.max(1).values.max(0).values.cpu().detach().numpy())]
+        print('Minimum probs (c1, c2, bkgd):', mins)
+        print('Maximum probs (c1, c2, bkgd):', maxs)
+    # bcc_logits = torch.log(bcc_prob)  # finds the logarithm of each element.
+    # note that they are log normalised probs from yolo output, i.e. log(transformprob)
+    return bcc_prob, wh, conf
+
 # When YOLO predicts bounding boxes in a given epoch, this has to be fed to BCC,
 # which is only possible if the dimensions match. While YOLO gives a boundingbox-class tensor (x, y, w, h, c, c1, c2),
 # what BCC needs is a gridcell-class tensor, and that too in logits.
-def yolo2bcc_newer(y_yolo, imgsz, silent = True):
+def yolo2bcc_newer_old(y_yolo, imgsz, silent = True):
     # transform probability from o,c1,c2 to p0,p1,p2
     wh = y_yolo[:, ..., 2:4] / imgsz  # width and height
     conf = y_yolo[:, ..., 4]  # first class C1
