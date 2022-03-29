@@ -274,7 +274,9 @@ class ComputeLoss:
                 lbox += (1.0 - iou).mean()  # iou loss
 
                 # Objectness
-                llobj = tcls[i][:, 2] * -torch.log(ps[:, -1])
+                tobj[b, a, gj, gi] = tcls[i][:, 2]
+                # llobj = tcls[i][:, 2] * -torch.log(ps[:, -1])
+                # lobj += self.BCEobj(ps[:, -1], tcls[i][:,2])
                 # llobj = tcls[i][:, 2] * -ps[:, -1]  # obj loss element-wise
                 # score_iou = iou.detach().clamp(0).type(tobj.dtype)
                 # if self.sort_obj_iou:
@@ -284,17 +286,20 @@ class ComputeLoss:
 
                 # Classification
                 if self.nc > 1:  # cls loss (only if multiple classes)
-                    cls_ind = tcls[i][:, :2] * -torch.log(ps[:, 5:7])
-                    cls_sum = torch.sum(cls_ind, 1)
-                    lcls = torch.unsqueeze(cls_sum.mean(), 0)
+                    lcls += self.BCEcls(ps[:, 5:7], tcls[i][:, :2])
+                    # cls_ind = tcls[i][:, :2] * -torch.log(ps[:, 5:7])
+                    # cls_sum = torch.sum(cls_ind, 1)
+                    # lcls = torch.unsqueeze(cls_sum.mean(), 0)
 
                 # Append targets to text file
                 # with open('targets.txt', 'a') as file:
                 #     [file.write('%11.5g ' * 4 % tuple(x) + '\n') for x in torch.cat((txy[i], twh[i]), 1)]
 
-            lobj = torch.unsqueeze(llobj.mean() * self.balance[i], 0)  # obj loss
+            obji = self.BCEobj(pi[..., -1], tobj)
+            lobj += obji * self.balance[i]
+            # lobj = torch.unsqueeze(lobj.mean() * self.balance[i], 0)  # obj loss
             if self.autobalance:
-                self.balance[i] = self.balance[i] * 0.9999 + 0.0001 / obji.detach().item()
+                self.balance[i] = self.balance[i] * 0.9999 + 0.0001 / lobj.detach().item()
 
         if self.autobalance:
             self.balance = [x / self.balance[self.ssi] for x in self.balance]

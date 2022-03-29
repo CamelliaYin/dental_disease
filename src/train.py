@@ -71,11 +71,12 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     save_dir, epochs, batch_size, weights, single_cls, evolve, data, cfg, resume, noval, nosave, workers, freeze, = \
         Path(opt.save_dir), opt.epochs, opt.batch_size, opt.weights, opt.single_cls, opt.evolve, opt.data, opt.cfg, \
         opt.resume, opt.noval, opt.nosave, opt.workers, opt.freeze
-    vol_id_map = 0 if 'single' in data else {0,1,2,3}
+    vol_id_map = 0 if 'single' in data else {0,1,2,3} # TODO HARD CODE
+    # data = opt.data = single_toy_bcc.yaml
 
 
     bcc_epoch = opt.bcc_epoch
-    qtfilter_epoch = opt.qtfilter_epoch
+    qtfilter_epoch = opt.qtfilter_epoch # no need maybe
     qt_thres_mode = opt.qt_thres_mode
     qt_thres = opt.qt_thres
     hybrid_entropy_thres = opt.hybrid_entropy_thres
@@ -140,13 +141,18 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     else:
         model = Model(cfg, ch=1, nc=nc, anchors=hyp.get('anchors')).to(device)  # create
 
-    # Freeze
-    freeze = [f'model.{x}.' for x in range(freeze)]  # layers to freeze
-    for k, v in model.named_parameters():
-        v.requires_grad = True  # train all layers
-        if any(x in k for x in freeze):
-            print(f'freezing {k}')
-            v.requires_grad = False
+    # Freeze (NOT IN USE)
+    # freeze = [f'model.{x}.' for x in range(freeze)]  # layers to freeze
+    # for k, v in model.named_parameters():
+    #     v.requires_grad = True  # train all layers
+    #     if any(x in k for x in freeze):
+    #         print(f'freezing {k}')
+    #         v.requires_grad = False
+
+    # Image sizes
+    gs = max(int(model.stride.max()), 32)  # grid size (max stride)
+    nl = model.model[-1].nl  # number of detection layers (used for scaling hyp['obj'])
+    imgsz = check_img_size(opt.imgsz, gs, floor=gs * 2)  # verify imgsz is gs-multiple
 
     # Optimizer
     nbs = 64  # nominal batch size
@@ -207,11 +213,6 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 
         del ckpt, csd
 
-    # Image sizes
-    gs = max(int(model.stride.max()), 32)  # grid size (max stride)
-    nl = model.model[-1].nl  # number of detection layers (used for scaling hyp['obj'])
-    imgsz = check_img_size(opt.imgsz, gs, floor=gs * 2)  # verify imgsz is gs-multiple
-
     # DP mode
     if cuda and RANK == -1 and torch.cuda.device_count() > 1:
         logging.warning('DP not recommended, instead use torch.distributed.run for best DDP Multi-GPU results.\n'
@@ -228,6 +229,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     if bcc_epoch != -1:
         aug = False
     print('Augmentation is: ', aug)
+
     # Trainloader
     train_loader, dataset = create_dataloader(train_path, imgsz, batch_size // WORLD_SIZE, gs, single_cls,
                                               hyp=hyp, augment=aug, cache=opt.cache, rect=opt.rect, rank=RANK,
@@ -297,8 +299,9 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
     compute_loss_val = ComputeLoss_val(model)
     if bcc_epoch != -1:
         cls_num = data_dict['nc'] + 1
-        BACKGROUND_CLASS_ID = data_dict['nc']
-        bcc_params = init_bcc_params(K=len(vol_id_map), classes=cls_num, diagPrior=opt.confusion_matrix_diagonal_prior_hyp, cnvrgThresh=opt.convergence_threshold_hyp)
+        # BACKGROUND_CLASS_ID = data_dict['nc']
+        bg_id = data_dict['nc']
+        bcc_params = init_bcc_params(K=len(vol_id_map), classes=cls_num, diagPrior=opt.cm_diagonal_prior_hyp, cnvrgThresh=opt.convergence_threshold_hyp)
         bcc_params['n_epoch'] = epochs
         batch_pcm = {k: torch.tensor(v).to(device) if torchMode else v for k, v in compute_param_confusion_matrices(bcc_params).items()}
         # pred0_bcc = init_nn_output(dataset.n, grid_ratios, n_anchor_choices, bcc_params)
@@ -344,9 +347,9 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
                 batch_volunteers_list = [file_volunteers_dict[fn] for fn in batch_filenames]
                 batch_volunteers = torch.cat(batch_volunteers_list)
                 target_volunteers = torch.cat([targets, batch_volunteers.unsqueeze(-1)], axis=1)
-                # #bbox x (img_id, cls, x, y, w, h, vol_id)
-                batch_size = np.where(dataset.batch==i)[0].shape[0]
-                target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, nc, grid_ratios, batch_size, vol_id_map)
+                # #bbox x (img_id_within_batch, cls, x, y, w, h, vol_id)
+                batch_size = np.where(dataset.batch == i)[0].shape[0]
+                target_volunteers_bcc, vigcwh = convert_target_volunteers_yolo2bcc(target_volunteers, n_anchor_choices, grid_ratios, batch_size, vol_id_map, bg_id)
                 ## target_volunteers_bcc is the list of class according vigcwh, (8,25200,1), and apparently most are 2 as bg
                 ## [v]olunteer, [i]mage, [g]rid choice, grid [c]ell id, [w]idth, [h]eight, in shape (78,6)
                 target_volunteers_bcc = target_volunteers_bcc.to(device)
@@ -378,8 +381,9 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
             with amp.autocast(enabled=cuda):
                 pred = model(imgs)
                 if bcc_flag:
-                    model.eval()
+                    model.eval() # TODO: keep or delete? any diff?
                     batch_pred_yolo = nn_predict(model, imgs, imgsz, transform_format_flag=False) # y_hat_yolo # gets the cyolo prdictions for the batch
+                    # todo: batch_pred_yolo = pred[0]
                     # given transform_format_flag = False, we have (x, y, w, h, prob, c1, c2)
                     # shape: #image x 25200 x 7
                     # TODO: Does This Work With 4 Labels (inc background)?
@@ -630,7 +634,7 @@ def train(hyp,  # path/to/hyp.yaml or hyp dictionary
 def parse_opt(known=False):
     parser = argparse.ArgumentParser()
     parser.add_argument('--bcc_epoch', type=int, default=0, help='start-epoch for BCC+YOLO run; use -1 for no BCC.')
-    parser.add_argument('--confusion_matrix_diagonal_prior_hyp', type=float, default=1e-1, help='BCC parameter to determine the diagonal prior for the matrix.')
+    parser.add_argument('--cm_diagonal_prior_hyp', type=float, default=1e-1, help='BCC parameter to determine the diagonal prior for the matrix.')
     parser.add_argument('--convergence_threshold_hyp', type=float, default=1e-6, help='BCC parameter to determine the convergence threshold.')
     parser.add_argument('--qtfilter_epoch', type=int, default=-1, help='start-epoch for qt-filter; use -1 for no qt-filter.')
     parser.add_argument('--qt_thres_mode', type=str, default='', help="one of '', 'conf-count', 'entropy', 'conf-val'")

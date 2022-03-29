@@ -1,0 +1,312 @@
+2022-03-28 15:29:46,132 INFO    MainThread:19717 [internal.py:wandb_internal():92] W&B internal server running at pid: 19717, started at: 2022-03-28 15:29:46.131855
+2022-03-28 15:29:46,136 INFO    WriterThread:19717 [datastore.py:open_for_write():77] open: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/run-vvkur57i.wandb
+2022-03-28 15:29:46,140 DEBUG   SenderThread:19717 [sender.py:send():235] send: header
+2022-03-28 15:29:46,140 DEBUG   SenderThread:19717 [sender.py:send():235] send: run
+2022-03-28 15:29:46,172 INFO    SenderThread:19717 [sender.py:_maybe_setup_resume():492] checking resume status for None/YOLOv5/vvkur57i
+2022-03-28 15:29:46,649 INFO    SenderThread:19717 [dir_watcher.py:__init__():169] watching files in: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files
+2022-03-28 15:29:46,649 INFO    SenderThread:19717 [sender.py:_start_run_threads():812] run started: vvkur57i with start time 1648477783
+2022-03-28 15:29:46,653 DEBUG   SenderThread:19717 [sender.py:send():235] send: summary
+2022-03-28 15:29:46,653 INFO    SenderThread:19717 [sender.py:_save_file():947] saving file wandb-summary.json with policy end
+2022-03-28 15:29:46,657 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: check_version
+2022-03-28 15:29:46,657 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: check_version
+2022-03-28 15:29:46,720 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: run_start
+2022-03-28 15:29:47,741 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/wandb-summary.json
+2022-03-28 15:29:49,865 DEBUG   HandlerThread:19717 [meta.py:__init__():37] meta init
+2022-03-28 15:29:49,866 DEBUG   HandlerThread:19717 [meta.py:__init__():51] meta init done
+2022-03-28 15:29:49,866 DEBUG   HandlerThread:19717 [meta.py:probe():211] probe
+2022-03-28 15:29:49,867 DEBUG   HandlerThread:19717 [meta.py:_setup_git():201] setup git
+2022-03-28 15:29:49,898 DEBUG   HandlerThread:19717 [meta.py:_setup_git():208] setup git done
+2022-03-28 15:29:49,899 DEBUG   HandlerThread:19717 [meta.py:_save_pip():55] save pip
+2022-03-28 15:29:49,900 DEBUG   HandlerThread:19717 [meta.py:_save_pip():69] save pip done
+2022-03-28 15:29:49,900 DEBUG   HandlerThread:19717 [meta.py:_save_conda():76] save conda
+2022-03-28 15:29:50,748 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/conda-environment.yaml
+2022-03-28 15:29:50,749 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/requirements.txt
+2022-03-28 15:29:51,748 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:29:52,362 DEBUG   HandlerThread:19717 [meta.py:_save_conda():86] save conda done
+2022-03-28 15:29:52,362 DEBUG   HandlerThread:19717 [meta.py:probe():249] probe done
+2022-03-28 15:29:52,369 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:29:52,369 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:29:52,554 DEBUG   SenderThread:19717 [sender.py:send():235] send: telemetry
+2022-03-28 15:29:52,554 DEBUG   SenderThread:19717 [sender.py:send():235] send: config
+2022-03-28 15:29:52,554 DEBUG   SenderThread:19717 [sender.py:send():235] send: files
+2022-03-28 15:29:52,555 INFO    SenderThread:19717 [sender.py:_save_file():947] saving file wandb-metadata.json with policy now
+2022-03-28 15:29:52,749 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/conda-environment.yaml
+2022-03-28 15:29:52,749 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_created():217] file/dir created: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/wandb-metadata.json
+2022-03-28 15:29:53,753 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:29:53,866 INFO    Thread-16 :19717 [upload_job.py:push():137] Uploaded file /var/folders/gg/vs58bk7n53qgj0xw27ly8zzw0000gn/T/tmpb1ursi2swandb/102gfo8q-wandb-metadata.json
+2022-03-28 15:29:55,759 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:29:56,764 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:30:07,558 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:30:07,559 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:30:17,830 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/config.yaml
+2022-03-28 15:30:18,568 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:30:22,748 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:30:22,749 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:30:37,937 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:30:37,937 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:30:49,268 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:30:53,128 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:30:53,129 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:30:55,956 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:30:57,960 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:31:08,319 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:31:08,319 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:31:14,011 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:31:19,948 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:31:23,500 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:31:23,501 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:31:38,913 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:31:38,913 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:31:50,559 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:31:54,090 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:31:54,090 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:32:09,268 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:32:09,268 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:32:21,238 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:32:24,481 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:32:24,481 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:32:39,669 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:32:39,669 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:32:51,931 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:32:54,850 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:32:54,850 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:33:10,020 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:33:10,020 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:33:22,638 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:33:25,199 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:33:25,200 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:33:40,377 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:33:40,377 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:33:53,390 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:33:55,571 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:33:55,572 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:34:10,754 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:34:10,755 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:34:16,591 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:34:24,115 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:34:25,934 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:34:25,934 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:34:41,110 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:34:41,111 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:34:52,679 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:34:54,769 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:34:56,293 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:34:56,293 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:35:00,711 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:06,732 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:10,747 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:11,541 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:35:11,542 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:35:14,758 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:16,766 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:22,787 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:25,544 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:35:26,706 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:35:26,707 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:35:28,809 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:32,825 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:35:41,903 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:35:41,903 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:35:56,359 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:35:57,082 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:35:57,082 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:36:12,247 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:36:12,247 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:36:26,978 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:36:27,129 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:36:27,767 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:36:27,767 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:36:42,929 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:36:42,929 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:36:53,045 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:36:57,848 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:36:58,302 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:36:58,303 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:37:13,464 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:37:13,465 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:37:28,613 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:37:28,619 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:37:28,619 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:37:43,775 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:37:43,776 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:37:45,228 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:37:51,250 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:37:58,972 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:37:58,972 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:37:59,560 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:38:01,291 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:38:13,334 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:38:14,134 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:38:14,135 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:38:17,350 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:38:29,318 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:38:29,318 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:38:30,380 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:38:44,486 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:38:44,486 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:38:59,649 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:38:59,649 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:39:01,135 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:39:14,810 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:39:14,811 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:39:29,989 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:39:29,990 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:39:32,011 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:39:45,154 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:39:45,155 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:40:00,317 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:40:00,317 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:40:02,804 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:40:15,500 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:40:15,501 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:40:30,669 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:40:30,669 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:40:33,442 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:40:45,831 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:40:45,831 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:41:01,008 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:41:01,017 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:41:04,214 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:41:16,209 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:41:16,210 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:41:31,369 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:41:31,369 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:41:34,964 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:41:46,988 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:41:46,988 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:42:02,189 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:42:02,189 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:42:05,795 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:42:17,367 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:42:17,367 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:42:32,757 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:42:32,758 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:42:36,561 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:42:47,917 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:42:47,918 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:43:03,087 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: stop_status
+2022-03-28 15:43:03,087 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: stop_status
+2022-03-28 15:43:07,428 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:43:16,627 WARNING MainThread:19717 [internal.py:wandb_internal():155] Internal process interrupt: 1
+2022-03-28 15:43:16,784 DEBUG   SenderThread:19717 [sender.py:send():235] send: telemetry
+2022-03-28 15:43:16,784 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: partial_history
+2022-03-28 15:43:18,241 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:43:19,153 DEBUG   SenderThread:19717 [sender.py:send():235] send: exit
+2022-03-28 15:43:19,153 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:19,154 INFO    SenderThread:19717 [sender.py:send_exit():371] handling exit code: 0
+2022-03-28 15:43:19,154 INFO    SenderThread:19717 [sender.py:send_exit():373] handling runtime: 812
+2022-03-28 15:43:19,155 INFO    SenderThread:19717 [sender.py:_save_file():947] saving file wandb-summary.json with policy end
+2022-03-28 15:43:19,155 INFO    SenderThread:19717 [sender.py:send_exit():379] send defer
+2022-03-28 15:43:19,156 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:19,156 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:19,157 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 0
+2022-03-28 15:43:19,157 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:19,157 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 0
+2022-03-28 15:43:19,157 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 1
+2022-03-28 15:43:19,158 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:19,158 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 1
+2022-03-28 15:43:19,198 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:19,199 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 1
+2022-03-28 15:43:19,199 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 2
+2022-03-28 15:43:19,199 DEBUG   SenderThread:19717 [sender.py:send():235] send: stats
+2022-03-28 15:43:19,200 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:19,200 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 2
+2022-03-28 15:43:19,200 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:19,201 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 2
+2022-03-28 15:43:19,201 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 3
+2022-03-28 15:43:19,201 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:19,201 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 3
+2022-03-28 15:43:19,202 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:19,202 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 3
+2022-03-28 15:43:19,202 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 4
+2022-03-28 15:43:19,203 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:19,203 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 4
+2022-03-28 15:43:19,203 DEBUG   SenderThread:19717 [sender.py:send():235] send: summary
+2022-03-28 15:43:19,204 INFO    SenderThread:19717 [sender.py:_save_file():947] saving file wandb-summary.json with policy end
+2022-03-28 15:43:19,204 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:19,205 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 4
+2022-03-28 15:43:19,205 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 5
+2022-03-28 15:43:19,205 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:19,205 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 5
+2022-03-28 15:43:19,206 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:19,206 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 5
+2022-03-28 15:43:19,242 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/wandb-summary.json
+2022-03-28 15:43:19,242 INFO    Thread-12 :19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:43:19,259 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:19,599 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 6
+2022-03-28 15:43:19,600 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:19,600 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:19,601 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 6
+2022-03-28 15:43:19,601 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:19,601 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 6
+2022-03-28 15:43:19,601 INFO    SenderThread:19717 [dir_watcher.py:finish():283] shutting down directory watcher
+2022-03-28 15:43:19,702 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:20,246 INFO    SenderThread:19717 [dir_watcher.py:_on_file_modified():230] file/dir modified: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/config.yaml
+2022-03-28 15:43:20,246 INFO    SenderThread:19717 [dir_watcher.py:finish():313] scan: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files
+2022-03-28 15:43:20,247 INFO    SenderThread:19717 [dir_watcher.py:finish():327] scan save: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/requirements.txt requirements.txt
+2022-03-28 15:43:20,247 INFO    SenderThread:19717 [dir_watcher.py:finish():327] scan save: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log output.log
+2022-03-28 15:43:20,257 INFO    SenderThread:19717 [dir_watcher.py:finish():327] scan save: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/config.yaml config.yaml
+2022-03-28 15:43:20,265 INFO    SenderThread:19717 [dir_watcher.py:finish():327] scan save: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/wandb-summary.json wandb-summary.json
+2022-03-28 15:43:20,271 INFO    SenderThread:19717 [dir_watcher.py:finish():327] scan save: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/conda-environment.yaml conda-environment.yaml
+2022-03-28 15:43:20,277 INFO    SenderThread:19717 [dir_watcher.py:finish():327] scan save: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/wandb-metadata.json wandb-metadata.json
+2022-03-28 15:43:20,281 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 7
+2022-03-28 15:43:20,282 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:20,288 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:20,293 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 7
+2022-03-28 15:43:20,302 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:20,304 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 7
+2022-03-28 15:43:20,304 INFO    SenderThread:19717 [file_pusher.py:finish():145] shutting down file pusher
+2022-03-28 15:43:20,387 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:20,387 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:20,493 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:20,493 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:20,604 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:20,607 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:20,716 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:20,716 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:20,818 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:20,819 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:20,921 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:20,921 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:21,028 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:21,028 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:21,118 INFO    Thread-19 :19717 [upload_job.py:push():137] Uploaded file /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/config.yaml
+2022-03-28 15:43:21,118 INFO    Thread-20 :19717 [upload_job.py:push():137] Uploaded file /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/wandb-summary.json
+2022-03-28 15:43:21,118 INFO    Thread-18 :19717 [upload_job.py:push():137] Uploaded file /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/output.log
+2022-03-28 15:43:21,120 INFO    Thread-17 :19717 [upload_job.py:push():137] Uploaded file /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/requirements.txt
+2022-03-28 15:43:21,120 INFO    Thread-21 :19717 [upload_job.py:push():137] Uploaded file /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/files/conda-environment.yaml
+2022-03-28 15:43:21,131 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:21,131 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:21,237 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:21,237 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:21,323 INFO    Thread-11 :19717 [sender.py:transition_state():392] send defer: 8
+2022-03-28 15:43:21,324 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:21,324 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 8
+2022-03-28 15:43:21,324 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:21,324 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 8
+2022-03-28 15:43:21,340 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:21,900 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 9
+2022-03-28 15:43:21,900 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:21,901 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:21,901 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 9
+2022-03-28 15:43:21,902 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:21,902 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 9
+2022-03-28 15:43:21,902 INFO    SenderThread:19717 [sender.py:transition_state():392] send defer: 10
+2022-03-28 15:43:21,903 DEBUG   SenderThread:19717 [sender.py:send():235] send: final
+2022-03-28 15:43:21,904 DEBUG   SenderThread:19717 [sender.py:send():235] send: footer
+2022-03-28 15:43:21,904 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: defer
+2022-03-28 15:43:21,904 INFO    HandlerThread:19717 [handler.py:handle_request_defer():164] handle defer: 10
+2022-03-28 15:43:21,905 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: defer
+2022-03-28 15:43:21,905 INFO    SenderThread:19717 [sender.py:send_request_defer():388] handle sender defer: 10
+2022-03-28 15:43:22,004 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: poll_exit
+2022-03-28 15:43:22,004 DEBUG   SenderThread:19717 [sender.py:send_request():249] send_request: poll_exit
+2022-03-28 15:43:22,004 INFO    SenderThread:19717 [file_pusher.py:join():150] waiting for file pusher
+2022-03-28 15:43:22,787 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: sampled_history
+2022-03-28 15:43:22,788 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: get_summary
+2022-03-28 15:43:22,789 DEBUG   HandlerThread:19717 [handler.py:handle_request():141] handle_request: shutdown
+2022-03-28 15:43:22,790 INFO    HandlerThread:19717 [handler.py:finish():778] shutting down handler
+2022-03-28 15:43:22,905 INFO    WriterThread:19717 [datastore.py:close():281] close: /Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/wandb/run-20220328_152943-vvkur57i/run-vvkur57i.wandb
+2022-03-28 15:43:23,681 INFO    SenderThread:19717 [sender.py:finish():1078] shutting down sender
+2022-03-28 15:43:23,681 INFO    SenderThread:19717 [file_pusher.py:finish():145] shutting down file pusher
+2022-03-28 15:43:23,681 INFO    SenderThread:19717 [file_pusher.py:join():150] waiting for file pusher
+2022-03-28 15:43:24,024 INFO    MainThread:19717 [internal.py:handle_exit():82] Internal process exited

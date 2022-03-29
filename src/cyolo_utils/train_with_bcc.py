@@ -237,22 +237,23 @@ def convert_cs_yolo2bcc(y_cs_yolo, Na=3, Nc=2, G=DEFAULT_G, intermediate_yolo_mo
         return convert_cs_yolo2bcc_wo_vol_list(y_cs_yolo, Na, Nc, G, intermediate_yolo_mode)
     return convert_cs_yolo2bcc_with_vol_list(y_cs_yolo, Na, Nc, G, intermediate_yolo_mode, volunteer_list)
 
-# This takes in a tensor in the native target volunteer format (image-class-x-y-w-h-volunteer; targets concatenated with volunteer ids)
-# to the BCC format (i.e., volunteer-image-gridchoice-gridcell-width-height) format.
-def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_G, batch_size=None, vol_id_map=[]):
+def convert_target_volunteers_yolo2bcc_cam(target_volunteers, Na=3, G=DEFAULT_G, batch_size=None, vol_id_map=[], background_id=2):
     n_images = batch_size
     n_vols = len(vol_id_map)
     Ng = G.shape[0]
 
     vigcwh_list = [] # [v]olunteer, [i]mage, [g]rid choice, grid [c]ell id, [w]idth, [h]eight
+    vigcwh_list1 = []
+    vigcwh_list2 = []
     # grid cell id with deci, but why
     targets_per_i_bcc_list = []
     for i in range(n_images):
         target_vols_per_i = target_volunteers[target_volunteers[:, 0] == i][:, 1:]
         targets_per_ig_bcc_list = []
+        # vigcwh_whole_list = []
         for g in range(Ng):  # per grid choice
             g_frac = G[g]
-            S_g = np.ceil(1/g_frac).astype(int)**2
+            S_g = np.ceil(1/g_frac).astype(int)**2 # 6400, 1600, 400
             # Don't need a loop for anchor-boxes as we are simply repeating Na times below.
             targets_per_iv_bcc_list = []
             for v in range(n_vols):
@@ -264,16 +265,84 @@ def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, Nc=2, G=DEFAULT_
                     x_cell_ids = torch.where(x < 1, x / g_frac, torch.ones(x.shape) * (np.ceil(1 / g_frac))).int()
                     y_cell_ids = torch.where(y < 1, y / g_frac, torch.ones(y.shape) * (np.ceil(1 / g_frac))).int()
                     gc_ids = ((y_cell_ids) * (np.ceil(1 / g_frac)) + x_cell_ids).long()
-                    vigcwh_list.append(torch.cat(
-                        [torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1),
-                         h.unsqueeze(-1)], axis=1))
+                    gc_ids1 = torch.add(gc_ids, S_g)
+                    gc_ids2 = torch.add(gc_ids1, S_g)
+                    gc_IDS = torch.cat((gc_ids, gc_ids1, gc_ids2))
 
-                    targets_per_iv_bcc = BACKGROUND_CLASS_ID * torch.ones(S_g)
-                    targets_per_iv_bcc[gc_ids] = c
+                    vigcwh_list.append(torch.cat([torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+                    vigcwh_list1.append(torch.cat([torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids1.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+                    vigcwh_list2.append(torch.cat([torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids2.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+                    whole_list = vigcwh_list + vigcwh_list1 + vigcwh_list2
+                    # whole_list = [whole_list]
+                    # targets_per_iv_bcc = background_id * torch.ones(S_g) # comment this
+                    targets_per_iv_bcc = background_id * torch.ones(S_g*Na)
+                    # targets_per_iv_bcc[gc_ids] = c # comment this
+                    targets_per_iv_bcc[gc_IDS] = c.repeat(Na)
                     targets_per_iv_bcc_list.append(targets_per_iv_bcc)
                 # volunteer did not classify this image
                 else:
-                    targets_per_iv_bcc = -1 * torch.ones(S_g)
+                    # targets_per_iv_bcc = -1 * torch.ones(S_g) # comment this
+                    targets_per_iv_bcc = -1 * torch.ones(S_g*Na)
+                    targets_per_iv_bcc_list.append(targets_per_iv_bcc)
+            targets_per_ig_bcc = torch.stack(tuple(targets_per_iv_bcc_list)).T
+            # targets_per_ig_bcc = targets_per_iga_bcc.repeat((Na, 1))
+            targets_per_ig_bcc_list.append(targets_per_ig_bcc)
+            # vigcwh_whole_list.append(whole_list)
+        targets_per_i_bcc = torch.cat(targets_per_ig_bcc_list)
+        targets_per_i_bcc_list.append(targets_per_i_bcc)
+    target_volunteers_bcc = torch.stack(tuple(targets_per_i_bcc_list))
+    vigcwh = torch.cat(whole_list)
+    return target_volunteers_bcc, vigcwh
+
+
+
+# This takes in a tensor in the native target volunteer format (image-class-x-y-w-h-volunteer; targets concatenated with volunteer ids)
+# to the BCC format (i.e., volunteer-image-gridchoice-gridcell-width-height) format.
+def convert_target_volunteers_yolo2bcc(target_volunteers, Na=3, G=DEFAULT_G, batch_size=None, vol_id_map=[], background_id=2):
+    n_images = batch_size
+    n_vols = len(vol_id_map)
+    Ng = G.shape[0]
+
+    vigcwh_list = [] # [v]olunteer, [i]mage, [g]rid choice, grid [c]ell id, [w]idth, [h]eight
+    vigcwh_list1 = []
+    wigcwh_list2 = []
+    # grid cell id with deci, but why
+    targets_per_i_bcc_list = []
+    for i in range(n_images):
+        target_vols_per_i = target_volunteers[target_volunteers[:, 0] == i][:, 1:]
+        targets_per_ig_bcc_list = []
+        for g in range(Ng):  # per grid choice
+            g_frac = G[g]
+            S_g = np.ceil(1/g_frac).astype(int)**2 # 6400, 1600, 400
+            # Don't need a loop for anchor-boxes as we are simply repeating Na times below.
+            targets_per_iv_bcc_list = []
+            for v in range(n_vols):
+                # volunteer did classify this image
+                if v in target_vols_per_i[:, -1]:
+                    targets_per_iv = target_vols_per_i[target_vols_per_i[:, -1] == v][:, :-1]
+                    c, x, y, w, h = targets_per_iv.T  # w and h are ignored
+
+                    x_cell_ids = torch.where(x < 1, x / g_frac, torch.ones(x.shape) * (np.ceil(1 / g_frac))).int()
+                    y_cell_ids = torch.where(y < 1, y / g_frac, torch.ones(y.shape) * (np.ceil(1 / g_frac))).int()
+                    gc_ids = ((y_cell_ids) * (np.ceil(1 / g_frac)) + x_cell_ids).long()
+                    # gc_ids1 = torch.add(gc_ids, S_g)
+                    # gc_ids2 = torch.add(gc_ids1, S_g)
+                    # gc_IDS = torch.cat((gc_ids, gc_ids1, gc_ids2))
+
+                    vigcwh_list.append(torch.cat([torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+                    # vigcwh_list1.append(torch.cat([torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids1.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+                    # vigcwh_list2.append(torch.cat([torch.tensor([v, i, g]) * torch.ones(w.shape[0], 3), gc_ids2.unsqueeze(-1), w.unsqueeze(-1), h.unsqueeze(-1)], axis=1))
+                    # whole_list = torch.cat((vigcwh_list[0], vigcwh_list1[0], vigcwh_list2[0]))
+                    # whole_list = [whole_list]
+                    targets_per_iv_bcc = background_id * torch.ones(S_g) # comment this
+                    # targets_per_iv_bcc = background_id * torch.ones(S_g*3)
+                    targets_per_iv_bcc[gc_ids] = c # comment this
+                    #  targets_per_iv_bcc[gc_IDS] = c.repeat(3)
+                    targets_per_iv_bcc_list.append(targets_per_iv_bcc)
+                # volunteer did not classify this image
+                else:
+                    targets_per_iv_bcc = -1 * torch.ones(S_g) # comment this
+                    # targets_per_iv_bcc = -1 * torch.ones(S_g*3)
                     targets_per_iv_bcc_list.append(targets_per_iv_bcc)
             targets_per_iga_bcc = torch.stack(tuple(targets_per_iv_bcc_list)).T
             targets_per_ig_bcc = targets_per_iga_bcc.repeat((Na, 1))

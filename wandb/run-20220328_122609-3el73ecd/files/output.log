@@ -1,0 +1,149 @@
+
+Downloading https://github.com/ultralytics/yolov5/releases/download/v6.1/yolov5s.pt to yolov5s.pt...
+100% 14.1M/14.1M [00:00<00:00, 24.2MB/s]
+Overriding model.yaml nc=80 with nc=2
+                 from  n    params  module                                  arguments
+  0                -1  1      3520  models.common.Conv                      [3, 32, 6, 2, 2]
+  1                -1  1     18560  models.common.Conv                      [32, 64, 3, 2]
+  2                -1  1     18816  models.common.C3                        [64, 64, 1]
+  3                -1  1     73984  models.common.Conv                      [64, 128, 3, 2]
+  4                -1  2    115712  models.common.C3                        [128, 128, 2]
+  5                -1  1    295424  models.common.Conv                      [128, 256, 3, 2]
+  6                -1  3    625152  models.common.C3                        [256, 256, 3]
+  7                -1  1   1180672  models.common.Conv                      [256, 512, 3, 2]
+  8                -1  1   1182720  models.common.C3                        [512, 512, 1]
+  9                -1  1    656896  models.common.SPPF                      [512, 512, 5]
+ 10                -1  1    131584  models.common.Conv                      [512, 256, 1, 1]
+ 11                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 12           [-1, 6]  1         0  models.common.Concat                    [1]
+ 13                -1  1    361984  models.common.C3                        [512, 256, 1, False]
+ 14                -1  1     33024  models.common.Conv                      [256, 128, 1, 1]
+ 15                -1  1         0  torch.nn.modules.upsampling.Upsample    [None, 2, 'nearest']
+ 16           [-1, 4]  1         0  models.common.Concat                    [1]
+ 17                -1  1     90880  models.common.C3                        [256, 128, 1, False]
+ 18                -1  1    147712  models.common.Conv                      [128, 128, 3, 2]
+ 19          [-1, 14]  1         0  models.common.Concat                    [1]
+ 20                -1  1    296448  models.common.C3                        [256, 256, 1, False]
+ 21                -1  1    590336  models.common.Conv                      [256, 256, 3, 2]
+ 22          [-1, 10]  1         0  models.common.Concat                    [1]
+ 23                -1  1   1182720  models.common.C3                        [512, 512, 1, False]
+Augmentation is:  False
+ 24      [17, 20, 23]  1     18879  models.yolo.Detect                      [2, [[10, 13, 16, 30, 33, 23], [30, 61, 62, 45, 59, 119], [116, 90, 156, 198, 373, 326]], [128, 256, 512]]
+/Users/camellia/opt/anaconda3/envs/torch/lib/python3.8/site-packages/torch/functional.py:445: UserWarning: torch.meshgrid: in an upcoming release, it will be required to pass the indexing argument. (Triggered internally at  /Users/distiller/project/conda/conda-bld/pytorch_1640811925055/work/aten/src/ATen/native/TensorShape.cpp:2157.)
+  return _VF.meshgrid(tensors, **kwargs)  # type: ignore[attr-defined]
+Model Summary: 270 layers, 7025023 parameters, 7025023 gradients, 15.9 GFLOPs
+Transferred 343/350 items from yolov5s.pt
+Scaled weight_decay = 0.00046875
+[34m[1moptimizer:[39m[22m SGD with parameter groups 57 weight, 60 weight (no decay), 60 bias
+[34m[1mtrain: [39m[22mScanning 'datasets/bcc-tv/labels/train.cache' images and labels... 80 found, 0 missing, 4 empty, 0 corrupted: 100% 80/80 [00:00<?, ?it/s]
+[34m[1mval: [39m[22mScanning 'datasets/bcc-tv/labels/val.cache' images and labels... 20 found, 0 missing, 0 empty, 0 corrupted: 100% 20/20 [00:01<?, ?it/s]
+Plotting labels...
+[34m[1mautoanchor: [39m[22mAnalyzing anchors... anchors/target = 6.03, Best Possible Recall (BPR) = 1.0000
+Image sizes 640 train, 640 val
+Using 8 dataloader workers
+Logging results to [1mruns/train/exp255
+Starting training for 1 epochs...
+     Epoch   gpu_mem       box       obj       cls    labels  img_size
+YOLO+BCC
+  0% 0/4 [00:00<?, ?it/s]
+Python 3.8.12 (default, Oct 12 2021, 06:23:56)
+Type 'copyright', 'credits' or 'license' for more information
+IPython 7.28.0 -- An enhanced Interactive Python. Type '?' for help.
+PyDev console: using IPython 7.28.0
+Out[1]:
+tensor([[[ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         ...,
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.]],
+        [[ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         ...,
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.]],
+        [[ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         ...,
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.]],
+        ...,
+        [[ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         ...,
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.]],
+        [[ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         ...,
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.],
+         [ 2.,  2.,  2.,  2., -1.]],
+        [[-1.,  2.,  2.,  2., -1.],
+         [-1.,  2.,  2.,  2., -1.],
+         [-1.,  2.,  2.,  2., -1.],
+         ...,
+         [-1.,  2.,  2.,  2., -1.],
+         [-1.,  2.,  2.,  2., -1.],
+         [-1.,  2.,  2.,  2., -1.]]])
+Out[2]: torch.Size([20, 25200, 5])
+Out[3]: torch.Size([20, 25200, 5])
+Out[4]:
+tensor([[0.00000e+00, 0.00000e+00, 0.00000e+00, 3.77400e+03, 9.05218e-02, 8.29093e-02],
+        [0.00000e+00, 0.00000e+00, 0.00000e+00, 3.86700e+03, 5.75080e-02, 5.42099e-02],
+        [0.00000e+00, 0.00000e+00, 0.00000e+00, 3.64800e+03, 7.02876e-02, 5.84617e-02],
+        ...,
+        [3.00000e+00, 1.90000e+01, 2.00000e+00, 2.83000e+02, 1.54206e-01, 8.35722e-02],
+        [3.00000e+00, 1.90000e+01, 2.00000e+00, 2.87000e+02, 6.38629e-02, 5.70991e-02],
+        [3.00000e+00, 1.90000e+01, 2.00000e+00, 1.33000e+02, 1.97300e-02, 4.61983e-02]])
+Out[5]: torch.Size([657, 6])
+Out[6]:
+[tensor([0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 1, 1, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 1, 1, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 2, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 1, 2, 2, 2, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 1, 2, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 1, 1, 1, 2, 2, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3], dtype=torch.int32),
+ tensor([], dtype=torch.int32),
+ tensor([], dtype=torch.int32),
+ tensor([0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3], dtype=torch.int32),
+ tensor([1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 3, 3, 3], dtype=torch.int32)]
+Out[7]:
+tensor([0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 3, 3, 0, 0, 1, 1, 2, 3, 3, 3, 0, 0, 0, 0, 0, 1, 2, 2, 2, 3, 3, 3, 3, 3, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 0, 0, 0, 0, 0, 1, 1, 2, 2, 3, 3, 3, 3, 0, 0, 2, 3, 0, 0, 0, 1, 2, 2, 2, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 0, 1, 2, 3,
+        0, 0, 0, 1, 1, 1, 2, 2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 3, 3, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 0, 0, 0, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 1, 2, 2, 2, 2, 3, 3, 3, 3, 3, 3, 0, 0, 1, 1, 1, 1, 2, 2, 2, 3, 3, 3, 0, 0, 0, 0, 0, 1, 1, 1, 1, 1, 2, 2, 3, 3, 3, 1, 1, 1,
+  0% 0/4 [00:00<?, ?it/s]Traceback (most recent call last):
+  File "/Users/camellia/opt/anaconda3/envs/torch/lib/python3.8/site-packages/IPython/core/interactiveshell.py", line 3444, in run_code
+    exec(code_obj, self.user_global_ns, self.user_ns)
+  File "<ipython-input-8-16056f0290c8>", line 1, in <module>
+    batch_volunteer.shape
+NameError: name 'batch_volunteer' is not defined
+Out[9]: torch.Size([219])
+Out[10]: torch.Size([657, 6])
+  0% 0/4 [1:45:44<?, ?it/s]
+Traceback (most recent call last):
+  File "/Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/src/train.py", line 831, in <module>
+    main(opt)
+  File "/Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/src/train.py", line 722, in main
+    train(opt.hyp, opt, device)
+  File "/Users/camellia/Desktop/OneDrive - University of Surrey/dental_disease/src/train.py", line 355, in train
+    target_volunteers_bcc = target_volunteers_bcc.to(device)
+KeyboardInterrupt
+libc++abi: terminating with uncaught exception of type std::__1::system_error: Broken pipe
